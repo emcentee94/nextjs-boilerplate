@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, Clock, Sparkles, Zap } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -13,12 +12,18 @@ export default function ComingSoon() {
         <div className="absolute bottom-40 left-20 w-40 h-40 bg-[#888625]/20 rounded-full blur-2xl animate-float delay-2000"></div>
         <div className="absolute bottom-20 right-10 w-28 h-28 bg-[#FD6585]/20 rounded-full blur-xl animate-float delay-500"></div>
 
-        <Clock
-          className="absolute top-16 left-1/4 w-12 h-12 text-[#FD6585]/30 animate-spin"
+        <div
+          className="absolute top-16 left-1/4 w-12 h-12 text-[#FD6585]/30 animate-spin text-4xl flex items-center justify-center"
           style={{ animationDuration: "8s" }}
-        />
-        <Sparkles className="absolute bottom-16 right-1/4 w-10 h-10 text-[#FF9A2E]/30 animate-pulse" />
-        <Zap className="absolute top-1/2 right-16 w-8 h-8 text-[#888625]/30 animate-bounce" />
+        >
+          🕐
+        </div>
+        <div className="absolute bottom-16 right-1/4 w-10 h-10 text-[#FF9A2E]/30 animate-pulse text-3xl flex items-center justify-center">
+          ✨
+        </div>
+        <div className="absolute top-1/2 right-16 w-8 h-8 text-[#888625]/30 animate-bounce text-2xl flex items-center justify-center">
+          ⚡
+        </div>
       </div>
 
       <div className="container mx-auto max-w-4xl px-4 text-center relative z-10">
@@ -84,20 +89,22 @@ export default function ComingSoon() {
           <div className="space-y-8">
             <p className="text-xl text-foreground font-medium">Want to be notified when we launch?</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] hover:from-[#FD6585]/90 hover:to-[#FF9A2E]/90 text-white px-8 py-4 text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-110 hover:-translate-y-1 rounded-2xl"
-              >
-                <Sparkles className="mr-2 w-5 h-5" />
-                Join the Waitlist
-              </Button>
+              <Link href="/waitlist">
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] hover:from-[#FD6585]/90 hover:to-[#FF9A2E]/90 text-white px-8 py-4 text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-110 hover:-translate-y-1 rounded-2xl"
+                >
+                  <span className="mr-2">✨</span>
+                  Join the Waitlist
+                </Button>
+              </Link>
               <Link href="/">
                 <Button
                   variant="outline"
                   size="lg"
                   className="px-8 py-4 text-lg font-bold border-2 hover:border-[#FD6585] hover:scale-110 hover:-translate-y-1 transition-all duration-500 rounded-2xl bg-transparent"
                 >
-                  <ArrowLeft className="mr-2 w-5 h-5" />
+                  <span className="mr-2">←</span>
                   Back to Home
                 </Button>
               </Link>

@@ -107,14 +107,16 @@ export default function TaughtfulLanding() {
                     <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 group-hover:scale-125 transition-all duration-300" />
                   </Button>
                 </Link>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="px-10 py-6 text-xl font-bold bg-gradient-to-r from-transparent to-[#FD6585]/5 border-3 border-foreground hover:bg-gradient-to-r hover:from-[#FD6585]/10 hover:to-[#FF9A2E]/10 hover:border-[#FD6585] hover:scale-110 hover:-translate-y-2 transition-all duration-500 rounded-2xl shadow-lg hover:shadow-xl group"
-                >
-                  <BookOpen className="mr-3 w-6 h-6 group-hover:animate-pulse" />
-                  See a Sample Lesson Plan
-                </Button>
+                <Link href="/sample-lesson">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="px-10 py-6 text-xl font-bold bg-gradient-to-r from-transparent to-[#FD6585]/5 border-3 border-foreground hover:bg-gradient-to-r hover:from-[#FD6585]/10 hover:to-[#FF9A2E]/10 hover:border-[#FD6585] hover:scale-110 hover:-translate-y-2 transition-all duration-500 rounded-2xl shadow-lg hover:shadow-xl group"
+                  >
+                    <BookOpen className="mr-3 w-6 h-6 group-hover:animate-pulse" />
+                    See a Sample Lesson Plan
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>

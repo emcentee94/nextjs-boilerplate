@@ -57,7 +57,7 @@ export default function TaughtfulLanding() {
             Get Started
           </Button>
         </div>
-      </header>
+      </header> 
 
       {/* 1. HERO SECTION */}
       <section className="py-32 px-4 bg-gradient-to-br from-white via-[#FDE5DA]/20 to-white relative overflow-hidden">

@@ -39,6 +39,7 @@ type WaitlistFormData = z.infer<typeof waitlistSchema>
 export default function TaughtfulLanding() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
+  const [showSampleLesson, setShowSampleLesson] = useState(false)
 
   const {
     register,
@@ -165,6 +166,7 @@ export default function TaughtfulLanding() {
                 <Button
                   variant="outline"
                   size="lg"
+                  onClick={() => setShowSampleLesson(true)}
                   className="px-10 py-6 text-xl font-bold bg-gradient-to-r from-transparent to-[#FD6585]/5 border-3 border-foreground hover:bg-gradient-to-r hover:from-[#FD6585]/10 hover:to-[#FF9A2E]/10 hover:border-[#FD6585] hover:scale-110 hover:-translate-y-2 transition-all duration-500 rounded-2xl shadow-lg hover:shadow-xl group"
                 >
                   <BookOpen className="mr-3 w-6 h-6 group-hover:animate-pulse" />
@@ -620,6 +622,170 @@ export default function TaughtfulLanding() {
           </div>
         </div>
       </footer>
+
+      {/* Sample Lesson Plan Modal */}
+      {showSampleLesson && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border-4 border-[#FD6585]/20">
+            <div className="p-8">
+              {/* Header */}
+              <div className="flex justify-between items-center mb-8">
+                <h2 className="text-4xl font-black text-foreground font-mono">
+                  Sample Lesson Plan
+                </h2>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowSampleLesson(false)}
+                  className="rounded-full w-10 h-10 p-0 hover:bg-[#FD6585]/10 hover:border-[#FD6585]"
+                >
+                  ✕
+                </Button>
+              </div>
+
+              {/* Sample Lesson Content */}
+              <div className="space-y-8">
+                <div className="bg-gradient-to-r from-[#FD6585]/10 to-[#FF9A2E]/10 rounded-2xl p-6 border-2 border-[#FD6585]/20">
+                  <h3 className="text-2xl font-bold text-foreground font-mono mb-4">Year 8 English - Poetry Analysis</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="text-lg font-semibold text-[#FD6585] mb-2">Learning Intentions</h4>
+                      <ul className="space-y-2 text-muted-foreground">
+                        <li>• Analyse poetic devices in contemporary Australian poetry</li>
+                        <li>• Connect themes to personal experiences</li>
+                        <li>• Develop critical thinking through discussion</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-semibold text-[#FF9A2E] mb-2">Success Criteria</h4>
+                      <ul className="space-y-2 text-muted-foreground">
+                        <li>• Identify 3+ poetic devices with examples</li>
+                        <li>• Explain how devices create meaning</li>
+                        <li>• Participate in respectful discussion</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-white border-2 border-[#888625]/20 rounded-2xl p-6">
+                    <h4 className="text-lg font-semibold text-[#888625] mb-4 flex items-center">
+                      <Clock className="w-5 h-5 mr-2" />
+                      Lesson Structure (50 min)
+                    </h4>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium">Welcome & Check-in</span>
+                        <span className="text-sm text-muted-foreground">5 min</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium">Poem Introduction</span>
+                        <span className="text-sm text-muted-foreground">10 min</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium">Analysis Activity</span>
+                        <span className="text-sm text-muted-foreground">25 min</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium">Reflection & Exit</span>
+                        <span className="text-sm text-muted-foreground">10 min</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white border-2 border-[#FD6585]/20 rounded-2xl p-6">
+                    <h4 className="text-lg font-semibold text-[#FD6585] mb-4 flex items-center">
+                      <Heart className="w-5 h-5 mr-2" />
+                      Trauma-Informed Elements
+                    </h4>
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-2">
+                        <span className="text-green-500">✓</span>
+                        <span className="text-sm">Predictable routine with visual timer</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="text-green-500">✓</span>
+                        <span className="text-sm">Choice in analysis approach</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="text-green-500">✓</span>
+                        <span className="text-sm">Low-stakes entry task</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="text-green-500">✓</span>
+                        <span className="text-sm">Co-regulation breathing space</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-[#888625]/10 to-[#FD6585]/10 rounded-2xl p-6 border-2 border-[#888625]/20">
+                  <h4 className="text-lg font-semibold text-[#888625] mb-4 flex items-center">
+                    <Users className="w-5 h-5 mr-2" />
+                    Cultural Considerations
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <h5 className="font-semibold text-foreground mb-2">Indigenous Perspectives</h5>
+                      <p className="text-sm text-muted-foreground">
+                        Teacher-selected contemporary Indigenous poets with proper attribution. 
+                        Students explore themes of connection to Country.
+                      </p>
+                    </div>
+                    <div>
+                      <h5 className="font-semibold text-foreground mb-2">Cultural Safety</h5>
+                      <p className="text-sm text-muted-foreground">
+                        No AI-generated Indigenous content. All materials vetted by cultural advisors. 
+                        Students choose their level of engagement.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white border-2 border-[#FF9A2E]/20 rounded-2xl p-6">
+                  <h4 className="text-lg font-semibold text-[#FF9A2E] mb-4 flex items-center">
+                    <Target className="w-5 h-5 mr-2" />
+                    Assessment & Differentiation
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <h5 className="font-semibold text-foreground mb-2">Formative Assessment</h5>
+                      <p className="text-sm text-muted-foreground">
+                        Exit ticket: One poetic device identified with explanation
+                      </p>
+                    </div>
+                    <div>
+                      <h5 className="font-semibold text-foreground mb-2">Support</h5>
+                      <p className="text-sm text-muted-foreground">
+                        Visual device cards, peer buddy system, extended time
+                      </p>
+                    </div>
+                    <div>
+                      <h5 className="font-semibold text-foreground mb-2">Extension</h5>
+                      <p className="text-sm text-muted-foreground">
+                        Compare devices across multiple poems, create own examples
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="mt-8 pt-6 border-t border-border/50 text-center">
+                <p className="text-muted-foreground font-medium mb-4">
+                  This is how Taughtful structures lesson plans - with intention, care, and cultural respect.
+                </p>
+                <Button
+                  onClick={() => setShowSampleLesson(false)}
+                  className="bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] hover:from-[#FD6585]/90 hover:to-[#FF9A2E]/90 text-white px-8 py-3 font-bold rounded-2xl"
+                >
+                  Close Sample
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Fredoka } from "next/font/google"
 import { Nunito } from "next/font/google"
+import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import "./globals.css"
 
@@ -33,6 +34,7 @@ export default function RootLayout({
     <html lang="en" className="bg-transparent">
       <body className={`font-sans ${fredoka.variable} ${nunito.variable}`}>
         <Suspense fallback={null}>{children}</Suspense>
+        <Analytics />
       </body>
     </html>
   )

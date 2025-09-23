@@ -1,9 +1,10 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import Link from "next/link"
 import {
   ArrowRight,
   BookOpen,
@@ -21,8 +22,64 @@ import {
   Target,
 } from "lucide-react"
 import Image from "next/image"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
+import { useState } from "react"
+
+const waitlistSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  name: z.string().min(1, "Name is required"),
+  yearLevels: z.string().min(1, "Please select year levels"),
+  planningHeadache: z.string().optional(),
+})
+
+type WaitlistFormData = z.infer<typeof waitlistSchema>
 
 export default function TaughtfulLanding() {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<WaitlistFormData>({
+    resolver: zodResolver(waitlistSchema),
+  })
+
+  const onSubmit = async (data: WaitlistFormData) => {
+    setIsSubmitting(true)
+    setSubmitStatus("idle")
+
+    try {
+      const response = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+
+      if (response.ok) {
+        setSubmitStatus("success")
+        reset()
+      } else {
+        setSubmitStatus("error")
+      }
+    } catch (error) {
+      console.error("Form submission error:", error)
+      setSubmitStatus("error")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const yearLevels = watch("yearLevels")
+
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       <div className="fixed inset-0 pointer-events-none z-0">
@@ -57,7 +114,7 @@ export default function TaughtfulLanding() {
             Get Started
           </Button>
         </div>
-      </header> 
+      </header>
 
       {/* 1. HERO SECTION */}
       <section className="py-32 px-4 bg-gradient-to-br from-white via-[#FDE5DA]/20 to-white relative overflow-hidden">
@@ -97,26 +154,22 @@ export default function TaughtfulLanding() {
           <div className="flex justify-center">
             <div className="text-center animate-fade-in">
               <div className="flex flex-col sm:flex-row gap-6 pt-4 justify-center">
-                <Link href="/coming-soon">
-                  <Button
-                    size="lg"
-                    className="bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] hover:from-[#FD6585]/90 hover:to-[#FF9A2E]/90 text-white px-10 py-6 text-xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110 hover:-translate-y-2 group rounded-2xl border-2 border-white/20 hover:border-white/40"
-                  >
-                    <Zap className="mr-3 w-6 h-6 group-hover:animate-bounce" />
-                    Join Beta – Free Access
-                    <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 group-hover:scale-125 transition-all duration-300" />
-                  </Button>
-                </Link>
-                <Link href="/sample-lesson">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="px-10 py-6 text-xl font-bold bg-gradient-to-r from-transparent to-[#FD6585]/5 border-3 border-foreground hover:bg-gradient-to-r hover:from-[#FD6585]/10 hover:to-[#FF9A2E]/10 hover:border-[#FD6585] hover:scale-110 hover:-translate-y-2 transition-all duration-500 rounded-2xl shadow-lg hover:shadow-xl group"
-                  >
-                    <BookOpen className="mr-3 w-6 h-6 group-hover:animate-pulse" />
-                    See a Sample Lesson Plan
-                  </Button>
-                </Link>
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] hover:from-[#FD6585]/90 hover:to-[#FF9A2E]/90 text-white px-10 py-6 text-xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110 hover:-translate-y-2 group rounded-2xl border-2 border-white/20 hover:border-white/40"
+                >
+                  <Zap className="mr-3 w-6 h-6 group-hover:animate-bounce" />
+                  Join Beta – Free Access
+                  <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 group-hover:scale-125 transition-all duration-300" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="px-10 py-6 text-xl font-bold bg-gradient-to-r from-transparent to-[#FD6585]/5 border-3 border-foreground hover:bg-gradient-to-r hover:from-[#FD6585]/10 hover:to-[#FF9A2E]/10 hover:border-[#FD6585] hover:scale-110 hover:-translate-y-2 transition-all duration-500 rounded-2xl shadow-lg hover:shadow-xl group"
+                >
+                  <BookOpen className="mr-3 w-6 h-6 group-hover:animate-pulse" />
+                  See a Sample Lesson Plan
+                </Button>
               </div>
             </div>
           </div>
@@ -378,63 +431,92 @@ export default function TaughtfulLanding() {
         <div className="container mx-auto max-w-5xl text-center relative z-10">
           <div className="bg-gradient-to-br from-white/80 via-[#FDE5DA]/60 to-white/80 rounded-3xl p-16 border-3 border-[#FD6585]/30 shadow-2xl backdrop-blur-sm hover:shadow-3xl hover:scale-[1.02] transition-all duration-700 group relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-[#FD6585]/5 via-transparent to-[#FF9A2E]/5 rounded-3xl"></div>
-            <div className="absolute top-8 right-8 w-16 h-16 bg-[#888625]/20 rounded-full blur-lg animate-pulse"></div>
-            <div className="absolute bottom-8 left-8 w-12 h-12 bg-[#FD6585]/20 rounded-full blur-md animate-pulse delay-500"></div>
+            <div className="absolute top-8 right-8 w-16 h-16 bg-[#FD6585]/20 rounded-full blur-lg animate-pulse"></div>
+            <div className="absolute bottom-8 left-8 w-12 h-12 bg-[#888625]/20 rounded-full blur-md animate-pulse delay-500"></div>
 
             <div className="relative z-10">
               <h2 className="text-5xl md:text-6xl font-black mb-10 text-foreground font-mono group-hover:scale-105 transition-all duration-500 cursor-default">
                 Ready to ditch the panic planning?
               </h2>
 
-              <div className="max-w-3xl mx-auto space-y-8 mb-12">
+              <form onSubmit={handleSubmit(onSubmit)} className="max-w-3xl mx-auto space-y-8 mb-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <Input
-                    placeholder="Email (required)"
-                    type="email"
-                    className="bg-white/90 border-3 hover:border-[#FD6585]/60 focus:border-[#FD6585] transition-all duration-500 rounded-2xl h-16 text-lg shadow-lg hover:shadow-xl hover:scale-105 font-medium"
-                  />
-                  <Input
-                    placeholder="Name (required)"
-                    className="bg-white/90 border-3 hover:border-[#FD6585]/60 focus:border-[#FD6585] transition-all duration-500 rounded-2xl h-16 text-lg shadow-lg hover:shadow-xl hover:scale-105 font-medium"
-                  />
+                  <div>
+                    <Input
+                      {...register("email")}
+                      placeholder="Email (required)"
+                      type="email"
+                      className="bg-white/90 border-3 hover:border-[#FD6585]/60 focus:border-[#FD6585] transition-all duration-500 rounded-2xl h-16 text-lg shadow-lg hover:shadow-xl hover:scale-105 font-medium"
+                    />
+                    {errors.email && <p className="text-red-500 text-sm mt-2 font-medium">{errors.email.message}</p>}
+                  </div>
+                  <div>
+                    <Input
+                      {...register("name")}
+                      placeholder="Name (required)"
+                      className="bg-white/90 border-3 hover:border-[#FD6585]/60 focus:border-[#FD6585] transition-all duration-500 rounded-2xl h-16 text-lg shadow-lg hover:shadow-xl hover:scale-105 font-medium"
+                    />
+                    {errors.name && <p className="text-red-500 text-sm mt-2 font-medium">{errors.name.message}</p>}
+                  </div>
                 </div>
-                <Select>
-                  <SelectTrigger className="bg-white/90 border-3 hover:border-[#FD6585]/60 focus:border-[#FD6585] transition-all duration-500 rounded-2xl h-16 text-lg shadow-lg hover:shadow-xl hover:scale-105 font-medium">
-                    <SelectValue placeholder="Year levels (dropdown)" />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-2xl border-2 border-[#FD6585]/20">
-                    <SelectItem value="primary" className="text-lg py-3 hover:bg-[#FD6585]/10 rounded-xl">
-                      Primary (K-6)
-                    </SelectItem>
-                    <SelectItem value="secondary" className="text-lg py-3 hover:bg-[#FD6585]/10 rounded-xl">
-                      Secondary (7-12)
-                    </SelectItem>
-                    <SelectItem value="both" className="text-lg py-3 hover:bg-[#FD6585]/10 rounded-xl">
-                      Both Primary & Secondary
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
+                <div>
+                  <Select onValueChange={(value) => setValue("yearLevels", value)} value={yearLevels}>
+                    <SelectTrigger className="bg-white/90 border-3 hover:border-[#FD6585]/60 focus:border-[#FD6585] transition-all duration-500 rounded-2xl h-16 text-lg shadow-lg hover:shadow-xl hover:scale-105 font-medium">
+                      <SelectValue placeholder="Year levels (dropdown)" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-2xl border-2 border-[#FD6585]/20">
+                      <SelectItem value="primary" className="text-lg py-3 hover:bg-[#FD6585]/10 rounded-xl">
+                        Primary (K-6)
+                      </SelectItem>
+                      <SelectItem value="secondary" className="text-lg py-3 hover:bg-[#FD6585]/10 rounded-xl">
+                        Secondary (7-12)
+                      </SelectItem>
+                      <SelectItem value="both" className="text-lg py-3 hover:bg-[#FD6585]/10 rounded-xl">
+                        Both Primary & Secondary
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {errors.yearLevels && (
+                    <p className="text-red-500 text-sm mt-2 font-medium">{errors.yearLevels.message}</p>
+                  )}
+                </div>
                 <Textarea
+                  {...register("planningHeadache")}
                   placeholder="Biggest planning headache (optional)"
                   className="bg-white/90 border-3 hover:border-[#FD6585]/60 focus:border-[#FD6585] transition-all duration-500 min-h-[140px] rounded-2xl text-lg shadow-lg hover:shadow-xl hover:scale-105 font-medium resize-none"
                 />
-              </div>
 
-              <div className="flex flex-col items-center gap-8">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] hover:from-[#FD6585]/90 hover:to-[#FF9A2E]/90 text-white px-12 py-6 text-2xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110 hover:-translate-y-2 group rounded-2xl border-2 border-white/20 hover:border-white/40 relative overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent rounded-2xl"></div>
-                  <Zap className="mr-3 w-7 h-7 group-hover:animate-bounce relative z-10" />
-                  <span className="relative z-10">Get Beta Access</span>
-                  <ArrowRight className="ml-3 w-7 h-7 group-hover:translate-x-2 group-hover:animate-bounce transition-all duration-300 relative z-10" />
-                  <Sparkles className="absolute top-2 right-2 w-5 h-5 text-white/60 animate-pulse group-hover:animate-spin" />
-                </Button>
-                <p className="text-muted-foreground font-medium hover:text-foreground transition-all duration-500 text-lg hover:scale-105 cursor-default">
-                  No card. No commitment. Just honesty.
-                </p>
-              </div>
+                <div className="flex flex-col items-center gap-8">
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    size="lg"
+                    className="bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] hover:from-[#FD6585]/90 hover:to-[#FF9A2E]/90 text-white px-12 py-6 text-2xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110 hover:-translate-y-2 group rounded-2xl border-2 border-white/20 hover:border-white/40 relative overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:translate-y-0"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent rounded-2xl"></div>
+                    <Zap className="mr-3 w-7 h-7 group-hover:animate-bounce relative z-10" />
+                    <span className="relative z-10">{isSubmitting ? "Joining..." : "Get Beta Access"}</span>
+                    <ArrowRight className="ml-3 w-7 h-7 group-hover:translate-x-2 group-hover:animate-bounce transition-all duration-300 relative z-10" />
+                    <Sparkles className="absolute top-2 right-2 w-5 h-5 text-white/60 animate-pulse group-hover:animate-spin" />
+                  </Button>
+
+                  {submitStatus === "success" && (
+                    <div className="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-2xl font-medium">
+                      🎉 Welcome to the beta! Check your email for next steps.
+                    </div>
+                  )}
+
+                  {submitStatus === "error" && (
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-2xl font-medium">
+                      Something went wrong. Please try again or email us directly at hello@taughtful.com.au
+                    </div>
+                  )}
+
+                  <p className="text-muted-foreground font-medium hover:text-foreground transition-all duration-500 text-lg hover:scale-105 cursor-default">
+                    No card. No commitment. Just honesty.
+                  </p>
+                </div>
+              </form>
             </div>
           </div>
         </div>

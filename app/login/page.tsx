@@ -15,7 +15,7 @@ import {
   Target,
 } from "lucide-react"
 import Image from "next/image"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { auth, supabase } from "@/lib/supabase"
 
 export default function LoginPage() {
@@ -24,6 +24,11 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -115,7 +120,7 @@ export default function LoginPage() {
               {/* MVP Notice */}
               <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
                 <p className="text-sm text-blue-800 text-center">
-                  <strong>MVP Notice:</strong> {supabase ? 'Supabase connected! Real authentication enabled.' : 'Demo mode: Any email/password combination will work for testing.'}
+                  <strong>MVP Notice:</strong> {isClient ? (supabase ? 'Supabase connected! Real authentication enabled.' : 'Demo mode: Any email/password combination will work for testing.') : 'Loading...'}
                 </p>
               </div>
 

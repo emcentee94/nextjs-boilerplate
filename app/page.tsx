@@ -180,37 +180,6 @@ export default function TaughtfulLanding() {
             </p>
           </div>
 
-          {/* Curriculum Selection */}
-          <div className="flex justify-center mb-8">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border-2 border-[#FD6585]/20 shadow-lg">
-              <div className="text-center mb-4">
-                <h3 className="text-lg font-bold text-foreground font-mono mb-2">Choose Your Curriculum</h3>
-                <p className="text-sm text-muted-foreground">Select your state/territory for curriculum-aligned lesson plans</p>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {Object.entries(curriculumOptions).map(([key, curriculum]) => (
-                  <button
-                    key={key}
-                    onClick={() => setSelectedCurriculum(key)}
-                    className={`p-3 rounded-xl border-2 transition-all duration-300 hover:scale-105 ${
-                      selectedCurriculum === key
-                        ? `border-[#FD6585] bg-gradient-to-r ${curriculum.color} text-white shadow-lg`
-                        : 'border-border hover:border-[#FD6585]/50 bg-white/50 hover:bg-white/80'
-                    }`}
-                  >
-                    <div className="text-xs font-semibold mb-1">{curriculum.name.split(' ')[0]}</div>
-                    <div className="text-xs opacity-80">{curriculum.description}</div>
-                  </button>
-                ))}
-              </div>
-              <div className="mt-4 text-center">
-                <p className="text-sm font-medium text-[#FD6585]">
-                  {curriculumOptions[selectedCurriculum as keyof typeof curriculumOptions].compliance}
-                </p>
-              </div>
-            </div>
-          </div>
-
           <div className="flex justify-center">
             <div className="text-center animate-fade-in">
               <div className="flex flex-col sm:flex-row gap-6 pt-4 justify-center">
@@ -324,6 +293,107 @@ export default function TaughtfulLanding() {
                 </p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 4. MULTI-CURRICULUM SUPPORT FEATURE */}
+      <section className="py-32 px-4 bg-gradient-to-br from-[#FDE5DA] via-[#FFF2E8] to-[#FDE5DA] relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-10 left-1/4 w-16 h-16 bg-[#FD6585]/20 rounded-full animate-bounce delay-0"></div>
+          <div className="absolute top-20 right-1/3 w-12 h-12 bg-[#888625]/20 rounded-full animate-bounce delay-300"></div>
+          <div className="absolute bottom-10 left-1/3 w-20 h-20 bg-[#FF9A2E]/20 rounded-full animate-bounce delay-700"></div>
+          <div className="absolute bottom-20 right-1/4 w-14 h-14 bg-[#FD6585]/20 rounded-full animate-bounce delay-1000"></div>
+        </div>
+
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-5xl md:text-6xl font-black text-foreground font-mono hover:scale-105 transition-all duration-700 cursor-default mb-6">
+              Built for Every Australian Classroom
+            </h2>
+            <p className="text-2xl md:text-3xl text-muted-foreground font-medium leading-relaxed font-sans hover:text-foreground transition-all duration-500 hover:scale-105 cursor-default max-w-4xl mx-auto mb-8">
+              No matter which curriculum your state uses, Taughtful speaks your language.
+            </p>
+            <div className="w-32 h-1 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] mx-auto rounded-full"></div>
+          </div>
+
+          {/* Curriculum Showcase */}
+          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-12 border-4 border-[#FD6585]/20 shadow-2xl mb-12">
+            <div className="text-center mb-8">
+              <h3 className="text-3xl font-bold text-foreground font-mono mb-4">Choose Your Curriculum</h3>
+              <p className="text-lg text-muted-foreground">Select your state/territory for curriculum-aligned lesson plans</p>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+              {Object.entries(curriculumOptions).map(([key, curriculum]) => (
+                <button
+                  key={key}
+                  onClick={() => setSelectedCurriculum(key)}
+                  className={`p-6 rounded-2xl border-3 transition-all duration-300 hover:scale-105 hover:-translate-y-2 ${
+                    selectedCurriculum === key
+                      ? `border-[#FD6585] bg-gradient-to-r ${curriculum.color} text-white shadow-xl`
+                      : 'border-border hover:border-[#FD6585]/50 bg-white/80 hover:bg-white hover:shadow-lg'
+                  }`}
+                >
+                  <div className="text-center">
+                    <div className="text-lg font-bold mb-2">{curriculum.name.split(' ')[0]}</div>
+                    <div className="text-sm opacity-80 mb-3">{curriculum.description}</div>
+                    <div className="text-xs font-medium opacity-90">{curriculum.compliance}</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <div className="bg-gradient-to-r from-[#FD6585]/10 to-[#FF9A2E]/10 rounded-2xl p-6 border-2 border-[#FD6585]/20">
+                <h4 className="text-xl font-bold text-foreground font-mono mb-2">Currently Selected:</h4>
+                <p className="text-lg font-semibold text-[#FD6585]">
+                  {curriculumOptions[selectedCurriculum as keyof typeof curriculumOptions].name}
+                </p>
+                <p className="text-sm text-muted-foreground mt-2">
+                  {curriculumOptions[selectedCurriculum as keyof typeof curriculumOptions].compliance}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Benefits Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center group">
+              <div className="w-20 h-20 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-125 transition-all duration-500 shadow-lg">
+                <Target className="w-10 h-10 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-foreground font-mono mb-4 group-hover:text-[#FD6585] transition-colors duration-300">
+                Automatic Code Mapping
+              </h3>
+              <p className="text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-300">
+                One lesson plan automatically maps to multiple curriculum frameworks. No manual translation needed.
+              </p>
+            </div>
+
+            <div className="text-center group">
+              <div className="w-20 h-20 bg-gradient-to-r from-[#888625] to-[#FD6585] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-125 transition-all duration-500 shadow-lg">
+                <BookOpen className="w-10 h-10 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-foreground font-mono mb-4 group-hover:text-[#888625] transition-colors duration-300">
+                State-Specific Language
+              </h3>
+              <p className="text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-300">
+                NSW teachers see NESA outcomes. Victorian teachers see VCAA codes. Everyone gets their local terminology.
+              </p>
+            </div>
+
+            <div className="text-center group">
+              <div className="w-20 h-20 bg-gradient-to-r from-[#FF9A2E] to-[#888625] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-125 transition-all duration-500 shadow-lg">
+                <Users className="w-10 h-10 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-foreground font-mono mb-4 group-hover:text-[#FF9A2E] transition-colors duration-300">
+                Compliance Confidence
+              </h3>
+              <p className="text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-300">
+                Clear alignment statements give you confidence that your lessons meet official requirements.
+              </p>
+            </div>
           </div>
         </div>
       </section>

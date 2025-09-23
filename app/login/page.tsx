@@ -16,6 +16,7 @@ import {
 } from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"
+import { auth, supabase } from "@/lib/supabase"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -29,17 +30,32 @@ export default function LoginPage() {
     setIsLoading(true)
     setError("")
 
-    // Simulate login process
-    setTimeout(() => {
-      if (email && password) {
-        // For MVP, any email/password combination works
-        localStorage.setItem("taughtful_user", JSON.stringify({ email, name: email.split("@")[0] }))
-        window.location.href = "/dashboard"
-      } else {
-        setError("Please enter both email and password")
+    try {
+      // Check if Supabase is configured
+      if (!supabase) {
+        // Fallback to localStorage for demo
+        if (email && password) {
+          localStorage.setItem("taughtful_user", JSON.stringify({ email, name: email.split("@")[0] }))
+          window.location.href = "/dashboard"
+        } else {
+          setError("Please enter both email and password")
+        }
+        return
       }
+
+      const { data, error } = await auth.signIn(email, password)
+      
+      if (error) {
+        setError(error.message)
+      } else if (data.user) {
+        // Successful login - redirect to dashboard
+        window.location.href = "/dashboard"
+      }
+    } catch (error) {
+      setError("Login failed. Please try again.")
+    } finally {
       setIsLoading(false)
-    }, 1000)
+    }
   }
 
   return (
@@ -96,6 +112,13 @@ export default function LoginPage() {
               </p>
             </CardHeader>
             <CardContent>
+              {/* MVP Notice */}
+              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                <p className="text-sm text-blue-800 text-center">
+                  <strong>MVP Notice:</strong> {supabase ? 'Supabase connected! Real authentication enabled.' : 'Demo mode: Any email/password combination will work for testing.'}
+                </p>
+              </div>
+
               <form onSubmit={handleLogin} className="space-y-6">
                 <div>
                   <label className="text-sm font-medium mb-2 block">Email Address</label>
@@ -194,12 +217,6 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* MVP Notice */}
-          <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-xl">
-            <p className="text-sm text-blue-800 text-center">
-              <strong>MVP Notice:</strong> This is a demo version. Any email/password combination will work for testing.
-            </p>
-          </div>
         </div>
       </div>
     </div>

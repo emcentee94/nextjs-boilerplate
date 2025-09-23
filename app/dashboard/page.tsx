@@ -24,6 +24,7 @@ import {
 } from "lucide-react"
 import Image from "next/image"
 import { useState, useEffect } from "react"
+import { auth, supabase, lessons, curriculum } from "@/lib/supabase"
 
 const curriculumOptions = {
   acara: {
@@ -90,6 +91,7 @@ export default function TeacherDashboard() {
   const [searchTerm, setSearchTerm] = useState("")
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [user, setUser] = useState<{ email: string; name: string } | null>(null)
+  const [userLessons, setUserLessons] = useState<any[]>([])
   const [newLesson, setNewLesson] = useState({
     title: "",
     subject: "",
@@ -99,17 +101,46 @@ export default function TeacherDashboard() {
 
   // Check authentication on component mount
   useEffect(() => {
-    const userData = localStorage.getItem("taughtful_user")
-    if (userData) {
-      setUser(JSON.parse(userData))
-    } else {
-      // Redirect to login if not authenticated
-      window.location.href = "/login"
+    const checkAuth = async () => {
+      const user = await auth.getCurrentUser()
+      if (user) {
+        setUser({ email: user.email || '', name: user.user_metadata?.name || user.email?.split('@')[0] || 'User' })
+        // Load user's lesson plans
+        loadUserLessons(user.id)
+      } else {
+        // Check if Supabase is configured
+        if (!supabase) {
+          // Fallback to localStorage for demo
+          const userData = localStorage.getItem("taughtful_user")
+          if (userData) {
+            setUser(JSON.parse(userData))
+            // Load sample lessons for demo
+            setUserLessons(sampleLessons)
+          } else {
+            window.location.href = "/login"
+          }
+        } else {
+          window.location.href = "/login"
+        }
+      }
     }
+    
+    checkAuth()
   }, [])
 
-  const handleLogout = () => {
-    localStorage.removeItem("taughtful_user")
+  const loadUserLessons = async (userId: string) => {
+    try {
+      const { data, error } = await lessons.getUserLessons(userId)
+      if (data) {
+        setUserLessons(data)
+      }
+    } catch (error) {
+      console.error('Failed to load lessons:', error)
+    }
+  }
+
+  const handleLogout = async () => {
+    await auth.signOut()
     window.location.href = "/login"
   }
 
@@ -127,17 +158,42 @@ export default function TeacherDashboard() {
     )
   }
 
-  const filteredLessons = sampleLessons.filter(lesson => 
+  const filteredLessons = userLessons.filter(lesson => 
     lesson.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     lesson.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    lesson.yearLevel.toLowerCase().includes(searchTerm.toLowerCase())
+    lesson.year_level.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
-  const handleCreateLesson = () => {
-    // In a real app, this would save to a database
-    console.log("Creating lesson:", { ...newLesson, curriculum: selectedCurriculum })
-    setShowCreateForm(false)
-    setNewLesson({ title: "", subject: "", yearLevel: "", description: "" })
+  const handleCreateLesson = async () => {
+    if (!user) return
+    
+    try {
+      const lessonData = {
+        user_id: user.id,
+        title: newLesson.title,
+        subject: newLesson.subject,
+        year_level: newLesson.yearLevel,
+        description: newLesson.description,
+        curriculum_framework: selectedCurriculum,
+        selected_outcomes: [],
+        status: 'draft' as const
+      }
+      
+      const { data, error } = await lessons.createLesson(lessonData)
+      
+      if (error) {
+        console.error('Failed to create lesson:', error)
+        alert('Failed to create lesson. Please try again.')
+      } else {
+        // Refresh lessons list
+        await loadUserLessons(user.id)
+        setShowCreateForm(false)
+        setNewLesson({ title: "", subject: "", yearLevel: "", description: "" })
+      }
+    } catch (error) {
+      console.error('Error creating lesson:', error)
+      alert('Failed to create lesson. Please try again.')
+    }
   }
 
   return (
@@ -362,7 +418,7 @@ export default function TeacherDashboard() {
                 <div className="flex justify-between items-start">
                   <div>
                     <CardTitle className="text-lg">{lesson.title}</CardTitle>
-                    <p className="text-sm text-muted-foreground">{lesson.subject} • {lesson.yearLevel}</p>
+                    <p className="text-sm text-muted-foreground">{lesson.subject} • {lesson.year_level}</p>
                   </div>
                   <div className={`px-2 py-1 rounded-full text-xs font-medium ${
                     lesson.status === 'Complete' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
@@ -375,11 +431,11 @@ export default function TeacherDashboard() {
                 <p className="text-sm text-muted-foreground mb-4">{lesson.description}</p>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground mb-4">
                   <Calendar className="w-3 h-3" />
-                  <span>Modified: {lesson.lastModified}</span>
+                  <span>Modified: {new Date(lesson.updated_at).toLocaleDateString()}</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground mb-4">
                   <Target className="w-3 h-3" />
-                  <span>{curriculumOptions[lesson.curriculum as keyof typeof curriculumOptions].name.split(' ')[0]}</span>
+                  <span>{curriculumOptions[lesson.curriculum_framework as keyof typeof curriculumOptions]?.name.split(' ')[0] || 'ACARA'}</span>
                 </div>
                 <div className="flex gap-2">
                   <Button size="sm" variant="outline" className="flex-1">

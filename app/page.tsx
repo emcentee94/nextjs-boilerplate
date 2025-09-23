@@ -36,10 +36,38 @@ const waitlistSchema = z.object({
 
 type WaitlistFormData = z.infer<typeof waitlistSchema>
 
+const curriculumOptions = {
+  acara: {
+    name: "Australian Curriculum v9 (ACARA)",
+    description: "National foundation curriculum",
+    compliance: "Aligned to ACARA v9",
+    color: "from-[#FD6585] to-[#FF9A2E]"
+  },
+  vic: {
+    name: "Victorian Curriculum F–10",
+    description: "Includes Capabilities strands",
+    compliance: "Aligned to VCAA Curriculum F–10",
+    color: "from-[#888625] to-[#FD6585]"
+  },
+  nsw: {
+    name: "NSW Syllabus",
+    description: "NESA outcomes and descriptors",
+    compliance: "Linked to NESA outcomes",
+    color: "from-[#FD6585] to-[#888625]"
+  },
+  wa: {
+    name: "WA Curriculum & Assessment Outline",
+    description: "WA-specific structure and phrasing",
+    compliance: "Aligned to WA Curriculum",
+    color: "from-[#FF9A2E] to-[#888625]"
+  }
+}
+
 export default function TaughtfulLanding() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
   const [showSampleLesson, setShowSampleLesson] = useState(false)
+  const [selectedCurriculum, setSelectedCurriculum] = useState("acara")
 
   const {
     register,
@@ -152,6 +180,37 @@ export default function TaughtfulLanding() {
             </p>
           </div>
 
+          {/* Curriculum Selection */}
+          <div className="flex justify-center mb-8">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border-2 border-[#FD6585]/20 shadow-lg">
+              <div className="text-center mb-4">
+                <h3 className="text-lg font-bold text-foreground font-mono mb-2">Choose Your Curriculum</h3>
+                <p className="text-sm text-muted-foreground">Select your state/territory for curriculum-aligned lesson plans</p>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {Object.entries(curriculumOptions).map(([key, curriculum]) => (
+                  <button
+                    key={key}
+                    onClick={() => setSelectedCurriculum(key)}
+                    className={`p-3 rounded-xl border-2 transition-all duration-300 hover:scale-105 ${
+                      selectedCurriculum === key
+                        ? `border-[#FD6585] bg-gradient-to-r ${curriculum.color} text-white shadow-lg`
+                        : 'border-border hover:border-[#FD6585]/50 bg-white/50 hover:bg-white/80'
+                    }`}
+                  >
+                    <div className="text-xs font-semibold mb-1">{curriculum.name.split(' ')[0]}</div>
+                    <div className="text-xs opacity-80">{curriculum.description}</div>
+                  </button>
+                ))}
+              </div>
+              <div className="mt-4 text-center">
+                <p className="text-sm font-medium text-[#FD6585]">
+                  {curriculumOptions[selectedCurriculum as keyof typeof curriculumOptions].compliance}
+                </p>
+              </div>
+            </div>
+          </div>
+
           <div className="flex justify-center">
             <div className="text-center animate-fade-in">
               <div className="flex flex-col sm:flex-row gap-6 pt-4 justify-center">
@@ -166,11 +225,11 @@ export default function TaughtfulLanding() {
                 <Button
                   variant="outline"
                   size="lg"
-                  onClick={() => setShowSampleLesson(true)}
+                  onClick={() => window.location.href = '/login'}
                   className="px-10 py-6 text-xl font-bold bg-gradient-to-r from-transparent to-[#FD6585]/5 border-3 border-foreground hover:bg-gradient-to-r hover:from-[#FD6585]/10 hover:to-[#FF9A2E]/10 hover:border-[#FD6585] hover:scale-110 hover:-translate-y-2 transition-all duration-500 rounded-2xl shadow-lg hover:shadow-xl group"
                 >
-                  <BookOpen className="mr-3 w-6 h-6 group-hover:animate-pulse" />
-                  See a Sample Lesson Plan
+                  <Users className="mr-3 w-6 h-6 group-hover:animate-pulse" />
+                  Teacher Dashboard
                 </Button>
               </div>
             </div>
@@ -212,7 +271,7 @@ export default function TaughtfulLanding() {
             <div className="w-32 h-1 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] mx-auto rounded-full"></div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-20 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20 max-w-6xl mx-auto">
             {[
               {
                 icon: <Users className="w-16 h-16" />,
@@ -234,6 +293,13 @@ export default function TaughtfulLanding() {
                 description:
                   "No prompts turning into unvetted paragraphs. Everything is structured, teacher-led, and exportable with clarity.",
                 color: "bg-[#888625]",
+              },
+              {
+                icon: <Target className="w-16 h-16" />,
+                title: "Multi-curriculum support",
+                description:
+                  "ACARA v9, Victorian Curriculum, NSW Syllabus, WA Curriculum. Automatic code mapping and compliance verification.",
+                color: "bg-[#FF9A2E]",
               },
             ].map((pillar, index) => (
               <div
@@ -610,6 +676,15 @@ export default function TaughtfulLanding() {
               <p className="hover:text-white transition-colors duration-300">
                 For Australian teachers. For Australian classrooms.
               </p>
+              <div className="mt-4 p-4 bg-white/10 rounded-lg">
+                <p className="text-sm font-semibold mb-2">Curriculum Compliance:</p>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div>✓ ACARA v9 aligned</div>
+                  <div>✓ Victorian Curriculum F–10</div>
+                  <div>✓ NSW Syllabus outcomes</div>
+                  <div>✓ WA Curriculum Outline</div>
+                </div>
+              </div>
             </div>
 
             <div className="border-t border-white/20 pt-8 text-white/60 font-sans text-sm">
@@ -646,7 +721,12 @@ export default function TaughtfulLanding() {
               {/* Sample Lesson Content */}
               <div className="space-y-8">
                 <div className="bg-gradient-to-r from-[#FD6585]/10 to-[#FF9A2E]/10 rounded-2xl p-6 border-2 border-[#FD6585]/20">
-                  <h3 className="text-2xl font-bold text-foreground font-mono mb-4">Year 8 English - Poetry Analysis</h3>
+                  <div className="flex justify-between items-start mb-4">
+                    <h3 className="text-2xl font-bold text-foreground font-mono">Year 8 English - Poetry Analysis</h3>
+                    <div className="bg-white/80 rounded-lg px-3 py-1 text-sm font-semibold text-[#FD6585]">
+                      {curriculumOptions[selectedCurriculum as keyof typeof curriculumOptions].compliance}
+                    </div>
+                  </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <h4 className="text-lg font-semibold text-[#FD6585] mb-2">Learning Intentions</h4>
@@ -655,6 +735,21 @@ export default function TaughtfulLanding() {
                         <li>• Connect themes to personal experiences</li>
                         <li>• Develop critical thinking through discussion</li>
                       </ul>
+                      <div className="mt-3 p-3 bg-white/50 rounded-lg">
+                        <h5 className="text-sm font-semibold text-foreground mb-2">Curriculum Codes:</h5>
+                        {selectedCurriculum === 'acara' && (
+                          <p className="text-xs text-muted-foreground">AC9E8LE04, AC9E8LY01, AC9E8LY03</p>
+                        )}
+                        {selectedCurriculum === 'vic' && (
+                          <p className="text-xs text-muted-foreground">VCELT418, VCELT419, VCCCTQ043</p>
+                        )}
+                        {selectedCurriculum === 'nsw' && (
+                          <p className="text-xs text-muted-foreground">EN4-1A, EN4-2A, EN4-5C</p>
+                        )}
+                        {selectedCurriculum === 'wa' && (
+                          <p className="text-xs text-muted-foreground">AC9E8LE04, AC9E8LY01, AC9E8LY03</p>
+                        )}
+                      </div>
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-[#FF9A2E] mb-2">Success Criteria</h4>
@@ -663,6 +758,15 @@ export default function TaughtfulLanding() {
                         <li>• Explain how devices create meaning</li>
                         <li>• Participate in respectful discussion</li>
                       </ul>
+                      <div className="mt-3 p-3 bg-white/50 rounded-lg">
+                        <h5 className="text-sm font-semibold text-foreground mb-2">Assessment Focus:</h5>
+                        <p className="text-xs text-muted-foreground">
+                          {selectedCurriculum === 'vic' && 'Critical & Creative Thinking Capability'}
+                          {selectedCurriculum === 'nsw' && 'Reading & Viewing outcomes'}
+                          {selectedCurriculum === 'wa' && 'Comprehension strategies'}
+                          {selectedCurriculum === 'acara' && 'Literacy: Analysing texts'}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>

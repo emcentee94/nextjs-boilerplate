@@ -122,16 +122,17 @@ export default function TaughtfulLanding() {
       <header className="border-b border-border/50 bg-background/95 backdrop-blur-md sticky top-0 z-50 transition-all duration-500 hover:bg-background/98 hover:shadow-lg">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between relative z-10">
           <div className="flex items-center gap-3 group cursor-pointer">
-            <div className="w-10 h-10 relative transition-all duration-500 group-hover:scale-125 group-hover:rotate-[360deg]">
+            <div className="w-12 h-12 relative transition-all duration-500 group-hover:scale-125 group-hover:rotate-[360deg]">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#FD6585] to-[#FF9A2E] rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-500"></div>
               <Image
                 src="/images/taughtful-logo.png"
                 alt="Taughtful"
-                width={40}
-                height={40}
-                className="rounded-full shadow-lg group-hover:shadow-xl"
+                width={48}
+                height={48}
+                className="rounded-full shadow-lg group-hover:shadow-xl relative z-10"
               />
             </div>
-            <span className="text-xl font-bold text-foreground font-mono transition-all duration-500 group-hover:text-[#FD6585] group-hover:scale-110">
+            <span className="text-2xl font-bold text-foreground font-mono transition-all duration-500 group-hover:text-[#FD6585] group-hover:scale-110">
               Taughtful
             </span>
           </div>
@@ -714,16 +715,17 @@ export default function TaughtfulLanding() {
         <div className="container mx-auto max-w-6xl">
           <div className="text-center space-y-8">
             <div className="flex items-center justify-center gap-3 group">
-              <div className="w-8 h-8 relative group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
+              <div className="w-10 h-10 relative group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#FD6585] to-[#FF9A2E] rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
                 <Image
                   src="/images/taughtful-logo.png"
                   alt="Taughtful"
-                  width={32}
-                  height={32}
-                  className="rounded-full"
+                  width={40}
+                  height={40}
+                  className="rounded-full shadow-lg group-hover:shadow-xl relative z-10"
                 />
               </div>
-              <span className="text-xl font-bold font-mono group-hover:text-[#FD6585] transition-colors duration-300">
+              <span className="text-2xl font-bold font-mono group-hover:text-[#FD6585] transition-colors duration-300">
                 Taughtful
               </span>
             </div>

@@ -20,7 +20,7 @@ export default function Header() {
           </Link>
 
           {/* Navigation */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex items-center space-x-6">
             <Link href="/demo" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
               Demo
             </Link>
@@ -30,10 +30,26 @@ export default function Header() {
             <Link href="/test-supabase" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
               Test
             </Link>
+            
+            {/* Demo Mode Button */}
+            <Link 
+              href="/demo" 
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center space-x-2"
+            >
+              <span>🎯</span>
+              <span>Try Demo Mode</span>
+            </Link>
           </nav>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
+          {/* Mobile menu button and demo button */}
+          <div className="md:hidden flex items-center space-x-3">
+            <Link 
+              href="/demo" 
+              className="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-md text-xs font-medium transition-colors duration-200 flex items-center space-x-1"
+            >
+              <span>🎯</span>
+              <span>Demo</span>
+            </Link>
             <button
               type="button"
               className="text-gray-600 hover:text-gray-900 focus:outline-none focus:text-gray-900"

@@ -8,6 +8,14 @@ export default function DemoDashboard() {
   const [selectedYearLevel, setSelectedYearLevel] = useState('Year 1')
   const [searchTerm, setSearchTerm] = useState('')
   const [showCreateForm, setShowCreateForm] = useState(false)
+  const [newLesson, setNewLesson] = useState({
+    title: '',
+    duration: 60,
+    learning_objectives: '',
+    resources: '',
+    assessment: '',
+    notes: ''
+  })
 
   // Sample lesson plans for demo
   const sampleLessons = [
@@ -71,6 +79,53 @@ export default function DemoDashboard() {
     lesson.learning_area.toLowerCase().includes(searchTerm.toLowerCase()) ||
     lesson.year_level.toLowerCase().includes(searchTerm.toLowerCase())
   )
+
+  const handleCreateLesson = () => {
+    if (!newLesson.title.trim()) {
+      alert('Please enter a lesson title')
+      return
+    }
+
+    // In a real app, this would save to the database
+    const lesson = {
+      id: Date.now().toString(),
+      title: newLesson.title,
+      learning_area: selectedSubject,
+      subject: selectedSubject,
+      year_level: selectedYearLevel,
+      duration_minutes: newLesson.duration,
+      status: 'draft',
+      created_at: new Date().toISOString(),
+      curriculum_framework: selectedCurriculum,
+      learning_objectives: newLesson.learning_objectives,
+      resources: newLesson.resources,
+      assessment: newLesson.assessment,
+      notes: newLesson.notes
+    }
+
+    // Add to sample lessons (in demo mode)
+    sampleLessons.unshift(lesson)
+    
+    // Reset form
+    setNewLesson({
+      title: '',
+      duration: 60,
+      learning_objectives: '',
+      resources: '',
+      assessment: '',
+      notes: ''
+    })
+    setShowCreateForm(false)
+    
+    alert('Lesson created successfully! (Demo mode - not saved to database)')
+  }
+
+  const handleInputChange = (field: string, value: string | number) => {
+    setNewLesson(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
 
   return (
     <div className="space-y-6">
@@ -177,27 +232,104 @@ export default function DemoDashboard() {
 
         {/* Create Form */}
         {showCreateForm && (
-          <div className="bg-gray-50 border rounded-lg p-4 mb-4">
-            <h3 className="font-medium mb-3">Create New Lesson Plan</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="Lesson title..."
-                className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <input
-                type="number"
-                placeholder="Duration (minutes)"
-                className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          <div className="bg-gray-50 border rounded-lg p-6 mb-4">
+            <h3 className="text-lg font-semibold mb-4">Create New Lesson Plan</h3>
+            
+            {/* Basic Information */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Lesson Title *
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter lesson title..."
+                  value={newLesson.title}
+                  onChange={(e) => handleInputChange('title', e.target.value)}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Duration (minutes)
+                </label>
+                <input
+                  type="number"
+                  placeholder="60"
+                  value={newLesson.duration}
+                  onChange={(e) => handleInputChange('duration', parseInt(e.target.value) || 60)}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+
+            {/* Learning Objectives */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Learning Objectives
+              </label>
+              <textarea
+                placeholder="What will students learn in this lesson?"
+                value={newLesson.learning_objectives}
+                onChange={(e) => handleInputChange('learning_objectives', e.target.value)}
+                rows={3}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div className="mt-3 flex gap-2">
-              <button className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+
+            {/* Resources */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Resources & Materials
+              </label>
+              <textarea
+                placeholder="List any resources, materials, or equipment needed..."
+                value={newLesson.resources}
+                onChange={(e) => handleInputChange('resources', e.target.value)}
+                rows={2}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            {/* Assessment */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Assessment Strategy
+              </label>
+              <textarea
+                placeholder="How will you assess student learning?"
+                value={newLesson.assessment}
+                onChange={(e) => handleInputChange('assessment', e.target.value)}
+                rows={2}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            {/* Notes */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Additional Notes
+              </label>
+              <textarea
+                placeholder="Any additional notes or considerations..."
+                value={newLesson.notes}
+                onChange={(e) => handleInputChange('notes', e.target.value)}
+                rows={2}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3">
+              <button 
+                onClick={handleCreateLesson}
+                className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+              >
                 Create Lesson
               </button>
               <button
                 onClick={() => setShowCreateForm(false)}
-                className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
+                className="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 Cancel
               </button>

@@ -21,7 +21,7 @@ const nunito = Nunito({
 })
 
 export const metadata: Metadata = {
-  title: "Taughtful - Learning Made Delightful",
+  title: "Taughtful - trauma informed, culturally safe",
   description:
     "Transform the way you learn and teach with AI that understands your unique style. Make every lesson engaging, personalized, and fun.",
   generator: "v0.app",

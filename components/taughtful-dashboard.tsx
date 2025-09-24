@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   BookOpen,
@@ -11,10 +11,12 @@ import {
   Brain,
   HandHeart,
   Feather,
+  Globe,
 } from 'lucide-react';
 
 // Cursor-ready React component
-// Update: Modals now include a "Resources" link to an external resources page.
+// Update: Wired Class, Pedagogy & Scaffolds, and Review steps end-to-end.
+// Added lightweight dev sanity tests. Removed smart quotes.
 
 const steps = [
   { key: 'basics', label: 'Lesson Basics', icon: BookOpen },
@@ -27,28 +29,72 @@ const subjects = ['English', 'Mathematics', 'Science', 'Humanities', 'Health & P
 
 const yearLevels = ['F', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
+const eightWays = [
+  'Story Sharing: Approaching learning through narrative',
+  'Learning Maps: Visualising processes explicitly',
+  'Non-verbal: Using kinaesthetic and reflective practice',
+  'Symbols and Images: Using images and metaphors',
+  'Land Links: Place-based learning connected to Country',
+  'Non-linear: Lateral thinking and innovation',
+  'Deconstruct/Reconstruct: Watch then do, scaffold from whole to parts',
+  'Community Links: Apply learning for community benefit',
+];
+
+function getWeightedEightWays(subject) {
+  let weights = [];
+  switch (subject) {
+    case 'English':
+      weights = [eightWays[0], eightWays[1], eightWays[3], eightWays[6]];
+      break;
+    case 'Science':
+      weights = [eightWays[1], eightWays[4], eightWays[5], eightWays[6]];
+      break;
+    case 'Mathematics':
+      weights = [eightWays[1], eightWays[3], eightWays[5], eightWays[6]];
+      break;
+    case 'Humanities':
+      weights = [eightWays[0], eightWays[3], eightWays[4], eightWays[7]];
+      break;
+    case 'Health & PE':
+      weights = [eightWays[2], eightWays[4], eightWays[6], eightWays[7]];
+      break;
+    case 'The Arts':
+      weights = [eightWays[0], eightWays[2], eightWays[3], eightWays[7]];
+      break;
+    case 'Technologies':
+      weights = [eightWays[1], eightWays[3], eightWays[5], eightWays[6]];
+      break;
+    default:
+      weights = eightWays;
+  }
+  return weights;
+}
+
 export default function TaughtfulDashboard() {
   const [active, setActive] = useState('basics');
-
-  // Step 1 - Basics
   const [subject, setSubject] = useState('');
   const [year, setYear] = useState('');
   const [duration, setDuration] = useState(60);
-
-  // Step 2 - Class Profile
   const [classSize, setClassSize] = useState(25);
   const [literacyTier, setLiteracyTier] = useState('Mixed');
   const [assessment, setAssessment] = useState('Formative');
-
-  // Step 3 - Pedagogy & Scaffolds
-  const [diff, setDiff] = useState(1);
+  const [diff, setDiff] = useState(1); // 0 Light, 1 Balanced, 2 Full
   const [tiOn, setTiOn] = useState(true);
-  const [indigLevel, setIndigLevel] = useState(1);
-
-  // Modal state
+  const [indigLevel, setIndigLevel] = useState(1); // 0 none, 1 contextual, 2 deep
+  const [aboriginalPedagogy, setAboriginalPedagogy] = useState(false);
+  const [selectedEightWays, setSelectedEightWays] = useState([]);
   const [modalContent, setModalContent] = useState(null);
 
   const canNextBasics = Boolean(subject && year);
+  const canNextClass = classSize > 0 && literacyTier && assessment;
+
+  useEffect(() => {
+    if (aboriginalPedagogy && subject) {
+      setSelectedEightWays(getWeightedEightWays(subject));
+    } else {
+      setSelectedEightWays([]);
+    }
+  }, [aboriginalPedagogy, subject]);
 
   return (
     <div className="min-h-screen w-full bg-[#FDE5DA]">
@@ -58,7 +104,6 @@ export default function TaughtfulDashboard() {
           <Badge>Beta</Badge>
         </div>
 
-        {/* Stepper */}
         <div className="mt-8">
           <Stepper active={active} setActive={setActive} />
         </div>
@@ -82,11 +127,11 @@ export default function TaughtfulDashboard() {
                 <motion.div key="class" className="rounded-3xl bg-white shadow-md p-6">
                   <SectionHeader icon={Users} title="Class Profile" subtitle="Calibrate scaffolds to your learners." />
                   <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <SliderField label="Class Size" value={classSize} onChange={setClassSize} min={5} max={35} step={1} icon={Users} suffix="students" />
-                    <SelectField label="Literacy Tier" value={literacyTier} onChange={setLiteracyTier} options={['Emerging', 'Mixed', 'Fluent']} />
-                    <SelectField label="Assessment Style" value={assessment} onChange={setAssessment} options={['Formative', 'Summative', 'Diagnostic']} />
+                    <SliderField label="Class Size" value={classSize} onChange={setClassSize} min={5} max={35} step={1} suffix="students" />
+                    <SelectField label="Literacy Tier" value={literacyTier} onChange={setLiteracyTier} options={['Emerging','Mixed','Fluent']} placeholder="Select literacy tier" />
+                    <SelectField label="Assessment Style" value={assessment} onChange={setAssessment} options={['Formative','Summative','Diagnostic']} placeholder="Select assessment" />
                   </div>
-                  <NavButtons onPrev={() => setActive('basics')} onNext={() => setActive('pedagogy')} />
+                  <NavButtons onPrev={() => setActive('basics')} onNext={() => setActive('pedagogy')} nextEnabled={canNextClass} />
                 </motion.div>
               )}
 
@@ -94,39 +139,54 @@ export default function TaughtfulDashboard() {
                 <motion.div key="pedagogy" className="rounded-3xl bg-white shadow-md p-6">
                   <SectionHeader icon={Feather} title="Pedagogy & Scaffolds" subtitle="Center trauma-informed practice and embed Indigenous perspectives." />
 
-                  <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Trauma-informed */}
-                    <div className="rounded-2xl border p-5 bg-[#fff9fb]">
-                      <div className="flex items-center gap-3">
-                        <HandHeart className="h-5 w-5 text-[#FD6585]" />
-                        <h3 className="font-semibold">Trauma-Informed Scaffolds</h3>
-                        <Toggle checked={tiOn} onChange={setTiOn} />
-                      </div>
-                      <p className="text-xs text-[#666] mt-2">These supports emphasize regulation, routine, and relationships. They help create safe environments for students who have experienced adversity. <button className="underline text-[#333]" onClick={() => setModalContent({title: 'Trauma-Informed Scaffolds', body: 'Practical strategies include predictable routines, co-regulation activities, safe spaces, and relational check-ins to support all learners.', link: '/resources#trauma-informed'})}>Learn more</button></p>
+                  {/* Trauma-informed toggle */}
+                  <div className="mt-6 rounded-2xl border p-5 bg-[#fff9fb]">
+                    <div className="flex items-center gap-3">
+                      <HandHeart className="h-5 w-5 text-[#FD6585]" />
+                      <h3 className="font-semibold">Trauma-Informed Scaffolds</h3>
+                      <Toggle checked={tiOn} onChange={setTiOn} />
                     </div>
+                    <p className="text-xs text-[#666] mt-2">These supports emphasize regulation, routine, and relationships. <button className="underline text-[#333]" onClick={() => setModalContent({title:'Trauma-Informed Scaffolds', body:'Strategies include predictable routines, co-regulation activities, calm entry/exit, and relational check-ins.', link:'/resources#trauma-informed'})}>Learn more</button></p>
+                  </div>
 
-                    {/* Indigenous perspectives */}
-                    <div className="rounded-2xl border p-5 bg-[#fbfff4]">
-                      <div className="flex items-center gap-3">
-                        <Brain className="h-5 w-5 text-[#888625]" />
-                        <h3 className="font-semibold">Embedding Indigenous Perspectives</h3>
-                        <div className="ml-auto"></div>
-                      </div>
-                      <p className="text-xs text-[#666] mt-2">Refers to the respectful integration of First Nations knowledge. Levels: Not included, Contextual (acknowledgment/examples), Deep (lesson shaped by Indigenous pedagogies). <button className="underline text-[#333]" onClick={() => setModalContent({title: 'Embedding Indigenous Perspectives', body: 'Contextual embedding may include Country acknowledgments or examples. Deep integration uses frameworks such as 8 Ways of Learning, weaving story, land, kinship, and cultural protocols into lesson design.', link: '/resources#indigenous'})}>Learn more</button></p>
-                      <div className="mt-4 grid grid-cols-3 gap-3">
-                        {[0, 1, 2].map((lvl) => (
-                          <ChoiceCard
-                            key={lvl}
-                            active={indigLevel === lvl}
-                            onClick={() => setIndigLevel(lvl)}
-                            title={lvl === 0 ? 'Not included' : lvl === 1 ? 'Contextual' : 'Deep integration'}
-                            description={lvl === 0 ? 'No explicit embedding.' : lvl === 1 ? 'Acknowledgment and contextual examples.' : 'Lesson structured by Indigenous pedagogies.'}
-                            icon={lvl === 0 ? LibraryBig : Brain}
-                          />
-                        ))}
-                      </div>
+                  {/* Indigenous perspectives depth */}
+                  <div className="mt-6 rounded-2xl border p-5 bg-[#fbfff4]">
+                    <div className="flex items-center gap-3">
+                      <Brain className="h-5 w-5 text-[#888625]" />
+                      <h3 className="font-semibold">Embedding Indigenous Perspectives</h3>
+                    </div>
+                    <p className="text-xs text-[#666] mt-2">Respectful integration of First Nations knowledge. Choose the depth that suits context. <button className="underline text-[#333]" onClick={() => setModalContent({title:'Embedding Indigenous Perspectives', body:'Contextual embedding may include Country acknowledgments or examples. Deep integration uses Indigenous pedagogies in lesson structure.', link:'/resources#indigenous'})}>Learn more</button></p>
+                    <div className="mt-3 flex gap-2">
+                      {[0,1,2].map((lvl) => (
+                        <button key={lvl} onClick={() => setIndigLevel(lvl)} className={`${indigLevel===lvl?'bg-[#888625] text-white':'bg-white'} border rounded px-3 py-1 text-sm`}>{lvl===0?'Not included':lvl===1?'Contextual':'Deep integration'}</button>
+                      ))}
                     </div>
                   </div>
+
+                  {/* Aboriginal Pedagogy (8 Ways) */}
+                  <div className="mt-6 rounded-2xl border p-5 bg-[#f0faff]">
+                    <div className="flex items-center gap-3">
+                      <Globe className="h-5 w-5 text-blue-600" />
+                      <h3 className="font-semibold">Aboriginal Pedagogy (8 Ways)</h3>
+                      <Toggle checked={aboriginalPedagogy} onChange={setAboriginalPedagogy} />
+                    </div>
+                    <p className="text-xs text-[#666] mt-2">Includes Story Sharing, Learning Maps, Land Links and more. <button className="underline text-[#333]" onClick={() => setModalContent({title:'Aboriginal Pedagogy (8 Ways)', body:'The 8 Ways framework focuses on Aboriginal processes of knowledge transmission and is adapted locally. It is a culturally safe entry point for embedding Aboriginal pedagogies.', link:'/resources#8ways'})}>Learn more</button></p>
+                    {aboriginalPedagogy && selectedEightWays.length>0 && (
+                      <ul className="list-disc list-inside text-xs text-[#555] mt-2">
+                        {selectedEightWays.map((w)=> <li key={w}>{w}</li>)}
+                      </ul>
+                    )}
+                  </div>
+
+                  <div className="mt-6">
+                    <label className="block text-sm font-medium mb-1">Scaffold depth</label>
+                    <div className="flex gap-2">
+                      {[0,1,2].map((lvl)=> (
+                        <button key={lvl} onClick={()=> setDiff(lvl)} className={`${diff===lvl?'bg-[#333] text-white':'bg-white'} border rounded px-3 py-1 text-sm`}>{['Light','Balanced','Full'][lvl]}</button>
+                      ))}
+                    </div>
+                  </div>
+
                   <NavButtons onPrev={() => setActive('class')} onNext={() => setActive('generate')} />
                 </motion.div>
               )}
@@ -134,7 +194,31 @@ export default function TaughtfulDashboard() {
               {active === 'generate' && (
                 <motion.div key="generate" className="rounded-3xl bg-white shadow-md p-6">
                   <SectionHeader icon={CheckCircle2} title="Review & Generate" subtitle="Quick recap before we craft your plan." />
-                  <PreviewCard subject={subject} year={year} duration={duration} classSize={classSize} literacyTier={literacyTier} assessment={assessment} tiOn={tiOn} diff={diff} indigLevel={indigLevel} />
+                  <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="rounded-2xl border p-4">
+                      <h4 className="font-semibold mb-2">Live Preview</h4>
+                      <PreviewCard subject={subject} year={year} duration={duration} classSize={classSize} literacyTier={literacyTier} assessment={assessment} tiOn={tiOn} diff={diff} indigLevel={indigLevel} aboriginalPedagogy={aboriginalPedagogy} selectedEightWays={selectedEightWays} />
+                    </div>
+                    <div className="rounded-2xl border p-4">
+                      <h4 className="font-semibold mb-2">Payload</h4>
+                      <pre className="bg-gray-100 p-2 text-xs rounded overflow-auto">{JSON.stringify({
+                        subject,
+                        year,
+                        duration,
+                        classSize,
+                        literacyTier,
+                        assessment,
+                        traumaInformed: tiOn,
+                        differentiation: ['Light','Balanced','Full'][diff],
+                        indigenousEmbedding: ['Not included','Contextual','Deep integration'][indigLevel],
+                        aboriginalPedagogy: aboriginalPedagogy ? getWeightedEightWays(subject) : 'Not included'
+                      }, null, 2)}</pre>
+                    </div>
+                  </div>
+                  <div className="mt-4 flex justify-between">
+                    <button onClick={() => setActive('pedagogy')} className="px-4 py-2 bg-gray-200 rounded">Back</button>
+                    <button className="px-4 py-2 bg-[#333] text-white rounded">Generate</button>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -142,7 +226,6 @@ export default function TaughtfulDashboard() {
         </div>
       </div>
 
-      {/* Modal */}
       {modalContent && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-6 max-w-lg shadow-xl">
@@ -159,257 +242,133 @@ export default function TaughtfulDashboard() {
   );
 }
 
-function Stepper(props) {
-  const { active, setActive } = props;
-  return (
-    <div className="relative">
-      <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-1 bg-gradient-to-r from-[#FD6585]/30 via-[#FF9A2E]/30 to-[#888625]/30 rounded-full" />
-      <div className="relative grid grid-cols-4 gap-4">
-        {steps.map(function (s, idx) {
-          const Icon = s.icon;
-          const isActive = active === s.key;
-          return (
-            <button
-              key={s.key}
-              onClick={function () {
-                setActive(s.key);
-              }}
-              className={
-                'group relative flex items-center gap-3 rounded-2xl p-3 bg-white shadow-sm border ' +
-                (isActive ? 'border-[#FD6585]' : 'border-transparent')
-              }
-            >
-              <div
-                className={
-                  'h-10 w-10 rounded-xl flex items-center justify-center transition ' +
-                  (isActive ? 'bg-[#FD6585] text-white' : 'bg-[#333333]/5 text-[#333]')
-                }
-              >
-                <Icon className="h-5 w-5" />
-              </div>
-              <div className="text-left">
-                <div className="text-sm font-semibold text-[#333]">{s.label}</div>
-                <div className="text-xs text-[#666]">Step {idx + 1}</div>
-              </div>
-              <div
-                className={
-                  'absolute -bottom-2 left-1/2 -translate-x-1/2 h-1 w-2/3 rounded-full transition ' +
-                  (isActive ? 'bg-[#FD6585]' : 'bg-transparent')
-                }
-              />
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
+// --- Dev sanity tests (lightweight) ---
+if (typeof window !== 'undefined' && typeof process !== 'undefined' && process.env && process.env.NODE_ENV !== 'production') {
+  const sci = getWeightedEightWays('Science');
+  console.assert(sci.includes('Land Links: Place-based learning connected to Country'), 'Science should prefer Land Links');
+  const eng = getWeightedEightWays('English');
+  console.assert(eng.includes('Story Sharing: Approaching learning through narrative'), 'English should prefer Story Sharing');
 }
 
-function SectionHeader(props) {
-  const { icon: Icon, title, subtitle } = props;
+// --- Supporting Components ---
+function Stepper({ active, setActive }) {
   return (
-    <div className="flex items-start gap-3">
-      <div className="h-12 w-12 rounded-2xl bg-white border border-[#eee] shadow flex items-center justify-center">
-        <Icon className="h-6 w-6 text-[#333]" />
-      </div>
-      <div>
-        <h2 className="text-xl font-bold text-[#333]">{title}</h2>
-        <p className="text-sm text-[#666]">{subtitle}</p>
-      </div>
-    </div>
-  );
-}
-
-function SelectField(props) {
-  const { label, value, onChange, options, placeholder } = props;
-  return (
-    <label className="block">
-      <span className="text-sm font-medium text-[#333]">{label}</span>
-      <div className="mt-1 relative">
-        <select
-          value={value}
-          onChange={function (e) {
-            onChange(e.target.value);
-          }}
-          className="w-full appearance-none rounded-xl border border-[#e5e5e5] bg-white px-3 py-2 text-[#333] focus:outline-none focus:ring-2 focus:ring-[#FD6585]/50"
+    <div className="flex flex-wrap gap-2">
+      {steps.map((step) => (
+        <button
+          key={step.key}
+          onClick={() => setActive(step.key)}
+          className={`flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+            active === step.key ? 'bg-[#333] text-white' : 'bg-gray-200 text-[#333]'
+          }`}
         >
-          <option value="" disabled>
-            {placeholder || 'Select'}
-          </option>
-          {options.map(function (o) {
-            return (
-              <option key={o} value={o}>
-                {o}
-              </option>
-            );
-          })}
-        </select>
-        <Chevron className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" />
-      </div>
-    </label>
+          <step.icon className="h-4 w-4 mr-2" />
+          {step.label}
+        </button>
+      ))}
+    </div>
   );
 }
 
-function SliderField(props) {
-  const { label, value, onChange, min, max, step, icon: Icon, suffix, marks } = props;
+function SectionHeader({ icon: Icon, title, subtitle }) {
   return (
-    <label className="block">
-      <span className="text-sm font-medium text-[#333] flex items-center gap-2">
-        {Icon && <Icon className="h-4 w-4 text-[#666]" />}
-        {label}
-      </span>
-      <div className="mt-2">
+    <div className="flex items-center gap-3">
+      <Icon className="h-6 w-6 text-[#333]" />
+      <div>
+        <h2 className="font-semibold text-lg">{title}</h2>
+        <p className="text-sm text-gray-600">{subtitle}</p>
+      </div>
+    </div>
+  );
+}
+
+function SelectField({ label, value, onChange, options, placeholder }) {
+  return (
+    <div>
+      <label className="block text-sm font-medium mb-1">{label}</label>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full rounded border px-2 py-1"
+      >
+        <option value="">{placeholder}</option>
+        {options.map((opt) => (
+          <option key={opt} value={opt}>{opt}</option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+function SliderField({ label, value, onChange, min, max, step, icon: Icon, suffix }) {
+  return (
+    <div>
+      <label className="block text-sm font-medium mb-1">{label}</label>
+      <div className="flex items-center gap-2">
+        {Icon && <Icon className="h-4 w-4 text-gray-500" />}
         <input
           type="range"
           min={min}
           max={max}
-          step={step || 1}
+          step={step}
           value={value}
-          onChange={function (e) {
-            onChange(Number(e.target.value));
-          }}
-          className="w-full accent-[#FD6585]"
+          onChange={(e) => onChange(Number(e.target.value))}
+          className="flex-1"
         />
-        <div className="flex items-center justify-between mt-1 text-xs text-[#666]">
-          <span>{min}</span>
-          <span className="font-medium text-[#333]">{String(value) + (suffix ? ' ' + suffix : '')}</span>
-          <span>{max}</span>
-        </div>
-        {marks && (
-          <div className="mt-2 grid grid-cols-3 text-xs text-[#666]">
-            {marks.map(function (m) {
-              return (
-                <div key={String(m.v)} className="text-center">
-                  <span
-                    className={
-                      'px-2 py-0.5 rounded-full ' + (value === m.v ? 'bg-[#333] text-white' : 'bg-[#f2f2f2] text-[#333]')
-                    }
-                  >
-                    {m.l}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        )}
+        <span className="text-sm text-gray-700">{value}{suffix ? ` ${suffix}` : ''}</span>
       </div>
-    </label>
+    </div>
   );
 }
 
-function ChoiceCard(props) {
-  const { active, onClick, title, description, icon: Icon } = props;
-  return (
-    <button
-      onClick={onClick}
-      className={
-        'text-left rounded-2xl border p-4 transition shadow-sm hover:shadow-md ' +
-        (active ? 'border-[#888625] bg-white' : 'border-[#e8eddc] bg-[#fcfff7]')
-      }
-    >
-      <div className="flex items-start gap-3">
-        <div className={
-          'h-10 w-10 rounded-xl flex items-center justify-center ' +
-          (active ? 'bg-[#888625] text-white' : 'bg-[#888625]/15 text-[#55611c]')
-        }>
-          <Icon className="h-5 w-5" />
-        </div>
-        <div>
-          <div className="font-semibold text-[#333]">{title}</div>
-          <div className="text-sm text-[#666]">{description}</div>
-        </div>
-      </div>
-    </button>
-  );
-}
-
-function NavButtons(props) {
-  const { onPrev, onNext, nextEnabled } = props;
+function NavButtons({ onPrev, onNext, nextEnabled = true }) {
   return (
     <div className="mt-6 flex justify-between">
-      <div>{onPrev && (
-        <button onClick={onPrev} className="px-4 py-2 rounded-xl border border-[#ddd] bg-white text-[#333] hover:bg-[#fafafa]">Back</button>
-      )}</div>
-      <div>{onNext && (
-        <button onClick={onNext} disabled={nextEnabled === false} className={(nextEnabled === false ? 'bg-[#c9c9c9] cursor-not-allowed ' : 'bg-[#333] hover:bg-black ') + 'px-5 py-2.5 rounded-xl text-white transition'}>Next</button>
-      )}</div>
+      {onPrev ? (
+        <button onClick={onPrev} className="px-4 py-2 bg-gray-300 rounded">Back</button>
+      ) : <span />}
+      {onNext && (
+        <button
+          onClick={onNext}
+          disabled={!nextEnabled}
+          className={`px-4 py-2 rounded ${nextEnabled ? 'bg-[#333] text-white' : 'bg-gray-200 text-gray-400'}`}
+        >
+          Next
+        </button>
+      )}
     </div>
   );
 }
 
-
-function PreviewCard(props) {
-  const { subject, year, duration, classSize, literacyTier, assessment, tiOn, diff, indigLevel } = props;
+function PreviewCard({ subject, year, duration, classSize, literacyTier, assessment, tiOn, diff, indigLevel, aboriginalPedagogy, selectedEightWays }) {
   return (
-    <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-      <SummaryCard title="Lesson">
-        <SummaryRow label="Subject" value={subject || '—'} />
-        <SummaryRow label="Year Level" value={year || '—'} />
-        <SummaryRow label="Duration" value={String(duration) + ' mins'} />
-      </SummaryCard>
-      <SummaryCard title="Learners">
-        <SummaryRow label="Class Size" value={String(classSize) + ' students'} />
-        <SummaryRow label="Literacy Tier" value={literacyTier} />
-        <SummaryRow label="Assessment" value={assessment} />
-      </SummaryCard>
-      <SummaryCard title="Pedagogy">
-        <SummaryRow label="Trauma-Informed" value={tiOn ? 'Enabled' : 'Off'} />
-        <SummaryRow label="Differentiation Depth" value={['Light', 'Balanced', 'Full'][diff]} />
-        <SummaryRow label="Indigenous Perspectives" value={['None', 'Light', 'Deep'][indigLevel]} />
-      </SummaryCard>
-
-      <div className="rounded-2xl bg-[#fff6f8] border border-[#ffd1dc] p-5">
-        <h4 className="font-semibold text-[#333] mb-2">What you will get</h4>
-        <ul className="text-sm text-[#555] space-y-1 list-disc ml-5">
-          <li>V9-aligned learning goals and success criteria</li>
-          <li>Stepwise lesson flow with timing</li>
-          <li>Scaffolds adapted to class profile</li>
-          <li>Indigenous perspectives embedded at selected depth</li>
-          <li>Assessment prompts and export options</li>
+    <div className="space-y-2 text-sm">
+      <p><strong>Subject:</strong> {subject || '—'}</p>
+      <p><strong>Year:</strong> {year || '—'}</p>
+      <p><strong>Duration:</strong> {duration} mins</p>
+      <p><strong>Class:</strong> {classSize} students • {literacyTier}</p>
+      <p><strong>Assessment:</strong> {assessment}</p>
+      <p><strong>Trauma-informed scaffolds:</strong> {tiOn ? 'Included' : 'Not included'}</p>
+      <p><strong>Scaffold depth:</strong> {['Light','Balanced','Full'][diff]}</p>
+      <p><strong>Embedding Indigenous perspectives:</strong> {['Not included','Contextual','Deep integration'][indigLevel]}</p>
+      <p><strong>Aboriginal Pedagogy (8 Ways):</strong> {aboriginalPedagogy ? 'Enabled' : 'Not included'}</p>
+      {aboriginalPedagogy && (
+        <ul className="list-disc list-inside text-xs text-[#555]">
+          {selectedEightWays.map((way) => <li key={way}>{way}</li>)}
         </ul>
-      </div>
+      )}
     </div>
   );
 }
 
-
-function SummaryCard(props) {
-  const { title, children } = props;
-  return (
-    <div className="rounded-2xl border border-[#eee] p-5 bg-white">
-      <h4 className="font-semibold text-[#333] mb-3">{title}</h4>
-      <div className="space-y-2">{children}</div>
-    </div>
-  );
+function Badge({ children }) {
+  return <span className="bg-[#333] text-white px-2 py-1 rounded-full text-xs">{children}</span>;
 }
 
-function SummaryRow(props) {
-  const { label, value } = props;
+function Toggle({ checked, onChange }) {
   return (
-    <div className="flex items-center justify-between text-sm">
-      <span className="text-[#666]">{label}</span>
-      <span className="font-medium text-[#333]">{value}</span>
-    </div>
-  );
-}
-
-function Chevron(props) {
-  return (
-    <svg {...props} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
-  );
-}
-
-function Badge(props) {
-  const { children } = props;
-  return <span className="inline-flex items-center rounded-full bg-[#333] text-white text-xs px-2 py-1">{children}</span>;
-}
-
-function Toggle(props) {
-  const { checked, onChange } = props;
-  return (
-    <button onClick={function () { onChange(!checked); }} className={'ml-auto relative h-6 w-11 rounded-full transition ' + (checked ? 'bg-[#FD6585]' : 'bg-[#dcdcdc]')}>
-      <span className={'absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow transition ' + (checked ? 'translate-x-5' : '')} />
+    <button onClick={() => onChange(!checked)} className={`ml-auto relative h-6 w-11 rounded-full ${checked ? 'bg-[#FD6585]' : 'bg-gray-300'}`}>
+      <span className={`absolute top-0.5 left-0.5 h-5 w-5 bg-white rounded-full shadow ${checked ? 'translate-x-5' : ''}`}></span>
     </button>
   );
 }
-

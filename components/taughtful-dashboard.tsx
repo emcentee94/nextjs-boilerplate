@@ -14,7 +14,7 @@ import {
   Globe,
 } from 'lucide-react';
 import Highlight, { defaultProps } from 'prism-react-renderer';
-import theme from 'prism-react-renderer/themes/github';
+import { themes } from 'prism-react-renderer';
 
 // Cursor-ready React component
 // Update: Wired Class, Pedagogy & Scaffolds, and Review steps end-to-end.
@@ -206,7 +206,7 @@ export default function TaughtfulDashboard() {
                       <h4 className="font-semibold mb-2">Payload (Admin Debug Tool)</h4>
                       <p className="text-xs text-[#666] mb-2">Visible only in development / admin mode. This shows the exact JSON payload sent to the generator for debugging.</p>
                       <div className="bg-gray-100 p-2 text-xs rounded overflow-auto">
-                        <Highlight {...defaultProps} theme={theme} code={JSON.stringify({
+                        <Highlight {...defaultProps} theme={themes.github} code={JSON.stringify({
                           subject,
                           year,
                           duration,

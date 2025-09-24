@@ -86,6 +86,9 @@ export default function TaughtfulDashboard() {
   const [aboriginalPedagogy, setAboriginalPedagogy] = useState(false);
   const [selectedEightWays, setSelectedEightWays] = useState([]);
   const [modalContent, setModalContent] = useState(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedLessonPlan, setGeneratedLessonPlan] = useState(null);
+  const [error, setError] = useState(null);
 
   const canNextBasics = Boolean(subject && year);
   const canNextClass = classSize > 0 && literacyTier && assessment;
@@ -97,6 +100,66 @@ export default function TaughtfulDashboard() {
       setSelectedEightWays([]);
     }
   }, [aboriginalPedagogy, subject]);
+
+  const handleGenerateLessonPlan = async () => {
+    if (!subject || !year) {
+      setError('Please complete all required fields before generating a lesson plan.');
+      return;
+    }
+
+    setIsGenerating(true);
+    setError(null);
+    setGeneratedLessonPlan(null);
+
+    try {
+      // Create a mock curriculum item for the lesson plan generation
+      const mockCurriculumItem = {
+        code: `${subject.toUpperCase()}-${year}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`,
+        description: `Year ${year} ${subject} lesson plan`,
+        strand: subject,
+        subStrand: 'General'
+      };
+
+      const request = {
+        subject,
+        yearLevels: [year],
+        items: [mockCurriculumItem],
+        durationMins: duration,
+        classProfile: {
+          classSize,
+          literacyTier,
+          assessmentStyle: assessment
+        },
+        options: {
+          traumaInformed: tiOn,
+          differentiation: ['Light', 'Balanced', 'Full'][diff],
+          indigenousEmbedding: ['Not included', 'Contextual', 'Deep integration'][indigLevel],
+          aboriginalPedagogy: aboriginalPedagogy ? selectedEightWays : []
+        }
+      };
+
+      const response = await fetch('/api/lesson-plan/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(request),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to generate lesson plan');
+      }
+
+      const data = await response.json();
+      setGeneratedLessonPlan(data.lessonPlan);
+    } catch (err) {
+      console.error('Lesson plan generation error:', err);
+      setError(err.message || 'Failed to generate lesson plan. Please try again.');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
   return (
     <div className="min-h-screen w-full bg-[#FDE5DA]">
@@ -204,8 +267,85 @@ export default function TaughtfulDashboard() {
                   </div>
                   <div className="mt-4 flex justify-between">
                     <button onClick={() => setActive('pedagogy')} className="px-4 py-2 bg-gray-200 rounded">Back</button>
-                    <button className="px-4 py-2 bg-[#333] text-white rounded">Generate</button>
+                    <button 
+                      onClick={handleGenerateLessonPlan}
+                      disabled={isGenerating}
+                      className={`px-4 py-2 rounded ${isGenerating ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#333] hover:bg-[#555]'} text-white`}
+                    >
+                      {isGenerating ? 'Generating...' : 'Generate Lesson Plan'}
+                    </button>
                   </div>
+                  
+                  {error && (
+                    <div className="mt-4 p-4 bg-red-100 border border-red-300 rounded-lg">
+                      <p className="text-red-700 text-sm">{error}</p>
+                    </div>
+                  )}
+                  
+                  {generatedLessonPlan && (
+                    <div className="mt-6">
+                      <h3 className="text-xl font-bold mb-4">Generated Lesson Plan</h3>
+                      <div className="bg-white border rounded-lg p-6 max-h-96 overflow-y-auto">
+                        <h4 className="text-lg font-semibold mb-2">{generatedLessonPlan.title}</h4>
+                        <p className="text-gray-700 mb-4">{generatedLessonPlan.overview}</p>
+                        
+                        <div className="mb-4">
+                          <h5 className="font-semibold mb-2">Learning Goals:</h5>
+                          <ul className="list-disc list-inside text-sm text-gray-700">
+                            {generatedLessonPlan.learningGoals?.map((goal, index) => (
+                              <li key={index}>{goal}</li>
+                            ))}
+                          </ul>
+                        </div>
+                        
+                        <div className="mb-4">
+                          <h5 className="font-semibold mb-2">Lesson Timeline:</h5>
+                          <div className="space-y-2">
+                            {generatedLessonPlan.lessonTimeline?.map((item, index) => (
+                              <div key={index} className="border-l-2 border-blue-300 pl-3">
+                                <div className="font-medium text-sm">{item.minutes} minutes: {item.activity}</div>
+                                <div className="text-xs text-gray-600 mt-1">
+                                  <strong>Teacher:</strong> {item.teacherMoves?.join(', ')}
+                                </div>
+                                <div className="text-xs text-gray-600">
+                                  <strong>Students:</strong> {item.studentTasks?.join(', ')}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        {generatedLessonPlan.resources && generatedLessonPlan.resources.length > 0 && (
+                          <div className="mb-4">
+                            <h5 className="font-semibold mb-2">Resources:</h5>
+                            <ul className="list-disc list-inside text-sm text-gray-700">
+                              {generatedLessonPlan.resources.map((resource, index) => (
+                                <li key={index}>{resource}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        
+                        {generatedLessonPlan.traumaInformedStrategies && generatedLessonPlan.traumaInformedStrategies.length > 0 && (
+                          <div className="mb-4">
+                            <h5 className="font-semibold mb-2">Trauma-Informed Strategies:</h5>
+                            <ul className="list-disc list-inside text-sm text-gray-700">
+                              {generatedLessonPlan.traumaInformedStrategies.map((strategy, index) => (
+                                <li key={index}>{strategy}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        
+                        {generatedLessonPlan.indigenousPerspectives && (
+                          <div className="mb-4">
+                            <h5 className="font-semibold mb-2">Indigenous Perspectives:</h5>
+                            <p className="text-sm text-gray-700">{generatedLessonPlan.indigenousPerspectives}</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>

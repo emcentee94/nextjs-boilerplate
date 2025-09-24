@@ -201,18 +201,20 @@ export default function TaughtfulDashboard() {
                     </div>
                     <div className="rounded-2xl border p-4">
                       <h4 className="font-semibold mb-2">Payload</h4>
-                      <pre className="bg-gray-100 p-2 text-xs rounded overflow-auto">{JSON.stringify({
-                        subject,
-                        year,
-                        duration,
-                        classSize,
-                        literacyTier,
-                        assessment,
-                        traumaInformed: tiOn,
-                        differentiation: ['Light','Balanced','Full'][diff],
-                        indigenousEmbedding: ['Not included','Contextual','Deep integration'][indigLevel],
-                        aboriginalPedagogy: aboriginalPedagogy ? getWeightedEightWays(subject) : 'Not included'
-                      }, null, 2)}</pre>
+                      <pre className="bg-gray-100 p-2 text-xs rounded overflow-auto whitespace-pre-wrap">
+                        {JSON.stringify({
+                          subject,
+                          year,
+                          duration,
+                          classSize,
+                          literacyTier,
+                          assessment,
+                          traumaInformed: tiOn,
+                          differentiation: ['Light','Balanced','Full'][diff],
+                          indigenousEmbedding: ['Not included','Contextual','Deep integration'][indigLevel],
+                          aboriginalPedagogy: aboriginalPedagogy ? getWeightedEightWays(subject) : 'Not included'
+                        }, null, 2)}
+                      </pre>
                     </div>
                   </div>
                   <div className="mt-4 flex justify-between">

@@ -25,7 +25,7 @@ import Image from "next/image"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { useState } from "react"
+import WhatMakesUsDifferent from "@/components/WhatMakesUsDifferent"
 
 const waitlistSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -270,6 +270,9 @@ export default function TaughtfulLanding() {
           </div>
         </div>
       </section>
+
+      {/* 3.5. WHAT MAKES US DIFFERENT - RAG EXPLAINER */}
+      <WhatMakesUsDifferent />
 
       {/* 4. MULTI-CURRICULUM SUPPORT FEATURE */}
       <section className="py-32 px-4 bg-gradient-to-br from-[#FDE5DA] via-[#FFF2E8] to-[#FDE5DA] relative overflow-hidden">

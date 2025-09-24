@@ -13,8 +13,8 @@ import {
   Feather,
   Globe,
 } from 'lucide-react';
-import Highlight, { defaultProps } from 'prism-react-renderer';
-import { themes } from 'prism-react-renderer';
+// import Highlight, { defaultProps } from 'prism-react-renderer';
+// import { themes } from 'prism-react-renderer';
 
 // Cursor-ready React component
 // Update: Wired Class, Pedagogy & Scaffolds, and Review steps end-to-end.
@@ -206,30 +206,20 @@ export default function TaughtfulDashboard() {
                       <h4 className="font-semibold mb-2">Payload (Admin Debug Tool)</h4>
                       <p className="text-xs text-[#666] mb-2">Visible only in development / admin mode. This shows the exact JSON payload sent to the generator for debugging.</p>
                       <div className="bg-gray-100 p-2 text-xs rounded overflow-auto">
-                        <Highlight {...defaultProps} theme={themes.github} code={JSON.stringify({
-                          subject,
-                          year,
-                          duration,
-                          classSize,
-                          literacyTier,
-                          assessment,
-                          traumaInformed: tiOn,
-                          differentiation: ['Light','Balanced','Full'][diff],
-                          indigenousEmbedding: ['Not included','Contextual','Deep integration'][indigLevel],
-                          aboriginalPedagogy: aboriginalPedagogy ? getWeightedEightWays(subject) : 'Not included'
-                        }, null, 2)} language="json">
-                          {({ className, style, tokens, getLineProps, getTokenProps }) => (
-                            <pre className={`${className} whitespace-pre`} style={style}>
-                              {tokens.map((line, i) => (
-                                <div key={i} {...getLineProps({ line, key: i })}>
-                                  {line.map((token, key) => (
-                                    <span key={key} {...getTokenProps({ token, key })} />
-                                  ))}
-                                </div>
-                              ))}
-                            </pre>
-                          )}
-                        </Highlight>
+                        <pre className="whitespace-pre-wrap text-gray-800">
+                          {JSON.stringify({
+                            subject,
+                            year,
+                            duration,
+                            classSize,
+                            literacyTier,
+                            assessment,
+                            traumaInformed: tiOn,
+                            differentiation: ['Light','Balanced','Full'][diff],
+                            indigenousEmbedding: ['Not included','Contextual','Deep integration'][indigLevel],
+                            aboriginalPedagogy: aboriginalPedagogy ? getWeightedEightWays(subject) : 'Not included'
+                          }, null, 2)}
+                        </pre>
                       </div>
                     </div>
                   )}

@@ -202,6 +202,13 @@ export default function TaughtfulLanding() {
           <p className="text-xl md:text-2xl font-medium font-nunito hover:scale-105 transition-all duration-500 cursor-default text-muted-foreground">
             No wonder burnout is at an all-time high.
           </p>
+          
+          {/* Revolutionary AI Technology Badge */}
+          <div className="mt-8 text-center">
+            <div className="inline-block bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] text-white px-6 py-3 rounded-full text-sm font-bold font-fredoka animate-pulse shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+              🚀 Revolutionary AI Technology
+            </div>
+          </div>
         </div>
       </section>
 
@@ -219,9 +226,6 @@ export default function TaughtfulLanding() {
 
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-16">
-            <div className="inline-block bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] text-white px-6 py-2 rounded-full text-sm font-bold font-fredoka mb-4 animate-pulse">
-              🚀 Revolutionary AI Technology
-            </div>
             <h2 className="text-5xl md:text-6xl font-black text-foreground font-fredoka hover:scale-105 transition-all duration-700 cursor-default mb-6">
               RAG-Powered Lesson Planning
             </h2>

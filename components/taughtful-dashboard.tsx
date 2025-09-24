@@ -196,33 +196,11 @@ export default function TaughtfulDashboard() {
               {active === 'generate' && (
                 <motion.div key="generate" className="rounded-3xl bg-white shadow-md p-6">
                   <SectionHeader icon={CheckCircle2} title="Review & Generate" subtitle="Quick recap before we craft your plan." />
-                  <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="mt-4">
                     <div className="rounded-2xl border p-4">
                       <h4 className="font-semibold mb-2">Live Preview</h4>
                       <PreviewCard subject={subject} year={year} duration={duration} classSize={classSize} literacyTier={literacyTier} assessment={assessment} tiOn={tiOn} diff={diff} indigLevel={indigLevel} aboriginalPedagogy={aboriginalPedagogy} selectedEightWays={selectedEightWays} />
                     </div>
-                    {process.env.NODE_ENV !== 'production' && (
-                    <div className="rounded-2xl border p-4">
-                      <h4 className="font-semibold mb-2">Payload (Admin Debug Tool)</h4>
-                      <p className="text-xs text-[#666] mb-2">Visible only in development / admin mode. This shows the exact JSON payload sent to the generator for debugging.</p>
-                      <div className="bg-gray-100 p-2 text-xs rounded overflow-auto">
-                        <pre className="whitespace-pre-wrap text-gray-800">
-                          {JSON.stringify({
-                            subject,
-                            year,
-                            duration,
-                            classSize,
-                            literacyTier,
-                            assessment,
-                            traumaInformed: tiOn,
-                            differentiation: ['Light','Balanced','Full'][diff],
-                            indigenousEmbedding: ['Not included','Contextual','Deep integration'][indigLevel],
-                            aboriginalPedagogy: aboriginalPedagogy ? getWeightedEightWays(subject) : 'Not included'
-                          }, null, 2)}
-                        </pre>
-                      </div>
-                    </div>
-                  )}
                   </div>
                   <div className="mt-4 flex justify-between">
                     <button onClick={() => setActive('pedagogy')} className="px-4 py-2 bg-gray-200 rounded">Back</button>

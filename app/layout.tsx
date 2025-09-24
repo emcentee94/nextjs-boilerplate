@@ -53,6 +53,9 @@ export default function RootLayout({
                 <Link href="/curriculum" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium font-nunito">
                   Curriculum
                 </Link>
+                <Link href="/resources" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium font-nunito">
+                  Resources
+                </Link>
                 <Link href="/login" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium font-nunito">
                   Login
                 </Link>

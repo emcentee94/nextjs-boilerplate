@@ -141,14 +141,29 @@ export default function TaughtfulDashboard() {
 
   const toggleCurriculumItem = (item) => {
     setSelectedCurriculumItems(prev => {
-      const isSelected = prev.some(selected => selected.id === item.id);
+      const itemId = item.id || item["Code"] || `item-${Date.now()}`
+      const isSelected = prev.some(selected => 
+        selected.id === itemId || selected.code === item["Code"]
+      )
+      
       if (isSelected) {
-        return prev.filter(selected => selected.id !== item.id);
+        return prev.filter(selected => 
+          selected.id !== itemId && selected.code !== item["Code"]
+        )
       } else {
-        return [...prev, item];
+        return [...prev, {
+          id: itemId,
+          code: item["Code"] || item.code,
+          title: item["Content Description"] || item.content_description || item["Achievement Standard"] || item.achievement_standard || item["Description"] || item.description,
+          description: item["Elaboration"] || item.elaboration,
+          level: item["Level"] || item.level,
+          strand: item["Strand"] || item.strand,
+          subject: item["Subject"] || item.subject,
+          learning_area: item["Learning Area"] || item.learning_area
+        }]
       }
-    });
-  };
+    })
+  }
 
   const handleGenerateLessonPlan = async () => {
     if (!subject || !year || selectedCurriculumItems.length === 0) {
@@ -272,48 +287,58 @@ export default function TaughtfulDashboard() {
                       </div>
                       
                       <div className="max-h-96 overflow-y-auto space-y-2">
-                        {curriculumItems.map((item) => (
-                          <div
-                            key={item.id}
-                            onClick={() => toggleCurriculumItem(item)}
-                            className={`p-3 border rounded-lg cursor-pointer transition-all ${
-                              selectedCurriculumItems.some(selected => selected.id === item.id)
-                                ? 'border-[#333] bg-[#FDE5DA]'
-                                : 'border-gray-200 hover:border-gray-300'
-                            }`}
-                          >
-                            <div className="flex items-start justify-between">
-                              <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                  <span className="text-xs font-mono bg-gray-100 px-2 py-1 rounded">
-                                    {item.code || item.id}
-                                  </span>
-                                  {item.strand && (
-                                    <span className="text-xs text-gray-500">{item.strand}</span>
+                        {curriculumItems.map((item, index) => {
+                          // Create a unique ID for items that don't have one
+                          const itemId = item.id || item["Code"] || `item-${index}`
+                          const isSelected = selectedCurriculumItems.some(selected => 
+                            selected.id === itemId || selected.code === item["Code"]
+                          )
+                          
+                          return (
+                            <div
+                              key={itemId}
+                              onClick={() => toggleCurriculumItem({...item, id: itemId})}
+                              className={`p-3 border rounded-lg cursor-pointer transition-all ${
+                                isSelected
+                                  ? 'border-[#333] bg-[#FDE5DA]'
+                                  : 'border-gray-200 hover:border-gray-300'
+                              }`}
+                            >
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <span className="text-xs font-mono bg-gray-100 px-2 py-1 rounded">
+                                      {item["Code"] || item.code || itemId}
+                                    </span>
+                                    {(item["Strand"] || item.strand) && (
+                                      <span className="text-xs text-gray-500">{item["Strand"] || item.strand}</span>
+                                    )}
+                                  </div>
+                                  <h4 className="font-medium text-sm mb-1">
+                                    {item["Content Description"] || item.content_description || item["Achievement Standard"] || item.achievement_standard || item["Description"] || item.description || 'Curriculum Standard'}
+                                  </h4>
+                                  {(item["Elaboration"] || item.elaboration) && (
+                                    <p className="text-xs text-gray-500 mt-1 italic">{item["Elaboration"] || item.elaboration}</p>
+                                  )}
+                                  {(item["Level"] || item.level) && (
+                                    <span className="text-xs text-blue-600 mt-1 block">{item["Level"] || item.level}</span>
                                   )}
                                 </div>
-                                <h4 className="font-medium text-sm mb-1">{item.title || item.description}</h4>
-                                {item.description && item.description !== item.title && (
-                                  <p className="text-xs text-gray-600">{item.description}</p>
-                                )}
-                                {item.elaboration && (
-                                  <p className="text-xs text-gray-500 mt-1 italic">{item.elaboration}</p>
-                                )}
-                              </div>
-                              <div className={`ml-2 w-4 h-4 rounded border-2 flex items-center justify-center ${
-                                selectedCurriculumItems.some(selected => selected.id === item.id)
-                                  ? 'border-[#333] bg-[#333]'
-                                  : 'border-gray-300'
-                              }`}>
-                                {selectedCurriculumItems.some(selected => selected.id === item.id) && (
-                                  <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                  </svg>
-                                )}
+                                <div className={`ml-2 w-4 h-4 rounded border-2 flex items-center justify-center ${
+                                  isSelected
+                                    ? 'border-[#333] bg-[#333]'
+                                    : 'border-gray-300'
+                                }`}>
+                                  {isSelected && (
+                                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                    </svg>
+                                  )}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        ))}
+                          )
+                        })}
                       </div>
                     </div>
                   )}
@@ -626,7 +651,9 @@ function PreviewCard({ subject, year, duration, classSize, literacyTier, assessm
       {selectedCurriculumItems && selectedCurriculumItems.length > 0 && (
         <ul className="list-disc list-inside text-xs text-[#555] max-h-20 overflow-y-auto">
           {selectedCurriculumItems.map((item, index) => (
-            <li key={index}>{item.code || item.id}: {item.title || item.description}</li>
+            <li key={item.id || index}>
+              {item.code}: {item.title || item.description || 'Curriculum Standard'}
+            </li>
           ))}
         </ul>
       )}

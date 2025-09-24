@@ -209,166 +209,114 @@ export default function TaughtfulLanding() {
             </div>
           </div>
           
-          {/* RAG-Powered Lesson Planning Heading */}
-          <div className="mt-12 text-center">
-            <h2 className="text-5xl md:text-6xl font-black text-foreground font-fredoka hover:scale-105 transition-all duration-700 cursor-default mb-6">
-              RAG-Powered Lesson Planning
-            </h2>
-            <p className="text-2xl md:text-3xl font-bold font-fredoka hover:scale-105 transition-all duration-500 cursor-default text-foreground mb-4">
-              The Future of Educational AI
-            </p>
-            <div className="w-32 h-1 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] mx-auto rounded-full"></div>
-          </div>
-        </div>
-      </section>
+          {/* RAG EXPLANATION */}
+          <div className="mt-16">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-black mb-6 font-fredoka text-gray-900">
+                RAG: Retrieval‑Augmented Generation
+              </h2>
+            </div>
 
-      {/* 3. RAG TECHNOLOGY - THE GAME CHANGER */}
-      <section className="py-32 px-4 relative overflow-hidden bg-gradient-to-r from-[#FDE5DA] via-[#FFF2E8] to-[#FDE5DA]">
-        {/* Animated background circles */}
-        <div className="absolute inset-0">
-          <div className="absolute top-10 left-1/4 w-16 h-16 bg-[#FD6585]/20 rounded-full animate-bounce delay-0"></div>
-          <div className="absolute top-20 right-1/3 w-12 h-12 bg-[#888625]/20 rounded-full animate-bounce delay-300"></div>
-          <div className="absolute bottom-10 left-1/3 w-20 h-20 bg-[#FF9A2E]/20 rounded-full animate-bounce delay-700"></div>
-          <div className="absolute bottom-20 right-1/4 w-14 h-14 bg-[#FD6585]/20 rounded-full animate-bounce delay-1000"></div>
-          <div className="absolute top-1/2 left-10 w-8 h-8 bg-[#888625]/15 rounded-full animate-pulse delay-500"></div>
-          <div className="absolute top-1/3 right-10 w-10 h-10 bg-[#FF9A2E]/15 rounded-full animate-pulse delay-1000"></div>
-        </div>
-
-        <div className="container mx-auto max-w-6xl relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto mb-16">
-            {[
-              {
-                icon: <Brain className="w-16 h-16" />,
-                title: "Retrieval-Augmented",
-                description: "AI retrieves from vetted curriculum databases, not random internet content",
-                color: "bg-[#FD6585]",
-                highlight: "VETTED SOURCES"
-              },
-              {
-                icon: <Shield className="w-16 h-16" />,
-                title: "Culturally Safe",
-                description: "Respectful Indigenous perspectives from authentic sources only",
-                color: "bg-[#888625]",
-                highlight: "AUTHENTIC PERSPECTIVES"
-              },
-              {
-                icon: <Heart className="w-16 h-16" />,
-                title: "Trauma-Informed",
-                description: "Built-in scaffolds for regulation, routine, and relationships",
-                color: "bg-[#FF9A2E]",
-                highlight: "SAFE LEARNING"
-              },
-              {
-                icon: <Target className="w-16 h-16" />,
-                title: "Curriculum-Precise",
-                description: "Every lesson aligns perfectly with Australian Curriculum v9",
-                color: "bg-[#FD6585]",
-                highlight: "100% ALIGNED"
-              },
-            ].map((pillar, index) => (
-              <div
-                key={index}
-                className="text-center group animate-fade-in"
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <div
-                  className={`w-48 h-48 ${pillar.color} rounded-full flex flex-col items-center justify-center mb-6 group-hover:scale-110 transition-all duration-700 hover:animate-bounce mx-auto shadow-2xl hover:shadow-3xl relative overflow-hidden cursor-pointer border-4 border-white/20 hover:border-white/40`}
-                >
-                  <div className="absolute inset-0 bg-white/10 rounded-full group-hover:bg-white/20 transition-all duration-500"></div>
-                  
-                  {/* Highlight badge positioned at top */}
-                  <div className="absolute top-2 right-2 bg-white/30 backdrop-blur-sm rounded-full px-2 py-1 z-20">
-                    <span className="text-xs font-bold text-white font-fredoka leading-none">{pillar.highlight}</span>
-                  </div>
-                  
-                  {/* Sparkles decoration */}
-                  <Sparkles className="absolute top-2 left-2 w-4 h-4 text-white/60 animate-pulse group-hover:animate-spin group-hover:text-white/90 transition-all duration-500 z-20" />
-                  
-                  {/* Main content */}
-                  <div className="text-white group-hover:scale-125 transition-all duration-500 mb-2 relative z-10 drop-shadow-lg">
-                    {pillar.icon}
-                  </div>
-                  <h3 className="text-base font-bold text-white font-fredoka text-center px-3 leading-tight relative z-10 group-hover:scale-105 transition-all duration-500">
-                    {pillar.title}
-                  </h3>
-                </div>
-                <p className="text-muted-foreground font-medium leading-relaxed font-nunito group-hover:text-foreground transition-all duration-500 max-w-sm mx-auto text-lg hover:scale-105 cursor-default">
-                  {pillar.description}
+            {/* Main Differentiator Statement */}
+            <div className="mb-16">
+              <div className="bg-gradient-to-r from-[#FD6585]/10 via-[#FF9A2E]/10 to-[#888625]/10 rounded-3xl p-8 border border-[#FD6585]/20 shadow-lg">
+                <p className="text-lg md:text-xl text-gray-800 font-nunito leading-relaxed text-center max-w-5xl mx-auto">
+                  <span className="font-bold text-[#FD6585]">RAG (Retrieval-Augmented Generation)</span> is what sets Taughtful apart. 
+                  Instead of guessing from the internet, our AI retrieves trusted curriculum resources, augments them with 
+                  <span className="font-semibold text-[#888625]"> trauma-informed scaffolding and Aboriginal pedagogies</span>, 
+                  and generates aligned lesson plans. The result? 
+                  <span className="font-bold text-[#FF9A2E]"> Safe, respectful, accurate, and classroom-ready outputs every time.</span>
                 </p>
               </div>
-            ))}
-          </div>
-
-          {/* RAG Comparison Section */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/20">
-            <div className="text-center mb-8">
-              <h3 className="text-3xl font-bold font-fredoka text-[#333] mb-4">Why RAG Changes Everything</h3>
-              <p className="text-lg font-nunito text-[#333]/80">Traditional AI vs. Taughtful's RAG-Powered Approach</p>
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Traditional AI */}
-              <div className="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-2xl p-6 shadow-lg">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-gray-400 to-gray-500 rounded-full flex items-center justify-center shadow-md">
-                    <span className="text-white font-bold text-xl">⚠️</span>
-                  </div>
-                  <h4 className="text-xl font-bold font-fredoka text-gray-700">Traditional AI</h4>
-                </div>
-                <ul className="space-y-3 text-gray-600 font-nunito">
-                  <li className="flex items-start gap-2">
-                    <span className="text-gray-400 mt-1">•</span>
-                    <span>AI guesses from random internet patterns</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-gray-400 mt-1">•</span>
-                    <span>Unreliable curriculum alignment</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-gray-400 mt-1">•</span>
-                    <span>Potential cultural insensitivity</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-gray-400 mt-1">•</span>
-                    <span>Generic, one-size-fits-all content</span>
-                  </li>
-                </ul>
-              </div>
 
-              {/* Taughtful RAG */}
-              <div className="bg-gradient-to-br from-[#FDE5DA] to-[#FFF2E8] border border-[#FD6585]/20 rounded-2xl p-6 shadow-lg">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center shadow-md">
-                    <span className="text-white font-bold text-xl">✨</span>
-                  </div>
-                  <h4 className="text-xl font-bold font-fredoka text-[#333]">Taughtful RAG</h4>
-                </div>
-                <ul className="space-y-3 text-[#333]/80 font-nunito">
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#FD6585] mt-1">•</span>
-                    <span>Retrieves from vetted curriculum databases</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#FD6585] mt-1">•</span>
-                    <span>100% Australian Curriculum v9 aligned</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#FD6585] mt-1">•</span>
-                    <span>Culturally respectful Indigenous perspectives</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#FD6585] mt-1">•</span>
-                    <span>Personalized, trauma-informed scaffolds</span>
-                  </li>
-                </ul>
+            {/* Tagline Banner */}
+            <div className="mb-12">
+              <div className="bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] text-white rounded-2xl p-6 shadow-xl">
+                <p className="text-xl md:text-2xl font-bold font-fredoka text-center">
+                  RAG: trauma-informed, Indigenous perspectives embedded, curriculum-aligned. AI you can trust.
+                </p>
               </div>
             </div>
 
-            <div className="text-center mt-8">
-              <div className="inline-flex items-center gap-3 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] text-white px-6 py-3 rounded-full font-bold font-fredoka text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
-                <Zap className="w-6 h-6" />
-                <span>Experience RAG-Powered Lesson Planning</span>
-                <ArrowRight className="w-6 h-6" />
+            {/* Punchy One-Liner */}
+            <div className="mb-16 text-center">
+              <div className="inline-block bg-white border-3 border-[#888625] rounded-full px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                <p className="text-2xl font-black font-fredoka text-[#888625]">
+                  "Other AI guesses. RAG retrieves."
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+              {/* R = Retrieval */}
+              <div className="group">
+                <div className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 border-2 border-transparent hover:border-[#FD6585]/20">
+                  <div className="text-center mb-6">
+                    <div className="w-20 h-20 bg-gradient-to-br from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <span className="text-3xl font-black text-white font-fredoka">R</span>
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2 font-fredoka">Retrieval</h3>
+                  </div>
+                  <p className="text-gray-700 text-center font-nunito leading-relaxed">
+                    Finds and pulls the right curriculum resources before anything else.
+                  </p>
+                  <div className="mt-6 flex justify-center">
+                    <div className="w-full h-2 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* A = Augmented */}
+              <div className="group">
+                <div className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 border-2 border-transparent hover:border-[#FF9A2E]/20">
+                  <div className="text-center mb-6">
+                    <div className="w-20 h-20 bg-gradient-to-br from-[#FF9A2E] to-[#888625] rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <span className="text-3xl font-black text-white font-fredoka">A</span>
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2 font-fredoka">Augmented</h3>
+                  </div>
+                  <p className="text-gray-700 text-center font-nunito leading-relaxed">
+                    Uses AI to shape those resources into clear, structured lesson scaffolds.
+                  </p>
+                  <div className="mt-6 flex justify-center">
+                    <div className="w-full h-2 bg-gradient-to-r from-[#FF9A2E] to-[#888625] rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* G = Generation */}
+              <div className="group">
+                <div className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 border-2 border-transparent hover:border-[#888625]/20">
+                  <div className="text-center mb-6">
+                    <div className="w-20 h-20 bg-gradient-to-br from-[#888625] to-[#FD6585] rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <span className="text-3xl font-black text-white font-fredoka">G</span>
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2 font-fredoka">Generation</h3>
+                  </div>
+                  <p className="text-gray-700 text-center font-nunito leading-relaxed">
+                    Delivers a finished plan aligned to Australian Curriculum v9 that you can trust tomorrow.
+                  </p>
+                  <div className="mt-6 flex justify-center">
+                    <div className="w-full h-2 bg-gradient-to-r from-[#888625] to-[#FD6585] rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Trust & Safety Message */}
+            <div className="text-center">
+              <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-[#FD6585]/10 max-w-4xl mx-auto">
+                <div className="flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center mr-4">
+                    <span className="text-white text-xl">🛡️</span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 font-fredoka">Trauma-Informed & Culturally Safe</h3>
+                </div>
+                <p className="text-lg text-gray-700 font-nunito leading-relaxed">
+                  Every lesson generated through RAG is built with trauma-informed practices and cultural safety at its core, 
+                  ensuring your students feel seen, heard, and supported in their learning journey.
+                </p>
               </div>
             </div>
           </div>
@@ -581,62 +529,6 @@ export default function TaughtfulLanding() {
         </div>
       </section>
 
-      {/* 7. WHY TAUGHTFUL IS DIFFERENT */}
-      <section className="py-24 px-4 bg-[#888625] text-white relative overflow-hidden">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-4xl md:text-5xl font-black mb-8 font-fredoka hover:scale-105 transition-transform duration-500">
-            Why Taughtful is Different
-          </h2>
-          <p className="text-2xl md:text-3xl font-bold mb-16 font-fredoka">
-            Taughtful isn't a content generator. It's your co-designer.
-          </p>
-
-          <div className="space-y-10 text-left max-w-3xl mx-auto">
-            {[
-              {
-                icon: "🧩",
-                text: "Scaffolds your thinking without drowning you in noise",
-              },
-              {
-                icon: "💡",
-                text: "Embeds reflection and trauma-informed practices naturally",
-              },
-              {
-                icon: "✏️",
-                text: "Built for teachers, not content marketers",
-              },
-            ].map((item, index) => (
-              <div key={index} className="flex items-start gap-6 group">
-                <div className="text-4xl group-hover:scale-125 transition-transform duration-300">{item.icon}</div>
-                <p className="text-xl font-medium font-nunito group-hover:scale-105 transition-transform duration-300">
-                  {item.text}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-16 p-10 bg-white/10 rounded-3xl backdrop-blur-sm">
-            <p className="text-xl font-medium italic font-nunito">
-              Where other tools feel like another admin chore, Taughtful becomes part of your professional rhythm —
-              aligned to the real mess and magic of classroom life.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 8. FINAL THOUGHT */}
-      <section className="py-24 px-4 bg-white relative overflow-hidden">
-        <div className="container mx-auto max-w-4xl text-center space-y-8">
-          <p className="text-xl md:text-2xl text-muted-foreground font-medium leading-relaxed font-nunito">
-            If you've ever tried an "AI planning tool" and thought, "I could've just done this myself…" — you're not
-            alone.
-          </p>
-          <p className="text-xl md:text-2xl text-foreground font-medium italic font-nunito hover:scale-105 transition-transform duration-300 animate-fade-in delay-500">
-            Taughtful was built for educators who don't need more fluff. Just tools that think with them, not for them.
-          </p>
-        </div>
-      </section>
-
       {/* 9. YOUR TURN (FORM) */}
       <section className="py-32 px-4 bg-gradient-to-br from-muted/30 via-[#FDE5DA]/20 to-muted/30 relative overflow-hidden">
         <div className="absolute inset-0">
@@ -734,55 +626,6 @@ export default function TaughtfulLanding() {
                 </div>
               </form>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 10. BUILT DIFFERENT */}
-      <section className="py-24 px-4 relative overflow-hidden">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-black text-foreground font-fredoka hover:scale-105 transition-transform duration-500">
-              Built Different
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {[
-              {
-                icon: <Users className="w-8 h-8" />,
-                title: "Built by teachers, for teachers",
-              },
-              {
-                icon: <Shield className="w-8 h-8" />,
-                title: "Cultural safety protocols embedded",
-              },
-              {
-                icon: <Shield className="w-8 h-8" />,
-                title: "Privacy-first (no student data, ever)",
-              },
-              {
-                icon: <MessageCircle className="w-8 h-8" />,
-                title: "Your feedback shapes the product roadmap",
-              },
-            ].map((trust, index) => (
-              <Card
-                key={index}
-                className="border-2 border-border/50 hover:border-[#FD6585]/30 transition-all duration-300 hover:shadow-xl group hover:scale-105 hover:-translate-y-2 bg-card/80 backdrop-blur-sm text-center"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <CardContent className="p-8">
-                  <div className="w-16 h-16 bg-[#FD6585]/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-[#FD6585]/20 transition-all duration-300 mx-auto group-hover:scale-110 group-hover:rotate-12">
-                    <div className="text-[#FD6585] group-hover:scale-125 transition-transform duration-300">
-                      {trust.icon}
-                    </div>
-                  </div>
-                  <h3 className="text-lg font-bold text-foreground font-fredoka group-hover:text-[#FD6585] transition-colors duration-300">
-                    {trust.title}
-                  </h3>
-                </CardContent>
-              </Card>
-            ))}
           </div>
         </div>
       </section>

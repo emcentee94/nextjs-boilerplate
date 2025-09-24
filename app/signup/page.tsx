@@ -19,6 +19,7 @@ export default function SignUpPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [error, setError] = useState("")
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -31,35 +32,33 @@ export default function SignUpPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setError("")
 
-    // Create mailto link with form data
-    const subject = `Demo Access Request - ${formData.name}`
-    const body = `Hi Taughtful Team,
+    try {
+      // Submit to our API route
+      const response = await fetch('/api/demo-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
 
-I'm interested in trying the demo mode for Taughtful.
+      const result = await response.json()
 
-My details:
-- Name: ${formData.name}
-- Email: ${formData.email}
-- School/Organization: ${formData.school}
-- Role: ${formData.role}
-- Message: ${formData.message}
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to submit demo request')
+      }
 
-Please provide me with demo access.
-
-Best regards,
-${formData.name}`
-
-    const mailtoLink = `mailto:hello@taughtful.com.au?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-    
-    // Open email client
-    window.location.href = mailtoLink
-    
-    // Show success message
-    setTimeout(() => {
+      // Show success message
       setIsSubmitted(true)
+      
+    } catch (error) {
+      console.error('Error submitting demo request:', error)
+      setError(error instanceof Error ? error.message : 'Failed to submit demo request. Please try again or contact us directly.')
+    } finally {
       setIsSubmitting(false)
-    }, 1000)
+    }
   }
 
   if (isSubmitted) {
@@ -70,9 +69,9 @@ ${formData.name}`
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Mail className="w-8 h-8 text-green-600" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Request Sent!</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Request Submitted!</h2>
             <p className="text-gray-600 mb-6">
-              Your demo access request has been sent to our team. We'll get back to you soon!
+              Your demo access request has been submitted and stored in our system. We'll get back to you soon!
             </p>
             <div className="space-y-3">
               <Button asChild className="w-full">
@@ -147,6 +146,11 @@ ${formData.name}`
             </CardHeader>
             <CardContent className="p-6">
               <form onSubmit={handleSubmit} className="space-y-6">
+                {error && (
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                    <p className="text-red-700 text-sm">{error}</p>
+                  </div>
+                )}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">

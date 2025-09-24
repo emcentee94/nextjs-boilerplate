@@ -1,369 +1,353 @@
-"use client"
+'use client';
 
-import { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { Badge } from "@/components/ui/badge"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Search, BookOpen, Target, Users, Filter, X } from "lucide-react"
-import { CurriculumService, CurriculumItem } from "@/lib/curriculum-service"
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Search, LibraryBig, CheckCircle2 } from 'lucide-react';
 
-interface CurriculumSelectorProps {
-  onSelectionChange: (selectedItems: CurriculumItem[]) => void
-  selectedItems?: CurriculumItem[]
-  subject?: string
-  level?: string
+interface CurriculumItem {
+  id?: string;
+  code?: string;
+  Code?: string;
+  strand?: string;
+  Strand?: string;
+  sub_strand?: string;
+  Sub_strand?: string;
+  content_description?: string;
+  'Content Description'?: string;
+  achievement_standard?: string;
+  'Achievement Standard'?: string;
+  description?: string;
+  Description?: string;
+  elaboration?: string;
+  Elaboration?: string;
+  level?: string;
+  Level?: string;
+  subject?: string;
+  Subject?: string;
 }
 
-export function CurriculumSelector({ 
-  onSelectionChange, 
-  selectedItems = [],
+interface CurriculumSelectorProps {
+  curriculumItems: CurriculumItem[];
+  selectedItems: CurriculumItem[];
+  onSelectionChange: (items: CurriculumItem[]) => void;
+  isLoading: boolean;
+  error: string | null;
+  onRetry: () => void;
+  subject: string; // From Lesson Basics
+  year: string;    // From Lesson Basics
+}
+
+export default function CurriculumSelector({
+  curriculumItems,
+  selectedItems,
+  onSelectionChange,
+  isLoading,
+  error,
+  onRetry,
   subject,
-  level 
+  year
 }: CurriculumSelectorProps) {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [selectedSubject, setSelectedSubject] = useState(subject || "")
-  const [selectedLevel, setSelectedLevel] = useState(level || "")
-  const [subjects, setSubjects] = useState<string[]>([])
-  const [levels, setLevels] = useState<string[]>([])
-  const [learningAreas, setLearningAreas] = useState<CurriculumItem[]>([])
-  const [achievementStandards, setAchievementStandards] = useState<CurriculumItem[]>([])
-  const [crossCurriculumPriorities, setCrossCurriculumPriorities] = useState<CurriculumItem[]>([])
-  const [generalCapabilities, setGeneralCapabilities] = useState<CurriculumItem[]>([])
-  const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<"learning_areas" | "achievement_standards" | "cross_curriculum" | "general_capabilities">("learning_areas")
+  const [view, setView] = useState<'browse' | 'search' | 'selected'>('browse');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState<CurriculumItem[]>([]);
 
-  // Load initial data
-  useEffect(() => {
-    loadInitialData()
-  }, [])
-
-  // Filter data when subject/level changes
-  useEffect(() => {
-    if (selectedSubject && selectedSubject !== "all" || selectedLevel && selectedLevel !== "all") {
-      loadFilteredData()
-    } else if (selectedSubject === "all" && selectedLevel === "all") {
-      loadInitialData()
-    }
-  }, [selectedSubject, selectedLevel])
-
-  const loadInitialData = async () => {
-    try {
-      setLoading(true)
-      const [subjectsData, levelsData, learningAreasData, achievementStandardsData, crossCurriculumData, generalCapabilitiesData] = await Promise.all([
-        CurriculumService.getSubjects(),
-        CurriculumService.getLevels(),
-        CurriculumService.getLearningAreas(selectedSubject, selectedLevel),
-        CurriculumService.getAchievementStandards(selectedSubject, selectedLevel),
-        CurriculumService.getCrossCurriculumPriorities(),
-        CurriculumService.getGeneralCapabilities()
-      ])
-
-      setSubjects(subjectsData)
-      setLevels(levelsData)
-      setLearningAreas(learningAreasData)
-      setAchievementStandards(achievementStandardsData)
-      setCrossCurriculumPriorities(crossCurriculumData)
-      setGeneralCapabilities(generalCapabilitiesData)
-    } catch (error) {
-      console.error("Error loading curriculum data:", error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const loadFilteredData = async () => {
-    try {
-      setLoading(true)
-      const subjectFilter = selectedSubject && selectedSubject !== "all" ? selectedSubject : undefined
-      const levelFilter = selectedLevel && selectedLevel !== "all" ? selectedLevel : undefined
+  // Search function
+  const searchItems = (term: string) => {
+    if (!term.trim()) return [];
+    
+    return curriculumItems.filter(item => {
+      const searchFields = [
+        item.code || item["Code"],
+        item.content_description || item["Content Description"],
+        item.achievement_standard || item["Achievement Standard"],
+        item.strand || item["Strand"],
+        item.sub_strand || item["Sub-strand"],
+        item.elaboration || item["Elaboration"]
+      ].filter(Boolean).join(' ').toLowerCase();
       
-      const [learningAreasData, achievementStandardsData] = await Promise.all([
-        CurriculumService.getLearningAreas(subjectFilter, levelFilter),
-        CurriculumService.getAchievementStandards(subjectFilter, levelFilter)
-      ])
+      return searchFields.includes(term.toLowerCase());
+    });
+  };
 
-      setLearningAreas(learningAreasData)
-      setAchievementStandards(achievementStandardsData)
-    } catch (error) {
-      console.error("Error loading filtered data:", error)
-    } finally {
-      setLoading(false)
+  // Get filtered items based on current view
+  const getFilteredItems = () => {
+    if (view === 'search') return searchResults;
+    if (view === 'selected') return selectedItems;
+    
+    // Browse view - automatically filter by selected subject and year level
+    let filtered = curriculumItems;
+    
+    // Auto-filter by subject and year level from lesson basics
+    filtered = filtered.filter(item => {
+      const itemSubject = item.subject || item["Subject"];
+      const itemLevel = item.level || item["Level"];
+      
+      // Match subject (case-insensitive)
+      const subjectMatch = !itemSubject || 
+        itemSubject.toLowerCase().includes(subject.toLowerCase()) ||
+        subject.toLowerCase().includes(itemSubject.toLowerCase());
+      
+      // Match year level (convert year number to level format)
+      const yearMatch = !itemLevel || 
+        itemLevel.toLowerCase().includes(year.toLowerCase()) ||
+        year.toLowerCase().includes(itemLevel.toLowerCase());
+      
+      return subjectMatch && yearMatch;
+    });
+    
+    return filtered;
+  };
+
+  // Handle search
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
+    if (term.trim()) {
+      setSearchResults(searchItems(term));
+      setView('search');
+    } else {
+      setView('browse');
     }
-  }
+  };
 
-  const handleSearch = async () => {
-    if (!searchTerm.trim()) {
-      loadFilteredData()
-      return
-    }
-
-    try {
-      setLoading(true)
-      const searchResults = await CurriculumService.searchCurriculumData(searchTerm)
-      setLearningAreas(searchResults.learning_areas)
-      setAchievementStandards(searchResults.achievement_standards)
-      setCrossCurriculumPriorities(searchResults.cross_curriculum_priorities)
-      setGeneralCapabilities(searchResults.general_capabilities)
-    } catch (error) {
-      console.error("Error searching curriculum data:", error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const toggleItemSelection = (item: CurriculumItem) => {
-    const isSelected = selectedItems.some(selected => selected.id === item.id)
-    let newSelection: CurriculumItem[]
+  // Toggle item selection
+  const toggleItem = (item: CurriculumItem) => {
+    const itemId = item.id || item.code || item["Code"];
+    const isSelected = selectedItems.some(selected => 
+      selected.id === itemId || selected.code === item.code || selected["Code"] === item["Code"]
+    );
 
     if (isSelected) {
-      newSelection = selectedItems.filter(selected => selected.id !== item.id)
+      onSelectionChange(selectedItems.filter(selected => 
+        selected.id !== itemId && selected.code !== item.code && selected["Code"] !== item["Code"]
+      ));
     } else {
-      newSelection = [...selectedItems, item]
+      onSelectionChange([...selectedItems, { ...item, id: itemId }]);
     }
+  };
 
-    onSelectionChange(newSelection)
-  }
+  // Clear all selections
+  const clearAll = () => {
+    onSelectionChange([]);
+  };
 
-  const removeSelectedItem = (itemId: string) => {
-    const newSelection = selectedItems.filter(item => item.id !== itemId)
-    onSelectionChange(newSelection)
-  }
+  // Select all visible
+  const selectAllVisible = () => {
+    const filtered = getFilteredItems();
+    const newSelections = [...selectedItems];
+    
+    filtered.forEach(item => {
+      const itemId = item.id || item.code || item["Code"];
+      const isAlreadySelected = newSelections.some(selected => 
+        selected.id === itemId || selected.code === item.code || selected["Code"] === item["Code"]
+      );
+      if (!isAlreadySelected) {
+        newSelections.push({...item, id: itemId});
+      }
+    });
+    
+    onSelectionChange(newSelections);
+  };
 
-  const getCurrentData = () => {
-    switch (activeTab) {
-      case "learning_areas":
-        return learningAreas
-      case "achievement_standards":
-        return achievementStandards
-      case "cross_curriculum":
-        return crossCurriculumPriorities
-      case "general_capabilities":
-        return generalCapabilities
-      default:
-        return []
-    }
-  }
-
-  const getTabIcon = (tab: string) => {
-    switch (tab) {
-      case "learning_areas":
-        return <BookOpen className="w-4 h-4" />
-      case "achievement_standards":
-        return <Target className="w-4 h-4" />
-      case "cross_curriculum":
-        return <Users className="w-4 h-4" />
-      case "general_capabilities":
-        return <Filter className="w-4 h-4" />
-      default:
-        return null
-    }
-  }
-
-  const getTabLabel = (tab: string) => {
-    switch (tab) {
-      case "learning_areas":
-        return "Learning Areas"
-      case "achievement_standards":
-        return "Achievement Standards"
-      case "cross_curriculum":
-        return "Cross-Curriculum Priorities"
-      case "general_capabilities":
-        return "General Capabilities"
-      default:
-        return ""
-    }
-  }
-
-  if (loading) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Loading Curriculum Data...</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-          </div>
-        </CardContent>
-      </Card>
-    )
-  }
+  const filteredItems = getFilteredItems();
 
   return (
     <div className="space-y-6">
-      {/* Search and Filters */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Curriculum Data Selector</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Search */}
-          <div className="flex gap-2">
-            <Input
-              placeholder="Search curriculum content..."
+      {/* Tab Navigation */}
+      <div className="flex border-b border-gray-200">
+        <button
+          onClick={() => setView('browse')}
+          className={`py-2 px-4 text-sm font-medium ${
+            view === 'browse' ? 'border-b-2 border-[#333] text-[#333]' : 'text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          Browse
+        </button>
+        <button
+          onClick={() => setView('search')}
+          className={`py-2 px-4 text-sm font-medium ${
+            view === 'search' ? 'border-b-2 border-[#333] text-[#333]' : 'text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          Search
+        </button>
+        <button
+          onClick={() => setView('selected')}
+          className={`py-2 px-4 text-sm font-medium ${
+            view === 'selected' ? 'border-b-2 border-[#333] text-[#333]' : 'text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          Selected ({selectedItems.length})
+        </button>
+      </div>
+
+      {/* Content based on view */}
+      {isLoading ? (
+        <div className="mt-6 text-center py-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#333] mx-auto"></div>
+          <p className="mt-2 text-sm text-gray-600">Loading curriculum standards...</p>
+        </div>
+      ) : error ? (
+        <div className="mt-6 p-4 bg-red-100 border border-red-300 rounded-lg">
+          <p className="text-red-700 text-sm">{error}</p>
+          <button 
+            onClick={onRetry}
+            className="mt-2 px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700"
+          >
+            Try Again
+          </button>
+        </div>
+      ) : curriculumItems.length === 0 ? (
+        <div className="mt-6 text-center py-8">
+          <p className="text-gray-600">No curriculum standards found for {subject} Year {year}</p>
+        </div>
+      ) : (
+        <>
+          {/* Search Bar (always visible) */}
+          <div className="relative">
+            <Search className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search by code, description, or strand..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+              onChange={(e) => handleSearch(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#333] focus:border-transparent"
             />
-            <Button onClick={handleSearch} variant="outline">
-              <Search className="w-4 h-4" />
-            </Button>
           </div>
 
-          {/* Filters */}
-          <div className="flex gap-4">
-            <Select value={selectedSubject} onValueChange={setSelectedSubject}>
-              <SelectTrigger className="w-48">
-                <SelectValue placeholder="Select Subject" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Subjects</SelectItem>
-                {subjects.map(subject => (
-                  <SelectItem key={subject} value={subject}>
-                    {subject}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={selectedLevel} onValueChange={setSelectedLevel}>
-              <SelectTrigger className="w-48">
-                <SelectValue placeholder="Select Level" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Levels</SelectItem>
-                {levels.map(level => (
-                  <SelectItem key={level} value={level}>
-                    {level}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Selected Items */}
-      {selectedItems.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Selected Curriculum Items ({selectedItems.length})</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              {selectedItems.map(item => (
-                <div key={item.id} className="flex items-start justify-between p-3 border rounded-lg">
-                  <div className="flex-1">
-                    <div className="font-medium">
-                      {item["Learning Area"] || item.learning_area || item["Subject"] || item.subject || item["Organising ideas title"] || item.organising_ideas_title}
-                    </div>
-                    <div className="text-sm text-muted-foreground mt-1 line-clamp-2">
-                      {item["Content Description"] || item.content_description || item["Achievement Standard"] || item.achievement_standard || item["Description"] || item.description}
-                    </div>
-                    <div className="flex gap-2 mt-2 flex-wrap">
-                      {(item["Level"] || item.level) && (
-                        <Badge variant="secondary" className="text-xs">
-                          {item["Level"] || item.level}
-                        </Badge>
-                      )}
-                      {(item["Code"] || item.code) && (
-                        <Badge variant="outline" className="text-xs">
-                          {item["Code"] || item.code}
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => removeSelectedItem(item.id)}
-                    className="ml-2 flex-shrink-0"
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Curriculum Data Tabs */}
-      <Card>
-        <CardHeader>
-          <div className="flex space-x-1">
-            {(["learning_areas", "achievement_standards", "cross_curriculum", "general_capabilities"] as const).map(tab => (
-              <Button
-                key={tab}
-                variant={activeTab === tab ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setActiveTab(tab)}
-                className="flex items-center gap-2"
+          {/* Bulk Actions */}
+          {filteredItems.length > 0 && (
+            <div className="flex gap-2">
+              <button
+                onClick={selectAllVisible}
+                className="px-3 py-2 bg-blue-100 text-blue-700 text-sm rounded-md hover:bg-blue-200 transition-colors"
               >
-                {getTabIcon(tab)}
-                {getTabLabel(tab)}
-                <Badge variant="secondary">
-                  {getCurrentData().length}
-                </Badge>
-              </Button>
-            ))}
+                Select All Visible ({filteredItems.length})
+              </button>
+              <button
+                onClick={clearAll}
+                className="px-3 py-2 bg-gray-100 text-gray-700 text-sm rounded-md hover:bg-gray-200 transition-colors"
+              >
+                Clear All Selections ({selectedItems.length})
+              </button>
+            </div>
+          )}
+
+          {/* Results Summary */}
+          <div className="flex justify-between items-center text-sm mb-4">
+            <span className="text-gray-600">
+              Showing {filteredItems.length} of {curriculumItems.length} standards
+            </span>
+            <span className="font-medium text-[#333]">
+              {selectedItems.length} selected
+            </span>
           </div>
-        </CardHeader>
-        <CardContent>
+          
+          {/* Curriculum Standards Grid */}
           <div className="space-y-3 max-h-96 overflow-y-auto">
-            {getCurrentData().map(item => {
-              const isSelected = selectedItems.some(selected => selected.id === item.id)
-              return (
-                <div
-                  key={item.id}
-                  className={`p-4 border rounded-lg cursor-pointer transition-colors ${
-                    isSelected ? "bg-primary/10 border-primary" : "hover:bg-muted/50"
-                  }`}
-                  onClick={() => toggleItemSelection(item)}
-                >
-                  <div className="flex items-start gap-3">
-                    <Checkbox checked={isSelected} readOnly />
-                    <div className="flex-1">
-                      <div className="font-medium">
-                        {item["Learning Area"] || item.learning_area || item["Subject"] || item.subject || item["Organising ideas title"] || item.organising_ideas_title}
+            {filteredItems.length === 0 ? (
+              <div className="text-center py-8 text-gray-500">
+                <p>No standards found matching your criteria.</p>
+                {view === 'search' && (
+                  <button
+                    onClick={() => handleSearch('')}
+                    className="mt-2 text-sm text-[#333] hover:underline"
+                  >
+                    Clear search
+                  </button>
+                )}
+              </div>
+            ) : (
+              filteredItems.map((item, index) => {
+                const itemId = item.id || item.code || item["Code"];
+                const isSelected = selectedItems.some(selected => 
+                  selected.id === itemId || selected.code === item.code || selected["Code"] === item["Code"]
+                );
+                const isAchievementStandard = item.achievement_standard || item["Achievement Standard"];
+                const strand = item.strand || item["Strand"];
+                const substrand = item.sub_strand || item["Sub-strand"];
+                
+                return (
+                  <div
+                    key={itemId}
+                    onClick={() => toggleItem({...item, id: itemId})}
+                    className={`p-4 border-2 rounded-xl cursor-pointer transition-all hover:shadow-md ${
+                      isSelected
+                        ? 'border-[#333] bg-[#FDE5DA] shadow-sm'
+                        : 'border-gray-200 hover:border-gray-300 bg-white'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1 min-w-0">
+                        {/* Header with Code and Type */}
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className={`text-xs font-mono px-2 py-1 rounded ${
+                            isAchievementStandard 
+                              ? 'bg-purple-100 text-purple-700' 
+                              : 'bg-blue-100 text-blue-700'
+                          }`}>
+                            {item.code || item["Code"] || itemId}
+                          </span>
+                          <span className={`text-xs px-2 py-1 rounded ${
+                            isAchievementStandard 
+                              ? 'bg-purple-50 text-purple-600' 
+                              : 'bg-blue-50 text-blue-600'
+                          }`}>
+                            {isAchievementStandard ? 'Achievement Standard' : 'Content Description'}
+                          </span>
+                          {strand && (
+                            <span className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded">
+                              {strand}
+                            </span>
+                          )}
+                          {substrand && (
+                            <span className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded">
+                              {substrand}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Main Content */}
+                        <h4 className="font-semibold text-sm mb-2 leading-relaxed">
+                          {item.content_description || item["Content Description"] || 
+                           item.achievement_standard || item["Achievement Standard"] || 
+                           item.description || item["Description"] || 'Curriculum Standard'}
+                        </h4>
+
+                        {/* Elaboration */}
+                        {(item.elaboration || item["Elaboration"]) && (
+                          <p className="text-xs text-gray-600 mb-2 italic leading-relaxed">
+                            {item.elaboration || item["Elaboration"]}
+                          </p>
+                        )}
+
+                        {/* Level */}
+                        {(item.level || item["Level"]) && (
+                          <span className="text-xs text-green-600 font-medium">
+                            Level: {item.level || item["Level"]}
+                          </span>
+                        )}
                       </div>
-                      <div className="text-sm text-muted-foreground mt-1 line-clamp-3">
-                        {item["Content Description"] || item.content_description || item["Achievement Standard"] || item.achievement_standard || item["Description"] || item.description}
-                      </div>
-                      <div className="flex gap-2 mt-2 flex-wrap">
-                        {(item["Level"] || item.level) && (
-                          <Badge variant="outline" className="text-xs">
-                            {item["Level"] || item.level}
-                          </Badge>
-                        )}
-                        {(item["Strand"] || item.strand) && (
-                          <Badge variant="outline" className="text-xs">
-                            {item["Strand"] || item.strand}
-                          </Badge>
-                        )}
-                        {(item["Element"] || item.element) && (
-                          <Badge variant="outline" className="text-xs">
-                            {item["Element"] || item.element}
-                          </Badge>
-                        )}
-                        {(item["Code"] || item.code) && (
-                          <Badge variant="secondary" className="text-xs">
-                            {item["Code"] || item.code}
-                          </Badge>
+
+                      {/* Selection Checkbox */}
+                      <div className={`ml-4 w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${
+                        isSelected
+                          ? 'border-[#333] bg-[#333]'
+                          : 'border-gray-300'
+                      }`}>
+                        {isSelected && (
+                          <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
                         )}
                       </div>
                     </div>
                   </div>
-                </div>
-              )
-            })}
+                );
+              })
+            )}
           </div>
-        </CardContent>
-      </Card>
+        </>
+      )}
     </div>
-  )
+  );
 }

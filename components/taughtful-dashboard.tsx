@@ -13,6 +13,7 @@ import {
   Feather,
   Globe,
 } from 'lucide-react';
+import CurriculumSelector from './curriculum-selector';
 // import Highlight, { defaultProps } from 'prism-react-renderer';
 // import { themes } from 'prism-react-renderer';
 
@@ -75,8 +76,8 @@ function getWeightedEightWays(subject) {
 
 export default function TaughtfulDashboard() {
   const [active, setActive] = useState('basics');
-  const [subject, setSubject] = useState('');
-  const [year, setYear] = useState('');
+  const [subject, setSubject] = useState('English');
+  const [year, setYear] = useState('5');
   const [duration, setDuration] = useState(60);
   const [classSize, setClassSize] = useState(25);
   const [literacyTier, setLiteracyTier] = useState('Mixed');
@@ -256,92 +257,18 @@ export default function TaughtfulDashboard() {
                 <motion.div key="curriculum" className="rounded-3xl bg-white shadow-md p-6">
                   <SectionHeader icon={LibraryBig} title="Curriculum Standards" subtitle="Select the specific curriculum outcomes you want to focus on." />
                   
-                  {isLoadingCurriculum ? (
-                    <div className="mt-6 text-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#333] mx-auto"></div>
-                      <p className="mt-2 text-sm text-gray-600">Loading curriculum standards...</p>
-                    </div>
-                  ) : curriculumError ? (
-                    <div className="mt-6 p-4 bg-red-100 border border-red-300 rounded-lg">
-                      <p className="text-red-700 text-sm">{curriculumError}</p>
-                      <button 
-                        onClick={fetchCurriculumItems}
-                        className="mt-2 px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700"
-                      >
-                        Try Again
-                      </button>
-                    </div>
-                  ) : curriculumItems.length === 0 ? (
-                    <div className="mt-6 text-center py-8">
-                      <p className="text-gray-600">No curriculum standards found for {subject} Year {year}</p>
-                    </div>
-                  ) : (
-                    <div className="mt-6">
-                      <div className="mb-4 flex justify-between items-center">
-                        <p className="text-sm text-gray-600">
-                          Found {curriculumItems.length} curriculum standards. Select the ones you want to focus on:
-                        </p>
-                        <span className="text-sm font-medium text-[#333]">
-                          {selectedCurriculumItems.length} selected
-                        </span>
-                      </div>
-                      
-                      <div className="max-h-96 overflow-y-auto space-y-2">
-                        {curriculumItems.map((item, index) => {
-                          // Create a unique ID for items that don't have one
-                          const itemId = item.id || item["Code"] || `item-${index}`
-                          const isSelected = selectedCurriculumItems.some(selected => 
-                            selected.id === itemId || selected.code === item["Code"]
-                          )
-                          
-                          return (
-                            <div
-                              key={itemId}
-                              onClick={() => toggleCurriculumItem({...item, id: itemId})}
-                              className={`p-3 border rounded-lg cursor-pointer transition-all ${
-                                isSelected
-                                  ? 'border-[#333] bg-[#FDE5DA]'
-                                  : 'border-gray-200 hover:border-gray-300'
-                              }`}
-                            >
-                              <div className="flex items-start justify-between">
-                                <div className="flex-1">
-                                  <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-xs font-mono bg-gray-100 px-2 py-1 rounded">
-                                      {item["Code"] || item.code || itemId}
-                                    </span>
-                                    {(item["Strand"] || item.strand) && (
-                                      <span className="text-xs text-gray-500">{item["Strand"] || item.strand}</span>
-                                    )}
-                                  </div>
-                                  <h4 className="font-medium text-sm mb-1">
-                                    {item["Content Description"] || item.content_description || item["Achievement Standard"] || item.achievement_standard || item["Description"] || item.description || 'Curriculum Standard'}
-                                  </h4>
-                                  {(item["Elaboration"] || item.elaboration) && (
-                                    <p className="text-xs text-gray-500 mt-1 italic">{item["Elaboration"] || item.elaboration}</p>
-                                  )}
-                                  {(item["Level"] || item.level) && (
-                                    <span className="text-xs text-blue-600 mt-1 block">{item["Level"] || item.level}</span>
-                                  )}
-                                </div>
-                                <div className={`ml-2 w-4 h-4 rounded border-2 flex items-center justify-center ${
-                                  isSelected
-                                    ? 'border-[#333] bg-[#333]'
-                                    : 'border-gray-300'
-                                }`}>
-                                  {isSelected && (
-                                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                    </svg>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  )}
+                  <div className="mt-6">
+                    <CurriculumSelector
+                      curriculumItems={curriculumItems}
+                      selectedItems={selectedCurriculumItems}
+                      onSelectionChange={setSelectedCurriculumItems}
+                      isLoading={isLoadingCurriculum}
+                      error={curriculumError}
+                      onRetry={fetchCurriculumItems}
+                      subject={subject}
+                      year={year}
+                    />
+                  </div>
                   
                   <NavButtons 
                     onPrev={() => setActive('basics')} 
@@ -435,13 +362,22 @@ export default function TaughtfulDashboard() {
                       disabled={isGenerating}
                       className={`px-4 py-2 rounded ${isGenerating ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#333] hover:bg-[#555]'} text-white`}
                     >
-                      {isGenerating ? 'Generating...' : 'Generate Lesson Plan'}
+                      {isGenerating ? 'Generating... (this may take a few minutes)' : 'Generate Lesson Plan'}
                     </button>
                   </div>
                   
                   {error && (
                     <div className="mt-4 p-4 bg-red-100 border border-red-300 rounded-lg">
                       <p className="text-red-700 text-sm">{error}</p>
+                      {error.includes('overloaded') && (
+                        <button 
+                          onClick={handleGenerateLessonPlan}
+                          disabled={isGenerating}
+                          className="mt-2 px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm rounded"
+                        >
+                          Try Again
+                        </button>
+                      )}
                     </div>
                   )}
                   

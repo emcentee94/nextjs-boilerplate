@@ -185,8 +185,31 @@ export async function POST(request: NextRequest) {
     
   } catch (error: any) {
     console.error("Lesson plan generation error:", error);
+    
+    // Handle specific Anthropic API errors
+    if (error.status === 529 || error.message?.includes('overloaded')) {
+      return NextResponse.json(
+        { error: "AI service is currently overloaded. Please try again in a few minutes." },
+        { status: 503 }
+      );
+    }
+    
+    if (error.status === 429) {
+      return NextResponse.json(
+        { error: "Rate limit exceeded. Please wait a moment before trying again." },
+        { status: 429 }
+      );
+    }
+    
+    if (error.status === 401) {
+      return NextResponse.json(
+        { error: "Authentication failed. Please check your API configuration." },
+        { status: 401 }
+      );
+    }
+    
     return NextResponse.json(
-      { error: error?.message || "Lesson plan generation failed" },
+      { error: error?.message || "Lesson plan generation failed. Please try again." },
       { status: 500 }
     );
   }

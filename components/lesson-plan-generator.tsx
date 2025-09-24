@@ -428,7 +428,7 @@ export function LessonPlanGenerator({ onLessonPlanGenerated }: LessonPlanGenerat
             {isGenerating ? (
               <>
                 <Clock className="h-4 w-4 mr-2 animate-spin" />
-                Generating Lesson Plan...
+                Generating Lesson Plan... (this may take a few minutes)
               </>
             ) : (
               <>

@@ -205,45 +205,61 @@ export default function TaughtfulLanding() {
         </div>
       </section>
 
-      {/* 3. WHAT MAKES TAUGHTFUL DIFFERENT */}
+      {/* 3. RAG TECHNOLOGY - THE GAME CHANGER */}
       <section className="py-32 px-4 relative overflow-hidden bg-gradient-to-r from-[#FDE5DA] via-[#FFF2E8] to-[#FDE5DA]">
+        {/* Animated background circles */}
+        <div className="absolute inset-0">
+          <div className="absolute top-10 left-1/4 w-16 h-16 bg-[#FD6585]/20 rounded-full animate-bounce delay-0"></div>
+          <div className="absolute top-20 right-1/3 w-12 h-12 bg-[#888625]/20 rounded-full animate-bounce delay-300"></div>
+          <div className="absolute bottom-10 left-1/3 w-20 h-20 bg-[#FF9A2E]/20 rounded-full animate-bounce delay-700"></div>
+          <div className="absolute bottom-20 right-1/4 w-14 h-14 bg-[#FD6585]/20 rounded-full animate-bounce delay-1000"></div>
+          <div className="absolute top-1/2 left-10 w-8 h-8 bg-[#888625]/15 rounded-full animate-pulse delay-500"></div>
+          <div className="absolute top-1/3 right-10 w-10 h-10 bg-[#FF9A2E]/15 rounded-full animate-pulse delay-1000"></div>
+        </div>
+
         <div className="container mx-auto max-w-6xl relative z-10">
-          <div className="text-center mb-24">
+          <div className="text-center mb-16">
+            <div className="inline-block bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] text-white px-6 py-2 rounded-full text-sm font-bold font-fredoka mb-4 animate-pulse">
+              🚀 Revolutionary AI Technology
+            </div>
             <h2 className="text-5xl md:text-6xl font-black text-foreground font-fredoka hover:scale-105 transition-all duration-700 cursor-default mb-6">
-              What Makes Taughtful Different
+              RAG-Powered Lesson Planning
             </h2>
+            <p className="text-2xl md:text-3xl font-bold font-fredoka hover:scale-105 transition-all duration-500 cursor-default text-foreground mb-4">
+              The Future of Educational AI
+            </p>
             <div className="w-32 h-1 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] mx-auto rounded-full"></div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto mb-16">
             {[
               {
-                icon: <Users className="w-16 h-16" />,
-                title: "Culturally safe by default",
-                description:
-                  "No AI-generated Indigenous perspectives. Only vetted sources. Teachers choose, AI never imposes.",
+                icon: <Brain className="w-16 h-16" />,
+                title: "Retrieval-Augmented",
+                description: "AI retrieves from vetted curriculum databases, not random internet content",
                 color: "bg-[#FD6585]",
+                highlight: "VETTED SOURCES"
+              },
+              {
+                icon: <Shield className="w-16 h-16" />,
+                title: "Culturally Safe",
+                description: "Respectful Indigenous perspectives from authentic sources only",
+                color: "bg-[#888625]",
+                highlight: "AUTHENTIC PERSPECTIVES"
               },
               {
                 icon: <Heart className="w-16 h-16" />,
-                title: "Trauma-informed built-in",
-                description:
-                  "Co-regulation routines, predictability chips, and low-stakes entry tasks — surfaced automatically.",
+                title: "Trauma-Informed",
+                description: "Built-in scaffolds for regulation, routine, and relationships",
                 color: "bg-[#FF9A2E]",
-              },
-              {
-                icon: <BookOpen className="w-16 h-16" />,
-                title: "Teacher authored, always",
-                description:
-                  "No prompts turning into unvetted paragraphs. Everything is structured, teacher-led, and exportable with clarity.",
-                color: "bg-[#888625]",
+                highlight: "SAFE LEARNING"
               },
               {
                 icon: <Target className="w-16 h-16" />,
-                title: "Multi-curriculum support",
-                description:
-                  "ACARA v9, Victorian Curriculum, NSW Syllabus, WA Curriculum. Automatic code mapping and compliance verification.",
-                color: "bg-[#FF9A2E]",
+                title: "Curriculum-Precise",
+                description: "Every lesson aligns perfectly with Australian Curriculum v9",
+                color: "bg-[#FD6585]",
+                highlight: "100% ALIGNED"
               },
             ].map((pillar, index) => (
               <div
@@ -252,7 +268,7 @@ export default function TaughtfulLanding() {
                 style={{ animationDelay: `${index * 200}ms` }}
               >
                 <div
-                  className={`w-56 h-56 ${pillar.color} rounded-full flex flex-col items-center justify-center mb-10 group-hover:scale-125 transition-all duration-700 hover:animate-bounce mx-auto shadow-2xl hover:shadow-3xl relative overflow-hidden cursor-pointer border-4 border-white/20 hover:border-white/40`}
+                  className={`w-56 h-56 ${pillar.color} rounded-full flex flex-col items-center justify-center mb-6 group-hover:scale-125 transition-all duration-700 hover:animate-bounce mx-auto shadow-2xl hover:shadow-3xl relative overflow-hidden cursor-pointer border-4 border-white/20 hover:border-white/40`}
                 >
                   <div className="absolute inset-0 bg-white/10 rounded-full group-hover:bg-white/20 transition-all duration-500"></div>
                   <div className="text-white group-hover:scale-150 transition-all duration-500 mb-4 relative z-10 drop-shadow-lg">
@@ -261,13 +277,90 @@ export default function TaughtfulLanding() {
                   <h3 className="text-xl font-bold text-white font-fredoka text-center px-6 leading-tight relative z-10 group-hover:scale-110 transition-all duration-500">
                     {pillar.title}
                   </h3>
-                  <Sparkles className="absolute top-4 right-4 w-6 h-6 text-white/40 animate-pulse group-hover:animate-spin group-hover:text-white/80 transition-all duration-500" />
+                  <div className="absolute top-4 right-4 bg-white/20 rounded-full px-2 py-1">
+                    <span className="text-xs font-bold text-white font-fredoka">{pillar.highlight}</span>
+                  </div>
+                  <Sparkles className="absolute top-4 left-4 w-6 h-6 text-white/40 animate-pulse group-hover:animate-spin group-hover:text-white/80 transition-all duration-500" />
                 </div>
                 <p className="text-muted-foreground font-medium leading-relaxed font-nunito group-hover:text-foreground transition-all duration-500 max-w-sm mx-auto text-lg hover:scale-105 cursor-default">
                   {pillar.description}
                 </p>
               </div>
             ))}
+          </div>
+
+          {/* RAG Comparison Section */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/20">
+            <div className="text-center mb-8">
+              <h3 className="text-3xl font-bold font-fredoka text-[#333] mb-4">Why RAG Changes Everything</h3>
+              <p className="text-lg font-nunito text-[#333]/80">Traditional AI vs. Taughtful's RAG-Powered Approach</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Without RAG */}
+              <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold text-xl">❌</span>
+                  </div>
+                  <h4 className="text-xl font-bold font-fredoka text-red-800">Without RAG</h4>
+                </div>
+                <ul className="space-y-3 text-red-700 font-nunito">
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-500 mt-1">•</span>
+                    <span>AI guesses from random internet patterns</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-500 mt-1">•</span>
+                    <span>Unreliable curriculum alignment</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-500 mt-1">•</span>
+                    <span>Potential cultural insensitivity</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-500 mt-1">•</span>
+                    <span>Generic, one-size-fits-all content</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* With RAG */}
+              <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold text-xl">✅</span>
+                  </div>
+                  <h4 className="text-xl font-bold font-fredoka text-green-800">With Taughtful RAG</h4>
+                </div>
+                <ul className="space-y-3 text-green-700 font-nunito">
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-500 mt-1">•</span>
+                    <span>Retrieves from vetted curriculum databases</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-500 mt-1">•</span>
+                    <span>100% Australian Curriculum v9 aligned</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-500 mt-1">•</span>
+                    <span>Culturally respectful Indigenous perspectives</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-500 mt-1">•</span>
+                    <span>Personalized, trauma-informed scaffolds</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="text-center mt-8">
+              <div className="inline-flex items-center gap-3 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] text-white px-6 py-3 rounded-full font-bold font-fredoka text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                <Zap className="w-6 h-6" />
+                <span>Experience RAG-Powered Lesson Planning</span>
+                <ArrowRight className="w-6 h-6" />
+              </div>
+            </div>
           </div>
         </div>
       </section>

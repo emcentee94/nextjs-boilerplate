@@ -112,16 +112,24 @@ export default function CurriculumSelector({
   // Toggle item selection
   const toggleItem = (item: CurriculumItem) => {
     const itemId = item.id || item.code || item["Code"];
+    console.log('Toggling item:', { itemId, item, selectedItems });
+    
     const isSelected = selectedItems.some(selected => 
       selected.id === itemId || selected.code === item.code || selected["Code"] === item["Code"]
     );
 
+    console.log('Is selected:', isSelected);
+
     if (isSelected) {
-      onSelectionChange(selectedItems.filter(selected => 
+      const newSelection = selectedItems.filter(selected => 
         selected.id !== itemId && selected.code !== item.code && selected["Code"] !== item["Code"]
-      ));
+      );
+      console.log('Removing item, new selection:', newSelection);
+      onSelectionChange(newSelection);
     } else {
-      onSelectionChange([...selectedItems, { ...item, id: itemId }]);
+      const newSelection = [...selectedItems, { ...item, id: itemId }];
+      console.log('Adding item, new selection:', newSelection);
+      onSelectionChange(newSelection);
     }
   };
 
@@ -132,6 +140,7 @@ export default function CurriculumSelector({
 
   // Select all visible
   const selectAllVisible = () => {
+    console.log('Select all visible clicked');
     const filtered = getFilteredItems();
     const newSelections = [...selectedItems];
     
@@ -145,6 +154,7 @@ export default function CurriculumSelector({
       }
     });
     
+    console.log('Select all result:', newSelections);
     onSelectionChange(newSelections);
   };
 

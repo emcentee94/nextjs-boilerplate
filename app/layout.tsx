@@ -50,9 +50,6 @@ export default function RootLayout({
                 <span className="text-xl font-semibold text-gray-900 font-fredoka">Taughtful Australia</span>
               </Link>
               <nav className="hidden md:flex space-x-8">
-                <Link href="/dashboard" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium font-nunito">
-                  Dashboard
-                </Link>
                 <Link href="/curriculum" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium font-nunito">
                   Curriculum
                 </Link>

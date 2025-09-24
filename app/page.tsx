@@ -118,33 +118,6 @@ export default function TaughtfulLanding() {
         <div className="absolute bottom-20 right-10 w-28 h-28 bg-gradient-to-br from-[#FD6585]/10 to-[#FF9A2E]/10 rounded-full blur-xl animate-float delay-500"></div>
       </div>
 
-      {/* Header */}
-      <header className="border-b border-border/50 bg-background/95 backdrop-blur-md sticky top-0 z-50 transition-all duration-500 hover:bg-background/98 hover:shadow-lg">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between relative z-10">
-          <div className="flex items-center gap-3 group cursor-pointer">
-            <div className="w-12 h-12 relative transition-all duration-500 group-hover:scale-125 group-hover:rotate-[360deg]">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#FD6585] to-[#FF9A2E] rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-500"></div>
-              <Image
-                src="/images/taughtful-logo.png"
-                alt="Taughtful"
-                width={48}
-                height={48}
-                className="rounded-full shadow-lg group-hover:shadow-xl relative z-10"
-              />
-            </div>
-            <span className="text-2xl font-bold text-foreground font-mono transition-all duration-500 group-hover:text-[#FD6585] group-hover:scale-110">
-              Taughtful
-            </span>
-          </div>
-          <Button
-            variant="outline"
-            className="hidden md:flex bg-gradient-to-r from-transparent to-[#FD6585]/5 hover:from-[#FD6585]/10 hover:to-[#FF9A2E]/10 hover:border-[#FD6585]/50 transition-all duration-500 hover:scale-110 hover:shadow-xl hover:-translate-y-1 border-2 rounded-full font-semibold"
-          >
-            <Sparkles className="w-4 h-4 mr-2 animate-pulse" />
-            Get Started
-          </Button>
-        </div>
-      </header>
 
       {/* 1. HERO SECTION */}
       <section className="py-32 px-4 bg-gradient-to-br from-white via-[#FDE5DA]/20 to-white relative overflow-hidden">
@@ -164,7 +137,7 @@ export default function TaughtfulLanding() {
 
         <div className="container mx-auto max-w-7xl relative z-10">
           <div className="text-center space-y-10 animate-fade-in mb-20">
-            <h1 className="text-6xl md:text-8xl font-black text-balance leading-tight font-mono hover:scale-105 transition-all duration-700 cursor-default">
+            <h1 className="text-6xl md:text-8xl font-black text-balance leading-tight font-[Fredoka] hover:scale-105 transition-all duration-700 cursor-default">
               <span className="text-foreground hover:text-[#888625] transition-colors duration-500">
                 Other AI tools?
               </span>{" "}
@@ -175,7 +148,7 @@ export default function TaughtfulLanding() {
               </span>
             </h1>
 
-            <p className="text-2xl md:text-3xl text-muted-foreground font-medium leading-relaxed font-sans hover:text-foreground transition-all duration-500 hover:scale-105 cursor-default max-w-5xl mx-auto">
+            <p className="text-2xl md:text-3xl text-muted-foreground font-medium leading-relaxed font-[Nunito] hover:text-foreground transition-all duration-500 hover:scale-105 cursor-default max-w-5xl mx-auto">
               Generic AI doesn't get Australian classrooms. Taughtful does — curriculum v9 aligned, trauma-informed
               scaffolding, Indigenous perspectives embedded.
             </p>
@@ -218,7 +191,7 @@ export default function TaughtfulLanding() {
           <Sparkles className="absolute bottom-6 left-1/3 w-8 h-8 text-[#FF9A2E]/30 animate-pulse hover:text-[#FF9A2E]/60 hover:scale-125 transition-all duration-500 cursor-pointer" />
         </div>
         <div className="container mx-auto max-w-5xl relative space-y-8">
-          <h2 className="text-4xl md:text-6xl font-black font-mono hover:scale-105 transition-all duration-500 cursor-default text-black">
+          <h2 className="text-4xl md:text-6xl font-black font-[Fredoka] hover:scale-105 transition-all duration-500 cursor-default text-black">
             Teaching in Australia right now?{" "}
             <span className="animate-fade-in delay-1000 inline-block hover:animate-bounce">It's a lot.</span>
           </h2>
@@ -235,7 +208,7 @@ export default function TaughtfulLanding() {
       <section className="py-32 px-4 relative overflow-hidden bg-gradient-to-r from-[#FDE5DA] via-[#FFF2E8] to-[#FDE5DA]">
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-24">
-            <h2 className="text-5xl md:text-6xl font-black text-foreground font-mono hover:scale-105 transition-all duration-700 cursor-default mb-6">
+            <h2 className="text-5xl md:text-6xl font-black text-foreground font-[Fredoka] hover:scale-105 transition-all duration-700 cursor-default mb-6">
               What Makes Taughtful Different
             </h2>
             <div className="w-32 h-1 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] mx-auto rounded-full"></div>

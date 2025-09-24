@@ -208,6 +208,17 @@ export default function TaughtfulLanding() {
               🚀 Revolutionary AI Technology
             </div>
           </div>
+          
+          {/* RAG-Powered Lesson Planning Heading */}
+          <div className="mt-12 text-center">
+            <h2 className="text-5xl md:text-6xl font-black text-foreground font-fredoka hover:scale-105 transition-all duration-700 cursor-default mb-6">
+              RAG-Powered Lesson Planning
+            </h2>
+            <p className="text-2xl md:text-3xl font-bold font-fredoka hover:scale-105 transition-all duration-500 cursor-default text-foreground mb-4">
+              The Future of Educational AI
+            </p>
+            <div className="w-32 h-1 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] mx-auto rounded-full"></div>
+          </div>
         </div>
       </section>
 
@@ -224,16 +235,6 @@ export default function TaughtfulLanding() {
         </div>
 
         <div className="container mx-auto max-w-6xl relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-black text-foreground font-fredoka hover:scale-105 transition-all duration-700 cursor-default mb-6">
-              RAG-Powered Lesson Planning
-            </h2>
-            <p className="text-2xl md:text-3xl font-bold font-fredoka hover:scale-105 transition-all duration-500 cursor-default text-foreground mb-4">
-              The Future of Educational AI
-            </p>
-            <div className="w-32 h-1 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] mx-auto rounded-full"></div>
-          </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto mb-16">
             {[
               {
@@ -274,16 +275,22 @@ export default function TaughtfulLanding() {
                   className={`w-48 h-48 ${pillar.color} rounded-full flex flex-col items-center justify-center mb-6 group-hover:scale-110 transition-all duration-700 hover:animate-bounce mx-auto shadow-2xl hover:shadow-3xl relative overflow-hidden cursor-pointer border-4 border-white/20 hover:border-white/40`}
                 >
                   <div className="absolute inset-0 bg-white/10 rounded-full group-hover:bg-white/20 transition-all duration-500"></div>
-                  <div className="text-white group-hover:scale-125 transition-all duration-500 mb-3 relative z-10 drop-shadow-lg">
+                  
+                  {/* Highlight badge positioned at top */}
+                  <div className="absolute top-2 right-2 bg-white/30 backdrop-blur-sm rounded-full px-2 py-1 z-20">
+                    <span className="text-xs font-bold text-white font-fredoka leading-none">{pillar.highlight}</span>
+                  </div>
+                  
+                  {/* Sparkles decoration */}
+                  <Sparkles className="absolute top-2 left-2 w-4 h-4 text-white/60 animate-pulse group-hover:animate-spin group-hover:text-white/90 transition-all duration-500 z-20" />
+                  
+                  {/* Main content */}
+                  <div className="text-white group-hover:scale-125 transition-all duration-500 mb-2 relative z-10 drop-shadow-lg">
                     {pillar.icon}
                   </div>
-                  <h3 className="text-lg font-bold text-white font-fredoka text-center px-4 leading-tight relative z-10 group-hover:scale-105 transition-all duration-500">
+                  <h3 className="text-base font-bold text-white font-fredoka text-center px-3 leading-tight relative z-10 group-hover:scale-105 transition-all duration-500">
                     {pillar.title}
                   </h3>
-                  <div className="absolute top-3 right-3 bg-white/25 rounded-full px-2 py-1">
-                    <span className="text-xs font-bold text-white font-fredoka">{pillar.highlight}</span>
-                  </div>
-                  <Sparkles className="absolute top-3 left-3 w-5 h-5 text-white/50 animate-pulse group-hover:animate-spin group-hover:text-white/80 transition-all duration-500" />
                 </div>
                 <p className="text-muted-foreground font-medium leading-relaxed font-nunito group-hover:text-foreground transition-all duration-500 max-w-sm mx-auto text-lg hover:scale-105 cursor-default">
                   {pillar.description}

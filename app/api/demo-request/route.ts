@@ -8,11 +8,12 @@ import path from 'path'
 const supabaseUrl = 'https://kpdusbhqiswdiyzdwxpw.supabase.co'
 const supabaseKey = process.env.SUPABASE_KEY
 
-if (!supabaseKey) {
-  console.error('Missing Supabase environment variables')
-}
+// Only create Supabase client if key is available
+const supabase = supabaseKey ? createClient(supabaseUrl, supabaseKey) : null
 
-const supabase = createClient(supabaseUrl, supabaseKey)
+if (!supabaseKey) {
+  console.warn('Missing Supabase environment variables - using file-based storage only')
+}
 
 // File-based storage for demo requests
 const DEMO_REQUESTS_FILE = path.join(process.cwd(), 'demo-requests.json')

@@ -138,7 +138,7 @@ export default function TaughtfulLanding() {
 
         <div className="container mx-auto max-w-7xl relative z-10">
           <div className="text-center space-y-10 animate-fade-in mb-20">
-            <h1 className="text-6xl md:text-8xl font-black text-balance leading-tight font-[Fredoka] hover:scale-105 transition-all duration-700 cursor-default">
+            <h1 className="text-6xl md:text-8xl font-black text-balance leading-tight font-fredoka hover:scale-105 transition-all duration-700 cursor-default">
               <span className="text-foreground hover:text-[#888625] transition-colors duration-500">
                 Other AI tools?
               </span>{" "}
@@ -149,7 +149,7 @@ export default function TaughtfulLanding() {
               </span>
             </h1>
 
-            <p className="text-2xl md:text-3xl text-muted-foreground font-medium leading-relaxed font-[Nunito] hover:text-foreground transition-all duration-500 hover:scale-105 cursor-default max-w-5xl mx-auto">
+            <p className="text-2xl md:text-3xl text-muted-foreground font-medium leading-relaxed font-nunito hover:text-foreground transition-all duration-500 hover:scale-105 cursor-default max-w-5xl mx-auto">
               Generic AI doesn't get Australian classrooms. Taughtful does — curriculum v9 aligned, trauma-informed
               scaffolding, Indigenous perspectives embedded.
             </p>
@@ -192,14 +192,14 @@ export default function TaughtfulLanding() {
           <Sparkles className="absolute bottom-6 left-1/3 w-8 h-8 text-[#FF9A2E]/30 animate-pulse hover:text-[#FF9A2E]/60 hover:scale-125 transition-all duration-500 cursor-pointer" />
         </div>
         <div className="container mx-auto max-w-5xl relative space-y-8">
-          <h2 className="text-4xl md:text-6xl font-black font-[Fredoka] hover:scale-105 transition-all duration-500 cursor-default text-black">
+          <h2 className="text-4xl md:text-6xl font-black font-fredoka hover:scale-105 transition-all duration-500 cursor-default text-black">
             Teaching in Australia right now?{" "}
             <span className="animate-fade-in delay-1000 inline-block hover:animate-bounce">It's a lot.</span>
           </h2>
-          <p className="text-2xl md:text-3xl font-bold font-[Nunito] hover:scale-105 transition-all duration-500 cursor-default text-foreground">
+          <p className="text-2xl md:text-3xl font-bold font-nunito hover:scale-105 transition-all duration-500 cursor-default text-foreground">
             The hours. The admin. The endless "do more with less."
           </p>
-          <p className="text-xl md:text-2xl font-medium font-[Nunito] hover:scale-105 transition-all duration-500 cursor-default text-muted-foreground">
+          <p className="text-xl md:text-2xl font-medium font-nunito hover:scale-105 transition-all duration-500 cursor-default text-muted-foreground">
             No wonder burnout is at an all-time high.
           </p>
         </div>
@@ -209,7 +209,7 @@ export default function TaughtfulLanding() {
       <section className="py-32 px-4 relative overflow-hidden bg-gradient-to-r from-[#FDE5DA] via-[#FFF2E8] to-[#FDE5DA]">
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-24">
-            <h2 className="text-5xl md:text-6xl font-black text-foreground font-[Fredoka] hover:scale-105 transition-all duration-700 cursor-default mb-6">
+            <h2 className="text-5xl md:text-6xl font-black text-foreground font-fredoka hover:scale-105 transition-all duration-700 cursor-default mb-6">
               What Makes Taughtful Different
             </h2>
             <div className="w-32 h-1 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] mx-auto rounded-full"></div>
@@ -258,12 +258,12 @@ export default function TaughtfulLanding() {
                   <div className="text-white group-hover:scale-150 transition-all duration-500 mb-4 relative z-10 drop-shadow-lg">
                     {pillar.icon}
                   </div>
-                  <h3 className="text-xl font-bold text-white font-[Fredoka] text-center px-6 leading-tight relative z-10 group-hover:scale-110 transition-all duration-500">
+                  <h3 className="text-xl font-bold text-white font-fredoka text-center px-6 leading-tight relative z-10 group-hover:scale-110 transition-all duration-500">
                     {pillar.title}
                   </h3>
                   <Sparkles className="absolute top-4 right-4 w-6 h-6 text-white/40 animate-pulse group-hover:animate-spin group-hover:text-white/80 transition-all duration-500" />
                 </div>
-                <p className="text-muted-foreground font-medium leading-relaxed font-[Nunito] group-hover:text-foreground transition-all duration-500 max-w-sm mx-auto text-lg hover:scale-105 cursor-default">
+                <p className="text-muted-foreground font-medium leading-relaxed font-nunito group-hover:text-foreground transition-all duration-500 max-w-sm mx-auto text-lg hover:scale-105 cursor-default">
                   {pillar.description}
                 </p>
               </div>
@@ -286,10 +286,10 @@ export default function TaughtfulLanding() {
 
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-black text-foreground font-[Fredoka] hover:scale-105 transition-all duration-700 cursor-default mb-6">
+            <h2 className="text-5xl md:text-6xl font-black text-foreground font-fredoka hover:scale-105 transition-all duration-700 cursor-default mb-6">
               Built for Every Australian Classroom
             </h2>
-            <p className="text-2xl md:text-3xl text-muted-foreground font-medium leading-relaxed font-[Nunito] hover:text-foreground transition-all duration-500 hover:scale-105 cursor-default max-w-4xl mx-auto mb-8">
+            <p className="text-2xl md:text-3xl text-muted-foreground font-medium leading-relaxed font-nunito hover:text-foreground transition-all duration-500 hover:scale-105 cursor-default max-w-4xl mx-auto mb-8">
               No matter which curriculum your state uses, Taughtful speaks your language.
             </p>
             <div className="w-32 h-1 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] mx-auto rounded-full"></div>
@@ -298,7 +298,7 @@ export default function TaughtfulLanding() {
           {/* Curriculum Showcase */}
           <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-12 border-4 border-[#FD6585]/20 shadow-2xl mb-12">
             <div className="text-center mb-8">
-              <h3 className="text-3xl font-bold text-foreground font-[Fredoka] mb-4">Choose Your Curriculum</h3>
+              <h3 className="text-3xl font-bold text-foreground font-fredoka mb-4">Choose Your Curriculum</h3>
               <p className="text-lg text-muted-foreground">Select your state/territory for curriculum-aligned lesson plans</p>
             </div>
             
@@ -324,7 +324,7 @@ export default function TaughtfulLanding() {
 
             <div className="text-center">
               <div className="bg-gradient-to-r from-[#FD6585]/10 to-[#FF9A2E]/10 rounded-2xl p-6 border-2 border-[#FD6585]/20">
-                <h4 className="text-xl font-bold text-foreground font-[Fredoka] mb-2">Currently Selected:</h4>
+                <h4 className="text-xl font-bold text-foreground font-fredoka mb-2">Currently Selected:</h4>
                 <p className="text-lg font-semibold text-[#FD6585]">
                   {curriculumOptions[selectedCurriculum as keyof typeof curriculumOptions].name}
                 </p>
@@ -341,7 +341,7 @@ export default function TaughtfulLanding() {
               <div className="w-20 h-20 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-125 transition-all duration-500 shadow-lg">
                 <Target className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-foreground font-[Fredoka] mb-4 group-hover:text-[#FD6585] transition-colors duration-300">
+              <h3 className="text-xl font-bold text-foreground font-fredoka mb-4 group-hover:text-[#FD6585] transition-colors duration-300">
                 Automatic Code Mapping
               </h3>
               <p className="text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-300">
@@ -353,7 +353,7 @@ export default function TaughtfulLanding() {
               <div className="w-20 h-20 bg-gradient-to-r from-[#888625] to-[#FD6585] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-125 transition-all duration-500 shadow-lg">
                 <BookOpen className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-foreground font-[Fredoka] mb-4 group-hover:text-[#888625] transition-colors duration-300">
+              <h3 className="text-xl font-bold text-foreground font-fredoka mb-4 group-hover:text-[#888625] transition-colors duration-300">
                 State-Specific Language
               </h3>
               <p className="text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-300">
@@ -365,7 +365,7 @@ export default function TaughtfulLanding() {
               <div className="w-20 h-20 bg-gradient-to-r from-[#FF9A2E] to-[#888625] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-125 transition-all duration-500 shadow-lg">
                 <Users className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-foreground font-[Fredoka] mb-4 group-hover:text-[#FF9A2E] transition-colors duration-300">
+              <h3 className="text-xl font-bold text-foreground font-fredoka mb-4 group-hover:text-[#FF9A2E] transition-colors duration-300">
                 Compliance Confidence
               </h3>
               <p className="text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-300">
@@ -379,7 +379,7 @@ export default function TaughtfulLanding() {
       {/* 5. THE FINE PRINT */}
       <section className="py-24 px-4 bg-[#FDE5DA] relative overflow-hidden">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-4xl md:text-5xl font-black mb-4 text-foreground font-[Fredoka] hover:scale-105 transition-transform duration-500">
+          <h2 className="text-4xl md:text-5xl font-black mb-4 text-foreground font-fredoka hover:scale-105 transition-transform duration-500">
             The Fine Print
           </h2>
           <span className="block text-2xl md:text-3xl mb-16 text-muted-foreground">(No Nasty Surprises)</span>
@@ -393,7 +393,7 @@ export default function TaughtfulLanding() {
                     className="flex items-center gap-4 group bg-white/50 rounded-2xl p-6 hover:bg-white/80 transition-all duration-300"
                   >
                     <div className="text-4xl">✅</div>
-                    <span className="text-lg font-semibold font-[Fredoka] group-hover:text-primary transition-colors duration-300">
+                    <span className="text-lg font-semibold font-fredoka group-hover:text-primary transition-colors duration-300">
                       {item}
                     </span>
                   </div>
@@ -408,7 +408,7 @@ export default function TaughtfulLanding() {
                     className="flex items-center gap-4 group bg-white/50 rounded-2xl p-6 hover:bg-white/80 transition-all duration-300"
                   >
                     <div className="text-4xl">⚠️</div>
-                    <span className="text-lg font-semibold font-[Fredoka] group-hover:text-primary transition-colors duration-300">
+                    <span className="text-lg font-semibold font-fredoka group-hover:text-primary transition-colors duration-300">
                       {item}
                     </span>
                   </div>
@@ -423,24 +423,24 @@ export default function TaughtfulLanding() {
       <section className="py-24 px-4 relative overflow-hidden">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-20">
-            <h2 className="text-4xl font-black text-foreground font-[Fredoka] hover:scale-105 transition-transform duration-500 text-center md:text-7xl">
+            <h2 className="text-4xl font-black text-foreground font-fredoka hover:scale-105 transition-transform duration-500 text-center md:text-7xl">
               Don't Just Take Our Word
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div className="text-center md:text-center">
-              <blockquote className="text-2xl md:text-3xl font-medium italic mb-8 font-[Nunito]">
+              <blockquote className="text-2xl md:text-3xl font-medium italic mb-8 font-nunito">
                 "Finally, someone who gets what we actually need in classrooms."
               </blockquote>
-              <p className="text-xl font-bold font-[Fredoka]">— Sarah, Year 8 English</p>
+              <p className="text-xl font-bold font-fredoka">— Sarah, Year 8 English</p>
             </div>
             <div className="space-y-8">
               <div className="bg-[#FD6585] text-white rounded-full px-8 py-4 text-center font-bold text-lg hover:scale-105 transition-transform duration-300">
                 30+ teachers already testing
               </div>
               <div className="text-center">
-                <p className="text-lg font-semibold mb-6 font-[Fredoka]">All F-10 subjects covered:</p>
+                <p className="text-lg font-semibold mb-6 font-fredoka">All F-10 subjects covered:</p>
                 <div className="flex justify-center gap-4 flex-wrap">
                   <div className="flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full hover:scale-105 transition-transform duration-300">
                     <BookOpen className="w-5 h-5" />
@@ -484,10 +484,10 @@ export default function TaughtfulLanding() {
       {/* 7. WHY TAUGHTFUL IS DIFFERENT */}
       <section className="py-24 px-4 bg-[#888625] text-white relative overflow-hidden">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-4xl md:text-5xl font-black mb-8 font-[Fredoka] hover:scale-105 transition-transform duration-500">
+          <h2 className="text-4xl md:text-5xl font-black mb-8 font-fredoka hover:scale-105 transition-transform duration-500">
             Why Taughtful is Different
           </h2>
-          <p className="text-2xl md:text-3xl font-bold mb-16 font-[Fredoka]">
+          <p className="text-2xl md:text-3xl font-bold mb-16 font-fredoka">
             Taughtful isn't a content generator. It's your co-designer.
           </p>
 
@@ -508,7 +508,7 @@ export default function TaughtfulLanding() {
             ].map((item, index) => (
               <div key={index} className="flex items-start gap-6 group">
                 <div className="text-4xl group-hover:scale-125 transition-transform duration-300">{item.icon}</div>
-                <p className="text-xl font-medium font-[Nunito] group-hover:scale-105 transition-transform duration-300">
+                <p className="text-xl font-medium font-nunito group-hover:scale-105 transition-transform duration-300">
                   {item.text}
                 </p>
               </div>
@@ -516,7 +516,7 @@ export default function TaughtfulLanding() {
           </div>
 
           <div className="mt-16 p-10 bg-white/10 rounded-3xl backdrop-blur-sm">
-            <p className="text-xl font-medium italic font-[Nunito]">
+            <p className="text-xl font-medium italic font-nunito">
               Where other tools feel like another admin chore, Taughtful becomes part of your professional rhythm —
               aligned to the real mess and magic of classroom life.
             </p>
@@ -527,11 +527,11 @@ export default function TaughtfulLanding() {
       {/* 8. FINAL THOUGHT */}
       <section className="py-24 px-4 bg-white relative overflow-hidden">
         <div className="container mx-auto max-w-4xl text-center space-y-8">
-          <p className="text-xl md:text-2xl text-muted-foreground font-medium leading-relaxed font-[Nunito]">
+          <p className="text-xl md:text-2xl text-muted-foreground font-medium leading-relaxed font-nunito">
             If you've ever tried an "AI planning tool" and thought, "I could've just done this myself…" — you're not
             alone.
           </p>
-          <p className="text-xl md:text-2xl text-foreground font-medium italic font-[Nunito] hover:scale-105 transition-transform duration-300 animate-fade-in delay-500">
+          <p className="text-xl md:text-2xl text-foreground font-medium italic font-nunito hover:scale-105 transition-transform duration-300 animate-fade-in delay-500">
             Taughtful was built for educators who don't need more fluff. Just tools that think with them, not for them.
           </p>
         </div>
@@ -551,7 +551,7 @@ export default function TaughtfulLanding() {
             <div className="absolute bottom-8 left-8 w-12 h-12 bg-[#888625]/20 rounded-full blur-md animate-pulse delay-500"></div>
 
             <div className="relative z-10">
-              <h2 className="text-5xl md:text-6xl font-black mb-10 text-foreground font-[Fredoka] group-hover:scale-105 transition-all duration-500 cursor-default">
+              <h2 className="text-5xl md:text-6xl font-black mb-10 text-foreground font-fredoka group-hover:scale-105 transition-all duration-500 cursor-default">
                 Ready to ditch the panic planning?
               </h2>
 
@@ -642,7 +642,7 @@ export default function TaughtfulLanding() {
       <section className="py-24 px-4 relative overflow-hidden">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-black text-foreground font-[Fredoka] hover:scale-105 transition-transform duration-500">
+            <h2 className="text-4xl md:text-5xl font-black text-foreground font-fredoka hover:scale-105 transition-transform duration-500">
               Built Different
             </h2>
           </div>
@@ -677,7 +677,7 @@ export default function TaughtfulLanding() {
                       {trust.icon}
                     </div>
                   </div>
-                  <h3 className="text-lg font-bold text-foreground font-[Fredoka] group-hover:text-[#FD6585] transition-colors duration-300">
+                  <h3 className="text-lg font-bold text-foreground font-fredoka group-hover:text-[#FD6585] transition-colors duration-300">
                     {trust.title}
                   </h3>
                 </CardContent>
@@ -702,12 +702,12 @@ export default function TaughtfulLanding() {
                   className="rounded-full shadow-lg group-hover:shadow-xl relative z-10"
                 />
               </div>
-              <span className="text-2xl font-bold font-[Fredoka] group-hover:text-[#FD6585] transition-colors duration-300">
+              <span className="text-2xl font-bold font-fredoka group-hover:text-[#FD6585] transition-colors duration-300">
                 Taughtful
               </span>
             </div>
 
-            <div className="space-y-4 text-white/80 font-[Nunito]">
+            <div className="space-y-4 text-white/80 font-nunito">
               <p className="hover:text-white transition-colors duration-300">
                 Contact:{" "}
                 <a href="mailto:hello@taughtful.com.au" className="hover:text-[#FD6585] transition-colors duration-300">
@@ -736,7 +736,7 @@ export default function TaughtfulLanding() {
               </div>
             </div>
 
-            <div className="border-t border-white/20 pt-8 text-white/60 font-[Nunito] text-sm">
+            <div className="border-t border-white/20 pt-8 text-white/60 font-nunito text-sm">
               <p>
                 All Indigenous cultural materials displayed in Taughtful are used with proper attribution and within the
                 scope of their original permissions. Taughtful does not modify, generate, or repurpose any cultural
@@ -768,7 +768,7 @@ export default function TaughtfulLanding() {
             <div className="p-8">
               {/* Header */}
               <div className="flex justify-between items-center mb-8">
-                <h2 className="text-4xl font-black text-foreground font-[Fredoka]">
+                <h2 className="text-4xl font-black text-foreground font-fredoka">
                   Sample Lesson Plan
                 </h2>
                 <Button
@@ -785,7 +785,7 @@ export default function TaughtfulLanding() {
               <div className="space-y-8">
                 <div className="bg-gradient-to-r from-[#FD6585]/10 to-[#FF9A2E]/10 rounded-2xl p-6 border-2 border-[#FD6585]/20">
                   <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-2xl font-bold text-foreground font-[Fredoka]">Year 8 English - Poetry Analysis</h3>
+                    <h3 className="text-2xl font-bold text-foreground font-fredoka">Year 8 English - Poetry Analysis</h3>
                     <div className="bg-white/80 rounded-lg px-3 py-1 text-sm font-semibold text-[#FD6585]">
                       {curriculumOptions[selectedCurriculum as keyof typeof curriculumOptions].compliance}
                     </div>

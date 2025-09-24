@@ -47,16 +47,16 @@ export default function RootLayout({
                   height={40}
                   className="h-10 w-auto"
                 />
-                <span className="text-xl font-semibold text-gray-900 font-[Fredoka]">Taughtful Australia</span>
+                <span className="text-xl font-semibold text-gray-900 font-fredoka">Taughtful Australia</span>
               </Link>
               <nav className="hidden md:flex space-x-8">
-                <Link href="/dashboard" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium font-[Nunito]">
+                <Link href="/dashboard" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium font-nunito">
                   Dashboard
                 </Link>
-                <Link href="/curriculum" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium font-[Nunito]">
+                <Link href="/curriculum" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium font-nunito">
                   Curriculum
                 </Link>
-                <Link href="/login" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium font-[Nunito]">
+                <Link href="/login" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium font-nunito">
                   Login
                 </Link>
               </nav>

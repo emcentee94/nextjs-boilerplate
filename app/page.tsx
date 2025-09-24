@@ -26,7 +26,6 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useState } from "react"
-import WhatMakesUsDifferent from "@/components/WhatMakesUsDifferent"
 
 const waitlistSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -272,19 +271,19 @@ export default function TaughtfulLanding() {
                 style={{ animationDelay: `${index * 200}ms` }}
               >
                 <div
-                  className={`w-56 h-56 ${pillar.color} rounded-full flex flex-col items-center justify-center mb-6 group-hover:scale-125 transition-all duration-700 hover:animate-bounce mx-auto shadow-2xl hover:shadow-3xl relative overflow-hidden cursor-pointer border-4 border-white/20 hover:border-white/40`}
+                  className={`w-48 h-48 ${pillar.color} rounded-full flex flex-col items-center justify-center mb-6 group-hover:scale-110 transition-all duration-700 hover:animate-bounce mx-auto shadow-2xl hover:shadow-3xl relative overflow-hidden cursor-pointer border-4 border-white/20 hover:border-white/40`}
                 >
                   <div className="absolute inset-0 bg-white/10 rounded-full group-hover:bg-white/20 transition-all duration-500"></div>
-                  <div className="text-white group-hover:scale-150 transition-all duration-500 mb-4 relative z-10 drop-shadow-lg">
+                  <div className="text-white group-hover:scale-125 transition-all duration-500 mb-3 relative z-10 drop-shadow-lg">
                     {pillar.icon}
                   </div>
-                  <h3 className="text-xl font-bold text-white font-fredoka text-center px-6 leading-tight relative z-10 group-hover:scale-110 transition-all duration-500">
+                  <h3 className="text-lg font-bold text-white font-fredoka text-center px-4 leading-tight relative z-10 group-hover:scale-105 transition-all duration-500">
                     {pillar.title}
                   </h3>
-                  <div className="absolute top-4 right-4 bg-white/20 rounded-full px-2 py-1">
+                  <div className="absolute top-3 right-3 bg-white/25 rounded-full px-2 py-1">
                     <span className="text-xs font-bold text-white font-fredoka">{pillar.highlight}</span>
                   </div>
-                  <Sparkles className="absolute top-4 left-4 w-6 h-6 text-white/40 animate-pulse group-hover:animate-spin group-hover:text-white/80 transition-all duration-500" />
+                  <Sparkles className="absolute top-3 left-3 w-5 h-5 text-white/50 animate-pulse group-hover:animate-spin group-hover:text-white/80 transition-all duration-500" />
                 </div>
                 <p className="text-muted-foreground font-medium leading-relaxed font-nunito group-hover:text-foreground transition-all duration-500 max-w-sm mx-auto text-lg hover:scale-105 cursor-default">
                   {pillar.description}
@@ -301,57 +300,57 @@ export default function TaughtfulLanding() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Without RAG */}
-              <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-6">
+              {/* Traditional AI */}
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-2xl p-6 shadow-lg">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-xl">❌</span>
+                  <div className="w-12 h-12 bg-gradient-to-br from-gray-400 to-gray-500 rounded-full flex items-center justify-center shadow-md">
+                    <span className="text-white font-bold text-xl">⚠️</span>
                   </div>
-                  <h4 className="text-xl font-bold font-fredoka text-red-800">Without RAG</h4>
+                  <h4 className="text-xl font-bold font-fredoka text-gray-700">Traditional AI</h4>
                 </div>
-                <ul className="space-y-3 text-red-700 font-nunito">
+                <ul className="space-y-3 text-gray-600 font-nunito">
                   <li className="flex items-start gap-2">
-                    <span className="text-red-500 mt-1">•</span>
+                    <span className="text-gray-400 mt-1">•</span>
                     <span>AI guesses from random internet patterns</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-red-500 mt-1">•</span>
+                    <span className="text-gray-400 mt-1">•</span>
                     <span>Unreliable curriculum alignment</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-red-500 mt-1">•</span>
+                    <span className="text-gray-400 mt-1">•</span>
                     <span>Potential cultural insensitivity</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-red-500 mt-1">•</span>
+                    <span className="text-gray-400 mt-1">•</span>
                     <span>Generic, one-size-fits-all content</span>
                   </li>
                 </ul>
               </div>
 
-              {/* With RAG */}
-              <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-6">
+              {/* Taughtful RAG */}
+              <div className="bg-gradient-to-br from-[#FDE5DA] to-[#FFF2E8] border border-[#FD6585]/20 rounded-2xl p-6 shadow-lg">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-xl">✅</span>
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center shadow-md">
+                    <span className="text-white font-bold text-xl">✨</span>
                   </div>
-                  <h4 className="text-xl font-bold font-fredoka text-green-800">With Taughtful RAG</h4>
+                  <h4 className="text-xl font-bold font-fredoka text-[#333]">Taughtful RAG</h4>
                 </div>
-                <ul className="space-y-3 text-green-700 font-nunito">
+                <ul className="space-y-3 text-[#333]/80 font-nunito">
                   <li className="flex items-start gap-2">
-                    <span className="text-green-500 mt-1">•</span>
+                    <span className="text-[#FD6585] mt-1">•</span>
                     <span>Retrieves from vetted curriculum databases</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-green-500 mt-1">•</span>
+                    <span className="text-[#FD6585] mt-1">•</span>
                     <span>100% Australian Curriculum v9 aligned</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-green-500 mt-1">•</span>
+                    <span className="text-[#FD6585] mt-1">•</span>
                     <span>Culturally respectful Indigenous perspectives</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-green-500 mt-1">•</span>
+                    <span className="text-[#FD6585] mt-1">•</span>
                     <span>Personalized, trauma-informed scaffolds</span>
                   </li>
                 </ul>
@@ -368,9 +367,6 @@ export default function TaughtfulLanding() {
           </div>
         </div>
       </section>
-
-      {/* 3.5. WHAT MAKES US DIFFERENT - RAG EXPLAINER */}
-      <WhatMakesUsDifferent />
 
       {/* 4. MULTI-CURRICULUM SUPPORT FEATURE */}
       <section className="py-32 px-4 bg-gradient-to-br from-[#FDE5DA] via-[#FFF2E8] to-[#FDE5DA] relative overflow-hidden">

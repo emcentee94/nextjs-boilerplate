@@ -11,9 +11,6 @@ const nextConfig = {
   },
   // Performance optimizations
   swcMinify: true,
-  experimental: {
-    optimizeCss: true,
-  },
   // Faster development
   onDemandEntries: {
     maxInactiveAge: 25 * 1000,

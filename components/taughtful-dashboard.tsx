@@ -110,6 +110,7 @@ export default function TaughtfulDashboard() {
                       <div className="flex items-center gap-3">
                         <Brain className="h-5 w-5 text-[#888625]" />
                         <h3 className="font-semibold">Embedding Indigenous Perspectives</h3>
+                        <div className="ml-auto"></div>
                       </div>
                       <p className="text-xs text-[#666] mt-2">Refers to the respectful integration of First Nations knowledge. Levels: Not included, Contextual (acknowledgment/examples), Deep (lesson shaped by Indigenous pedagogies). <button className="underline text-[#333]" onClick={() => setModalContent({title: 'Embedding Indigenous Perspectives', body: 'Contextual embedding may include Country acknowledgments or examples. Deep integration uses frameworks such as 8 Ways of Learning, weaving story, land, kinship, and cultural protocols into lesson design.', link: '/resources#indigenous'})}>Learn more</button></p>
                       <div className="mt-4 grid grid-cols-3 gap-3">

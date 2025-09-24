@@ -22,6 +22,7 @@ import {
 
 const steps = [
   { key: 'basics', label: 'Lesson Basics', icon: BookOpen },
+  { key: 'curriculum', label: 'Curriculum Standards', icon: LibraryBig },
   { key: 'class', label: 'Class Profile', icon: Users },
   { key: 'pedagogy', label: 'Pedagogy & Scaffolds', icon: Feather },
   { key: 'generate', label: 'Review & Generate', icon: CheckCircle2 },
@@ -89,8 +90,15 @@ export default function TaughtfulDashboard() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedLessonPlan, setGeneratedLessonPlan] = useState(null);
   const [error, setError] = useState(null);
+  
+  // Curriculum selection state
+  const [curriculumItems, setCurriculumItems] = useState([]);
+  const [selectedCurriculumItems, setSelectedCurriculumItems] = useState([]);
+  const [isLoadingCurriculum, setIsLoadingCurriculum] = useState(false);
+  const [curriculumError, setCurriculumError] = useState(null);
 
   const canNextBasics = Boolean(subject && year);
+  const canNextCurriculum = selectedCurriculumItems.length > 0;
   const canNextClass = classSize > 0 && literacyTier && assessment;
 
   useEffect(() => {
@@ -101,9 +109,50 @@ export default function TaughtfulDashboard() {
     }
   }, [aboriginalPedagogy, subject]);
 
+  // Fetch curriculum items when subject and year are selected
+  useEffect(() => {
+    if (subject && year) {
+      fetchCurriculumItems();
+    }
+  }, [subject, year]);
+
+  const fetchCurriculumItems = async () => {
+    setIsLoadingCurriculum(true);
+    setCurriculumError(null);
+    setCurriculumItems([]);
+    setSelectedCurriculumItems([]);
+
+    try {
+      const response = await fetch(`/api/curriculum/search?learningAreaId=${subject}&yearLevel=${year}&limit=100`);
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch curriculum items');
+      }
+
+      const data = await response.json();
+      setCurriculumItems(data.outcomes || []);
+    } catch (err) {
+      console.error('Curriculum fetch error:', err);
+      setCurriculumError(err.message || 'Failed to load curriculum items');
+    } finally {
+      setIsLoadingCurriculum(false);
+    }
+  };
+
+  const toggleCurriculumItem = (item) => {
+    setSelectedCurriculumItems(prev => {
+      const isSelected = prev.some(selected => selected.id === item.id);
+      if (isSelected) {
+        return prev.filter(selected => selected.id !== item.id);
+      } else {
+        return [...prev, item];
+      }
+    });
+  };
+
   const handleGenerateLessonPlan = async () => {
-    if (!subject || !year) {
-      setError('Please complete all required fields before generating a lesson plan.');
+    if (!subject || !year || selectedCurriculumItems.length === 0) {
+      setError('Please complete all required fields and select at least one curriculum standard before generating a lesson plan.');
       return;
     }
 
@@ -112,18 +161,18 @@ export default function TaughtfulDashboard() {
     setGeneratedLessonPlan(null);
 
     try {
-      // Create a mock curriculum item for the lesson plan generation
-      const mockCurriculumItem = {
-        code: `${subject.toUpperCase()}-${year}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`,
-        description: `Year ${year} ${subject} lesson plan`,
-        strand: subject,
-        subStrand: 'General'
-      };
+      // Convert selected curriculum items to the format expected by the API
+      const curriculumItemsForAPI = selectedCurriculumItems.map(item => ({
+        code: item.code || item.id,
+        description: item.description || item.title || `Curriculum item ${item.code}`,
+        strand: item.strand || subject,
+        subStrand: item.sub_strand || 'General'
+      }));
 
       const request = {
         subject,
         yearLevels: [year],
-        items: [mockCurriculumItem],
+        items: curriculumItemsForAPI,
         durationMins: duration,
         classProfile: {
           classSize,
@@ -184,7 +233,96 @@ export default function TaughtfulDashboard() {
                     <SelectField label="Year Level" value={year} onChange={setYear} options={yearLevels} placeholder="Select year level" />
                     <SliderField label="Duration (mins)" value={duration} onChange={setDuration} min={20} max={120} step={5} icon={Clock} />
                   </div>
-                  <NavButtons onNext={() => setActive('class')} nextEnabled={canNextBasics} />
+                  <NavButtons onNext={() => setActive('curriculum')} nextEnabled={canNextBasics} />
+                </motion.div>
+              )}
+
+              {active === 'curriculum' && (
+                <motion.div key="curriculum" className="rounded-3xl bg-white shadow-md p-6">
+                  <SectionHeader icon={LibraryBig} title="Curriculum Standards" subtitle="Select the specific curriculum outcomes you want to focus on." />
+                  
+                  {isLoadingCurriculum ? (
+                    <div className="mt-6 text-center py-8">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#333] mx-auto"></div>
+                      <p className="mt-2 text-sm text-gray-600">Loading curriculum standards...</p>
+                    </div>
+                  ) : curriculumError ? (
+                    <div className="mt-6 p-4 bg-red-100 border border-red-300 rounded-lg">
+                      <p className="text-red-700 text-sm">{curriculumError}</p>
+                      <button 
+                        onClick={fetchCurriculumItems}
+                        className="mt-2 px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700"
+                      >
+                        Try Again
+                      </button>
+                    </div>
+                  ) : curriculumItems.length === 0 ? (
+                    <div className="mt-6 text-center py-8">
+                      <p className="text-gray-600">No curriculum standards found for {subject} Year {year}</p>
+                    </div>
+                  ) : (
+                    <div className="mt-6">
+                      <div className="mb-4 flex justify-between items-center">
+                        <p className="text-sm text-gray-600">
+                          Found {curriculumItems.length} curriculum standards. Select the ones you want to focus on:
+                        </p>
+                        <span className="text-sm font-medium text-[#333]">
+                          {selectedCurriculumItems.length} selected
+                        </span>
+                      </div>
+                      
+                      <div className="max-h-96 overflow-y-auto space-y-2">
+                        {curriculumItems.map((item) => (
+                          <div
+                            key={item.id}
+                            onClick={() => toggleCurriculumItem(item)}
+                            className={`p-3 border rounded-lg cursor-pointer transition-all ${
+                              selectedCurriculumItems.some(selected => selected.id === item.id)
+                                ? 'border-[#333] bg-[#FDE5DA]'
+                                : 'border-gray-200 hover:border-gray-300'
+                            }`}
+                          >
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <span className="text-xs font-mono bg-gray-100 px-2 py-1 rounded">
+                                    {item.code || item.id}
+                                  </span>
+                                  {item.strand && (
+                                    <span className="text-xs text-gray-500">{item.strand}</span>
+                                  )}
+                                </div>
+                                <h4 className="font-medium text-sm mb-1">{item.title || item.description}</h4>
+                                {item.description && item.description !== item.title && (
+                                  <p className="text-xs text-gray-600">{item.description}</p>
+                                )}
+                                {item.elaboration && (
+                                  <p className="text-xs text-gray-500 mt-1 italic">{item.elaboration}</p>
+                                )}
+                              </div>
+                              <div className={`ml-2 w-4 h-4 rounded border-2 flex items-center justify-center ${
+                                selectedCurriculumItems.some(selected => selected.id === item.id)
+                                  ? 'border-[#333] bg-[#333]'
+                                  : 'border-gray-300'
+                              }`}>
+                                {selectedCurriculumItems.some(selected => selected.id === item.id) && (
+                                  <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                  </svg>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  <NavButtons 
+                    onPrev={() => setActive('basics')} 
+                    onNext={() => setActive('class')} 
+                    nextEnabled={canNextCurriculum}
+                  />
                 </motion.div>
               )}
 
@@ -262,7 +400,7 @@ export default function TaughtfulDashboard() {
                   <div className="mt-4">
                     <div className="rounded-2xl border p-4">
                       <h4 className="font-semibold mb-2">Live Preview</h4>
-                      <PreviewCard subject={subject} year={year} duration={duration} classSize={classSize} literacyTier={literacyTier} assessment={assessment} tiOn={tiOn} diff={diff} indigLevel={indigLevel} aboriginalPedagogy={aboriginalPedagogy} selectedEightWays={selectedEightWays} />
+                      <PreviewCard subject={subject} year={year} duration={duration} classSize={classSize} literacyTier={literacyTier} assessment={assessment} tiOn={tiOn} diff={diff} indigLevel={indigLevel} aboriginalPedagogy={aboriginalPedagogy} selectedEightWays={selectedEightWays} selectedCurriculumItems={selectedCurriculumItems} />
                     </div>
                   </div>
                   <div className="mt-4 flex justify-between">
@@ -467,7 +605,7 @@ function NavButtons({ onPrev, onNext, nextEnabled = true }) {
   );
 }
 
-function PreviewCard({ subject, year, duration, classSize, literacyTier, assessment, tiOn, diff, indigLevel, aboriginalPedagogy, selectedEightWays }) {
+function PreviewCard({ subject, year, duration, classSize, literacyTier, assessment, tiOn, diff, indigLevel, aboriginalPedagogy, selectedEightWays, selectedCurriculumItems }) {
   return (
     <div className="space-y-2 text-sm">
       <p><strong>Subject:</strong> {subject || '—'}</p>
@@ -482,6 +620,14 @@ function PreviewCard({ subject, year, duration, classSize, literacyTier, assessm
       {aboriginalPedagogy && (
         <ul className="list-disc list-inside text-xs text-[#555]">
           {selectedEightWays.map((way) => <li key={way}>{way}</li>)}
+        </ul>
+      )}
+      <p><strong>Selected Curriculum Standards:</strong> {selectedCurriculumItems?.length || 0} items</p>
+      {selectedCurriculumItems && selectedCurriculumItems.length > 0 && (
+        <ul className="list-disc list-inside text-xs text-[#555] max-h-20 overflow-y-auto">
+          {selectedCurriculumItems.map((item, index) => (
+            <li key={index}>{item.code || item.id}: {item.title || item.description}</li>
+          ))}
         </ul>
       )}
     </div>

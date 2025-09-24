@@ -109,24 +109,40 @@ export default function CurriculumSelector({
     }
   };
 
+  // Create a consistent unique identifier for curriculum items
+  const getItemId = (item: CurriculumItem): string => {
+    // Try different possible ID fields in order of preference
+    return item.id || 
+           item.code || 
+           item["Code"] || 
+           item["Content Description"] || 
+           item.content_description ||
+           item["Achievement Standard"] ||
+           item.achievement_standard ||
+           `${item["Subject"] || item.subject || 'unknown'}-${item["Level"] || item.level || 'unknown'}-${Math.random().toString(36).substr(2, 9)}`;
+  };
+
+  // Check if an item is selected using consistent ID matching
+  const isItemSelected = (item: CurriculumItem): boolean => {
+    const itemId = getItemId(item);
+    return selectedItems.some(selected => getItemId(selected) === itemId);
+  };
+
   // Toggle item selection
   const toggleItem = (item: CurriculumItem) => {
-    const itemId = item.id || item.code || item["Code"];
+    const itemId = getItemId(item);
     console.log('Toggling item:', { itemId, item, selectedItems });
     
-    const isSelected = selectedItems.some(selected => 
-      selected.id === itemId || selected.code === item.code || selected["Code"] === item["Code"]
-    );
-
+    const isSelected = isItemSelected(item);
     console.log('Is selected:', isSelected);
 
     if (isSelected) {
-      const newSelection = selectedItems.filter(selected => 
-        selected.id !== itemId && selected.code !== item.code && selected["Code"] !== item["Code"]
-      );
+      // Remove item from selection
+      const newSelection = selectedItems.filter(selected => getItemId(selected) !== itemId);
       console.log('Removing item, new selection:', newSelection);
       onSelectionChange(newSelection);
     } else {
+      // Add item to selection with consistent ID
       const newSelection = [...selectedItems, { ...item, id: itemId }];
       console.log('Adding item, new selection:', newSelection);
       onSelectionChange(newSelection);
@@ -145,10 +161,8 @@ export default function CurriculumSelector({
     const newSelections = [...selectedItems];
     
     filtered.forEach(item => {
-      const itemId = item.id || item.code || item["Code"];
-      const isAlreadySelected = newSelections.some(selected => 
-        selected.id === itemId || selected.code === item.code || selected["Code"] === item["Code"]
-      );
+      const itemId = getItemId(item);
+      const isAlreadySelected = newSelections.some(selected => getItemId(selected) === itemId);
       if (!isAlreadySelected) {
         newSelections.push({...item, id: itemId});
       }
@@ -268,10 +282,8 @@ export default function CurriculumSelector({
               </div>
             ) : (
               filteredItems.map((item, index) => {
-                const itemId = item.id || item.code || item["Code"];
-                const isSelected = selectedItems.some(selected => 
-                  selected.id === itemId || selected.code === item.code || selected["Code"] === item["Code"]
-                );
+                const itemId = getItemId(item);
+                const isSelected = isItemSelected(item);
                 const isAchievementStandard = item.achievement_standard || item["Achievement Standard"];
                 const strand = item.strand || item["Strand"];
                 const substrand = item.sub_strand || item["Sub-strand"];
@@ -279,7 +291,7 @@ export default function CurriculumSelector({
                 return (
                   <div
                     key={itemId}
-                    onClick={() => toggleItem({...item, id: itemId})}
+                    onClick={() => toggleItem(item)}
                     className={`p-4 border-2 rounded-xl cursor-pointer transition-all hover:shadow-md ${
                       isSelected
                         ? 'border-[#333] bg-[#FDE5DA] shadow-sm'

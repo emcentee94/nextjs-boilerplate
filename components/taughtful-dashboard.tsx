@@ -13,6 +13,8 @@ import {
   Feather,
   Globe,
 } from 'lucide-react';
+import Highlight, { defaultProps } from 'prism-react-renderer';
+import theme from 'prism-react-renderer/themes/github';
 
 // Cursor-ready React component
 // Update: Wired Class, Pedagogy & Scaffolds, and Review steps end-to-end.
@@ -99,12 +101,12 @@ export default function TaughtfulDashboard() {
   return (
     <div className="min-h-screen w-full bg-[#FDE5DA]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-extrabold text-[#333]">Teacher Dashboard</h1>
           <Badge>Beta</Badge>
         </div>
 
-        <div className="mt-8">
+        <div className="mb-8">
           <Stepper active={active} setActive={setActive} />
         </div>
 
@@ -199,10 +201,12 @@ export default function TaughtfulDashboard() {
                       <h4 className="font-semibold mb-2">Live Preview</h4>
                       <PreviewCard subject={subject} year={year} duration={duration} classSize={classSize} literacyTier={literacyTier} assessment={assessment} tiOn={tiOn} diff={diff} indigLevel={indigLevel} aboriginalPedagogy={aboriginalPedagogy} selectedEightWays={selectedEightWays} />
                     </div>
+                    {process.env.NODE_ENV !== 'production' && (
                     <div className="rounded-2xl border p-4">
-                      <h4 className="font-semibold mb-2">Payload</h4>
-                      <pre className="bg-gray-100 p-2 text-xs rounded overflow-auto whitespace-pre-wrap">
-                        {JSON.stringify({
+                      <h4 className="font-semibold mb-2">Payload (Admin Debug Tool)</h4>
+                      <p className="text-xs text-[#666] mb-2">Visible only in development / admin mode. This shows the exact JSON payload sent to the generator for debugging.</p>
+                      <div className="bg-gray-100 p-2 text-xs rounded overflow-auto">
+                        <Highlight {...defaultProps} theme={theme} code={JSON.stringify({
                           subject,
                           year,
                           duration,
@@ -213,9 +217,22 @@ export default function TaughtfulDashboard() {
                           differentiation: ['Light','Balanced','Full'][diff],
                           indigenousEmbedding: ['Not included','Contextual','Deep integration'][indigLevel],
                           aboriginalPedagogy: aboriginalPedagogy ? getWeightedEightWays(subject) : 'Not included'
-                        }, null, 2)}
-                      </pre>
+                        }, null, 2)} language="json">
+                          {({ className, style, tokens, getLineProps, getTokenProps }) => (
+                            <pre className={`${className} whitespace-pre`} style={style}>
+                              {tokens.map((line, i) => (
+                                <div key={i} {...getLineProps({ line, key: i })}>
+                                  {line.map((token, key) => (
+                                    <span key={key} {...getTokenProps({ token, key })} />
+                                  ))}
+                                </div>
+                              ))}
+                            </pre>
+                          )}
+                        </Highlight>
+                      </div>
                     </div>
+                  )}
                   </div>
                   <div className="mt-4 flex justify-between">
                     <button onClick={() => setActive('pedagogy')} className="px-4 py-2 bg-gray-200 rounded">Back</button>

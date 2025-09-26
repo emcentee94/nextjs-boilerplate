@@ -303,6 +303,20 @@ export default function StandardsGenerator() {
                   ← Back
                 </button>
                 <button
+                  onClick={() => {
+                    // Navigate to next step (Class Profile) with selected standards
+                    const selectedStandards = outcomes.filter(o => selected[o.id || o.Code])
+                    const params = new URLSearchParams({
+                      authority,
+                      version: authority === "VCAA" ? version : authority === "ACARA" ? "v9" : "N/A",
+                      level: authority === "VCAA" ? level : "",
+                      subject,
+                      year,
+                      minutes: String(minutes),
+                      selectedStandards: JSON.stringify(selectedStandards.map(s => s.id || s.Code))
+                    })
+                    window.location.href = `/generator/profile?${params.toString()}`
+                  }}
                   disabled={Object.values(selected).filter(Boolean).length === 0}
                   className="px-5 py-3 rounded-full text-white font-semibold shadow-lg bg-[#888625] hover:bg-[#6f7220] ring-1 ring-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >

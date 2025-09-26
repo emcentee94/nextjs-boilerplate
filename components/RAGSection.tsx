@@ -9,9 +9,9 @@ export default function RAGSection() {
       {/* Hero Heading */}
       <div className="text-center max-w-4xl mx-auto mb-10">
         <div className="flex justify-center mb-4">
-          <div className="bg-[#888625]/15 px-4 py-2 rounded-full inline-flex items-center gap-2 shadow-sm">
-            <Star className="text-[#888625] w-5 h-5" />
-            <span className="text-[#888625] font-semibold uppercase tracking-wide text-sm">
+          <div className="bg-[#888625]/15 px-6 py-3 rounded-full inline-flex items-center gap-3 shadow-sm">
+            <Star className="text-[#888625] w-6 h-6" />
+            <span className="text-[#888625] font-semibold uppercase tracking-wide text-base">
               Why Taughtful is Different
             </span>
           </div>

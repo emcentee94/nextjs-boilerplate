@@ -78,10 +78,10 @@ const testimonials = [
 ]
 
 const stats = [
-  { number: "500+", label: "Teachers Using" },
-  { number: "2,000+", label: "Lessons Generated" },
-  { number: "4.9/5", label: "Teacher Rating" },
-  { number: "85%", label: "Time Saved" }
+  { number: "30+", label: "Teachers Testing" },
+  { number: "150+", label: "Lessons Generated" },
+  { number: "Beta", label: "Currently Live" },
+  { number: "Free", label: "During Testing" }
 ]
 
 export default function TaughtfulLanding() {
@@ -141,20 +141,43 @@ export default function TaughtfulLanding() {
     <div className="min-h-screen bg-background">
       {/* HERO SECTION */}
       <section className="pt-16 pb-24 px-4 bg-gradient-to-br from-white via-[#FDE5DA]/20 to-white relative overflow-hidden">
+        {/* Playful Background Elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Floating circles */}
+          <div className="absolute top-20 left-10 w-32 h-32 bg-[#FD6585]/10 rounded-full animate-pulse"></div>
+          <div className="absolute top-40 right-20 w-24 h-24 bg-[#FF9A2E]/15 rounded-full animate-bounce" style={{animationDelay: '1s', animationDuration: '3s'}}></div>
+          <div className="absolute bottom-32 left-1/4 w-20 h-20 bg-[#888625]/10 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
+          
+          {/* Scattered dots */}
+          <div className="absolute top-32 left-1/3 w-3 h-3 bg-[#FD6585] rounded-full opacity-30"></div>
+          <div className="absolute top-60 right-1/3 w-2 h-2 bg-[#FF9A2E] rounded-full opacity-40"></div>
+          <div className="absolute bottom-40 right-1/4 w-4 h-4 bg-[#888625] rounded-full opacity-25"></div>
+          
+          {/* Wavy lines */}
+          <svg className="absolute top-1/4 left-0 w-64 h-32 opacity-10" viewBox="0 0 200 100">
+            <path d="M0,50 Q50,20 100,50 T200,50" stroke="#FD6585" strokeWidth="3" fill="none" className="animate-pulse"/>
+          </svg>
+          <svg className="absolute bottom-1/4 right-0 w-64 h-32 opacity-10 rotate-180" viewBox="0 0 200 100">
+            <path d="M0,50 Q50,80 100,50 T200,50" stroke="#888625" strokeWidth="3" fill="none" className="animate-pulse" style={{animationDelay: '1s'}}/>
+          </svg>
+        </div>
+        
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-16">
             
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-balance leading-tight font-fredoka mb-8">
-              <span className="text-foreground">Stop the</span>{" "}
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-balance leading-tight font-fredoka mb-10">
+              <span className="text-foreground">Other AI tools?</span>{" "}
               <span className="text-[#FD6585] relative inline-block">
-                panic planning
-                <div className="absolute -bottom-2 left-0 right-0 h-4 bg-gradient-to-r from-[#FD6585]/40 via-[#FF9A2E]/40 to-[#FD6585]/40 rounded-full -rotate-1"></div>
+                Absolute detention.
+                <div className="absolute -bottom-3 left-0 right-0 h-6 bg-gradient-to-r from-[#FD6585]/40 via-[#FF9A2E]/40 to-[#FD6585]/40 rounded-full -rotate-1"></div>
+                <Sparkles className="absolute -top-3 -right-3 w-8 h-8 text-[#FF9A2E] animate-pulse" />
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-muted-foreground font-medium leading-relaxed max-w-4xl mx-auto mb-12">
-              Generate curriculum-aligned, trauma-informed lesson plans in minutes. 
-              Built specifically for Australian classrooms with Indigenous perspectives embedded.
+            <p className="text-2xl md:text-3xl lg:text-4xl text-gray-700 font-bold leading-relaxed max-w-5xl mx-auto mb-16">
+              Generate <span className="bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] bg-clip-text text-transparent font-black">curriculum-aligned</span>, <em className="text-[#888625] font-black">trauma-informed</em> lesson plans in <span className="underline decoration-[#FD6585] decoration-4 underline-offset-4 font-black">minutes</span>. 
+              <br className="hidden md:block" />
+              Built specifically for <span className="bg-[#888625] text-white px-3 py-1 rounded-full font-black">Australian classrooms</span> with Indigenous perspectives embedded.
             </p>
 
             {/* Hero CTAs */}
@@ -195,23 +218,30 @@ export default function TaughtfulLanding() {
         </div>
       </section>
 
-      {/* STATS SECTION */}
-      <section className="py-16 px-4 bg-gradient-to-r from-[#888625] to-[#4CAF50] text-white">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {stats.map((stat, index) => (
-              <div key={index} className="flex flex-col items-center">
-                <div className="text-3xl md:text-4xl font-black font-fredoka mb-2">{stat.number}</div>
-                <div className="text-sm md:text-base font-medium opacity-90">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* RAG COMPARISON SECTION */}
-      <section id="how-it-works" className="py-24 px-4 bg-gradient-to-br from-[#FDE5DA] via-white to-[#FDE5DA]">
-        <div className="container mx-auto max-w-6xl">
+      <section id="how-it-works" className="py-24 px-4 bg-gradient-to-br from-[#FDE5DA] via-white to-[#FDE5DA] relative overflow-hidden">
+        {/* Decorative Elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Paper airplane paths */}
+          <div className="absolute top-16 left-8 transform rotate-12">
+            <div className="w-8 h-8 text-[#FF9A2E]/30 animate-pulse">✈️</div>
+          </div>
+          <div className="absolute top-32 right-12 transform -rotate-12">
+            <div className="w-6 h-6 text-[#FD6585]/40 animate-bounce" style={{animationDelay: '0.5s', animationDuration: '2s'}}>🎯</div>
+          </div>
+          
+          {/* Geometric shapes */}
+          <div className="absolute bottom-20 left-16 w-16 h-16 border-4 border-[#888625]/20 rotate-45 animate-spin" style={{animationDuration: '20s'}}></div>
+          <div className="absolute top-20 right-1/4 w-12 h-12 bg-gradient-to-r from-[#FD6585]/10 to-[#FF9A2E]/10 rounded-full"></div>
+          
+          {/* Dashed lines */}
+          <svg className="absolute top-1/3 left-1/4 w-32 h-16 opacity-20" viewBox="0 0 100 50">
+            <line x1="0" y1="25" x2="100" y2="25" stroke="#888625" strokeWidth="2" strokeDasharray="5,5" className="animate-pulse"/>
+          </svg>
+        </div>
+        
+        <div className="container mx-auto max-w-6xl relative z-10">
           {/* Teacher Quote */}
           <div className="mb-12 text-center">
             <div className="inline-flex items-center gap-2 bg-[#FD6585]/10 text-[#FD6585] px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-[#FD6585]/20">
@@ -540,6 +570,32 @@ export default function TaughtfulLanding() {
                 <CheckCircle className="w-4 h-4 text-green-500" />
                 <span>Cancel anytime</span>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* INDIGENOUS PERSPECTIVES BANNER */}
+      <section className="py-12 px-4 bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 border-t-4 border-[#888625] border-b-4">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center">
+            <div className="inline-flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 bg-gradient-to-r from-[#888625] to-[#4CAF50] rounded-full flex items-center justify-center">
+                <span className="text-white text-2xl">🤝</span>
+              </div>
+              <h3 className="text-2xl md:text-3xl font-black font-fredoka text-[#888625]">
+                Respectful Teaching Starts with Local Voices
+              </h3>
+            </div>
+            
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border-2 border-[#888625]/20">
+              <p className="text-lg md:text-xl text-gray-800 leading-relaxed max-w-4xl mx-auto">
+                <span className="font-bold text-[#888625]">Taughtful</span> provides <em className="font-semibold">curriculum-aligned scaffolds</em> with <span className="bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] bg-clip-text text-transparent font-bold">trauma-informed</span> and <span className="underline decoration-[#888625] decoration-2 underline-offset-2 font-bold">Indigenous perspectives</span> built in. 
+                <br className="hidden md:block" />
+                We <strong className="text-[#888625]">encourage teachers</strong> to adapt and enrich these with guidance from <span className="bg-[#888625] text-white px-2 py-1 rounded font-bold">local Aboriginal and Torres Strait Islander communities</span>. 
+                <br />
+                <span className="text-xl font-black text-[#FD6585] italic">Respectful teaching starts with local voices.</span>
+              </p>
             </div>
           </div>
         </div>

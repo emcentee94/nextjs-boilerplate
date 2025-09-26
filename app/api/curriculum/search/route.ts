@@ -25,7 +25,8 @@ export async function GET(request: NextRequest) {
     // Build query for curriculum_data table
     let query = supabase
       .from('curriculum_data')
-      .select('*');
+      .select('*')
+      .not('content_descriptor_code', 'is', null); // Only return records with codes
 
     // Filter by learning area if provided
     if (learningAreaId) {

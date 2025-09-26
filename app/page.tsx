@@ -26,6 +26,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useState } from "react"
+import Header from "@/components/header"
 
 const waitlistSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -111,13 +112,14 @@ export default function TaughtfulLanding() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
+      <Header />
+      
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-[#FD6585]/10 to-[#FF9A2E]/10 rounded-full blur-xl animate-float"></div>
         <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-br from-[#888625]/10 to-[#FD6585]/10 rounded-full blur-lg animate-float delay-1000"></div>
         <div className="absolute bottom-40 left-20 w-40 h-40 bg-gradient-to-br from-[#FF9A2E]/10 to-[#888625]/10 rounded-full blur-2xl animate-float delay-2000"></div>
         <div className="absolute bottom-20 right-10 w-28 h-28 bg-gradient-to-br from-[#FD6585]/10 to-[#FF9A2E]/10 rounded-full blur-xl animate-float delay-500"></div>
       </div>
-
 
       {/* 1. HERO SECTION */}
       <section className="py-32 px-4 bg-gradient-to-br from-white via-[#FDE5DA]/20 to-white relative overflow-hidden">

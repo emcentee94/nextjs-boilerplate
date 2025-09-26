@@ -21,6 +21,7 @@ import {
   HeartHandshake,
   UsersRound
 } from "lucide-react"
+import Header from "@/components/header"
 
 const statItems = [
   { icon: <Timer className="w-4 h-4" />, label: "Time Saved", value: "3.8 hrs" },
@@ -285,21 +286,23 @@ export default function Dashboard() {
   }, [])
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6">
-      {/* Header */}
-      <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">
-            G'DAY, {name || "Teacher"} 👋
-          </h1>
-          <p className="mt-1 text-sm text-gray-600">Welcome back to your hub. Built for teachers, not tech demos.</p>
+    <div className="min-h-screen bg-[#FDE5DA]">
+      <Header />
+      <div className="mx-auto max-w-7xl px-4 py-6">
+        {/* Header */}
+        <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 font-fredoka">
+              G'DAY, {name || "Teacher"} 👋
+            </h1>
+            <p className="mt-1 text-sm text-gray-600">Welcome back to your hub. Built for teachers, not tech demos.</p>
+          </div>
+          <div className="grid grid-cols-3 gap-3 sm:w-auto">
+            {statItems.map((s, i) => (
+              <StatCard key={i} {...s} />
+            ))}
+          </div>
         </div>
-        <div className="grid grid-cols-3 gap-3 sm:w-auto">
-          {statItems.map((s, i) => (
-            <StatCard key={i} {...s} />
-          ))}
-        </div>
-      </div>
 
       {/* Main Grid */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
@@ -344,9 +347,10 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Footer Fun Fact */}
-      <div className="mt-6 rounded-2xl border border-gray-100 bg-white p-4 text-xs text-gray-600 shadow-sm">
-        Did you know? Swapping one written response for a visual organiser can lift participation by reluctant writers.
+        {/* Footer Fun Fact */}
+        <div className="mt-6 rounded-2xl border border-gray-100 bg-white p-4 text-xs text-gray-600 shadow-sm">
+          Did you know? Swapping one written response for a visual organiser can lift participation by reluctant writers.
+        </div>
       </div>
     </div>
   )

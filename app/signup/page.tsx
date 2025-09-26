@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Mail, ArrowRight, Users, Sparkles } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import Header from "@/components/header"
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -115,17 +116,10 @@ export default function SignUpPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#FDE5DA] via-white to-[#FFF2E8]">
+      <Header showBackButton={true} backHref="/" backText="← Back to Home" />
       {/* Main Content */}
-      <div className="flex items-center justify-center min-h-screen p-4">
+      <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] p-4">
         <div className="w-full max-w-2xl">
-          {/* Back Button */}
-          <div className="mb-6">
-            <Button variant="outline" asChild className="mb-4">
-              <Link href="/" className="inline-flex items-center">
-                ← Back to Home
-              </Link>
-            </Button>
-          </div>
           
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
@@ -133,7 +127,7 @@ export default function SignUpPage() {
                 <Sparkles className="w-8 h-8 text-white" />
               </div>
             </div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4 font-fredoka">
               Get Demo Access
             </h1>
             <p className="text-xl text-gray-600 max-w-lg mx-auto">
@@ -144,7 +138,7 @@ export default function SignUpPage() {
 
           <Card className="shadow-xl border-0 bg-white/80 backdrop-blur-sm">
             <CardHeader className="text-center pb-4">
-          <CardTitle className="text-2xl font-bold text-gray-900">
+          <CardTitle className="text-2xl font-bold text-gray-900 font-fredoka">
             Try Demo Mode
           </CardTitle>
               <CardDescription className="text-gray-600">
@@ -232,7 +226,7 @@ export default function SignUpPage() {
                 <>
                   <form onSubmit={handleFriendAccess} className="space-y-6">
                     <div className="text-center mb-6">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">Quick Access</h3>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2 font-fredoka">Quick Access</h3>
                       <p className="text-sm text-gray-600">What's Eva's surname?</p>
                     </div>
                     

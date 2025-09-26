@@ -213,6 +213,36 @@ CREATE TABLE public.lesson_templates (
 );
 
 -- =====================================================
+-- RESOURCES TABLE - Downloadable PDF resources
+-- =====================================================
+CREATE TABLE public.resources (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    
+    -- Resource Information
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    type TEXT NOT NULL, -- Framework Guide, Curriculum Guide, etc.
+    category TEXT NOT NULL, -- VCAA (2.0), Australian Curriculum, etc.
+    
+    -- File Information
+    file_path TEXT NOT NULL, -- Path to the PDF file in storage
+    file_size TEXT NOT NULL, -- Human-readable size (e.g., "2.5 MB")
+    pages TEXT NOT NULL, -- Human-readable page count (e.g., "50 pages")
+    
+    -- Content Features
+    features TEXT[], -- Array of features included in the resource
+    
+    -- Usage Tracking
+    download_count INTEGER DEFAULT 0,
+    view_count INTEGER DEFAULT 0,
+    
+    -- Metadata
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    is_published BOOLEAN DEFAULT TRUE
+);
+
+-- =====================================================
 -- INDEXES for Performance
 -- =====================================================
 
@@ -242,6 +272,12 @@ CREATE INDEX idx_templates_public ON public.lesson_templates(is_public, is_verif
 CREATE INDEX idx_templates_subject_level ON public.lesson_templates(learning_area, subject);
 CREATE INDEX idx_templates_tags_gin ON public.lesson_templates USING GIN(tags);
 
+-- Resources indexes
+CREATE INDEX idx_resources_category ON public.resources(category);
+CREATE INDEX idx_resources_type ON public.resources(type);
+CREATE INDEX idx_resources_features_gin ON public.resources USING GIN(features);
+CREATE INDEX idx_resources_published ON public.resources(is_published) WHERE is_published = true;
+
 -- =====================================================
 -- ROW LEVEL SECURITY (RLS) POLICIES
 -- =====================================================
@@ -253,6 +289,7 @@ ALTER TABLE public.lesson_enhancements ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.lesson_feedback ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.usage_analytics ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.lesson_templates ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.resources ENABLE ROW LEVEL SECURITY;
 
 -- Note: curriculum_data is public read-only, no RLS needed
 
@@ -310,6 +347,10 @@ CREATE POLICY "Users can create templates" ON public.lesson_templates
 CREATE POLICY "Users can update own templates" ON public.lesson_templates
     FOR UPDATE USING (auth.uid() = created_by);
 
+-- Resources policies - allow public read access to published resources
+CREATE POLICY "Anyone can view published resources" ON public.resources
+    FOR SELECT USING (is_published = true);
+
 -- =====================================================
 -- FUNCTIONS AND TRIGGERS
 -- =====================================================
@@ -334,6 +375,10 @@ CREATE TRIGGER update_lesson_enhancements_updated_at BEFORE UPDATE ON public.les
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_lesson_templates_updated_at BEFORE UPDATE ON public.lesson_templates
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- Add updated_at trigger for resources table
+CREATE TRIGGER update_resources_updated_at BEFORE UPDATE ON public.resources
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- Function to handle user creation (called by auth trigger)
@@ -407,6 +452,24 @@ $$ LANGUAGE plpgsql;
 INSERT INTO public.curriculum_data (learning_area, subject, level, strand, sub_strand, content_description, elaboration, topics) VALUES
 ('English', 'English', 'Foundation', 'Language', 'Language variation and change', 'Understand that English is one of many languages spoken in Australia and that different languages may be spoken by family, classmates and community', 'recognising that Australia is a linguistically diverse country with more than 400 languages spoken', ARRAY['multilingualism', 'diversity', 'languages']),
 ('Mathematics', 'Mathematics', 'Year 1', 'Number and Algebra', 'Number and place value', 'Develop confidence with number sequences to and from 100 by ones from any starting point', 'Skip counting by twos, fives and tens starting from zero', ARRAY['counting', 'sequences', 'patterns']);
+
+-- Insert sample VCAA 2.0 PDF resources
+INSERT INTO public.resources (title, description, type, category, file_path, file_size, pages, features) VALUES
+('VCAA Curriculum Framework 2.0', 'Comprehensive overview of the Victorian Curriculum F-10 Version 2.0 framework, structure, and implementation guidelines', 'Framework Guide', 'VCAA (2.0)', '/resources/vcaa-curriculum-framework-2.0.pdf', '2.5 MB', '50 pages', ARRAY['Learning area structure', 'Capabilities integration', 'Year-level progression', 'Implementation strategies']),
+
+('Learning Areas Complete Guide', 'Detailed curriculum content for all 8 learning areas: The Arts, English, HPE, Humanities, Languages, Mathematics, Science, Technologies', 'Curriculum Guide', 'VCAA (2.0)', '/resources/learning-areas-complete-guide.pdf', '4.2 MB', '120 pages', ARRAY['Subject-specific content', 'Achievement standards', 'Assessment examples', 'Teaching strategies']),
+
+('Capabilities Development Framework', 'Comprehensive guide to developing Critical & Creative Thinking, Ethical, Intercultural, and Personal & Social capabilities', 'Development Guide', 'VCAA (2.0)', '/resources/capabilities-development-framework.pdf', '3.1 MB', '85 pages', ARRAY['Progression continua', 'Teaching approaches', 'Assessment rubrics', 'Integration examples']),
+
+('Foundational Skills Toolkit', 'Resources for developing Digital Literacy, Literacy, and Numeracy foundational skills across all learning areas', 'Toolkit', 'VCAA (2.0)', '/resources/foundational-skills-toolkit.pdf', '2.8 MB', '75 pages', ARRAY['Skill progression maps', 'Cross-curricular integration', 'Assessment tools', 'Differentiation strategies']),
+
+('Cross-Curriculum Priorities', 'Implementation guide for Aboriginal & Torres Strait Islander histories, Asia engagement, and Sustainability priorities', 'Priority Guide', 'VCAA (2.0)', '/resources/cross-curriculum-priorities.pdf', '2.3 MB', '60 pages', ARRAY['Cultural protocols', 'Integration frameworks', 'Resource recommendations', 'Community engagement']),
+
+('Achievement Standards Handbook', 'Complete set of Victorian Achievement Standards for all learning areas and capabilities with detailed indicators', 'Handbook', 'VCAA (2.0)', '/resources/achievement-standards-handbook.pdf', '3.5 MB', '95 pages', ARRAY['Year-level standards', 'Assessment criteria', 'Progress indicators', 'Reporting templates']),
+
+('Assessment & Reporting Guide 2.0', 'Updated assessment practices and reporting requirements for Victorian Curriculum Version 2.0 implementation', 'Assessment Guide', 'VCAA (2.0)', '/resources/assessment-reporting-guide-2.0.pdf', '2.7 MB', '70 pages', ARRAY['Assessment types', 'Reporting formats', 'Data collection', 'Parent communication']),
+
+('Curriculum Implementation Toolkit', 'Practical tools and templates for implementing Version 2.0 across your school or classroom', 'Implementation Toolkit', 'VCAA (2.0)', '/resources/curriculum-implementation-toolkit.pdf', '3.8 MB', '110 pages', ARRAY['Planning templates', 'Professional learning', 'Monitoring tools', 'Evaluation frameworks']);
 
 -- Create a test user profile completion procedure
 CREATE OR REPLACE FUNCTION complete_user_profile(

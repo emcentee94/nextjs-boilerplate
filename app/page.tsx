@@ -158,14 +158,6 @@ export default function TaughtfulLanding() {
             <div className="text-center animate-fade-in">
               <div className="flex flex-col sm:flex-row gap-6 pt-4 justify-center">
                 <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] hover:from-[#FD6585]/90 hover:to-[#FF9A2E]/90 text-white px-10 py-6 text-xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110 hover:-translate-y-2 group rounded-2xl border-2 border-white/20 hover:border-white/40"
-                >
-                  <Zap className="mr-3 w-6 h-6 group-hover:animate-bounce" />
-                  Join Beta – Free Access
-                  <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 group-hover:scale-125 transition-all duration-300" />
-                </Button>
-                <Button
                   variant="outline"
                   size="lg"
                   onClick={() => window.location.href = '/signup'}
@@ -173,6 +165,15 @@ export default function TaughtfulLanding() {
                 >
                   <Users className="mr-3 w-6 h-6 group-hover:animate-pulse" />
                   🎯 Try Demo Mode
+                </Button>
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-[#888625] to-[#4CAF50] hover:from-[#888625]/90 hover:to-[#4CAF50]/90 text-white px-10 py-6 text-xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110 hover:-translate-y-2 group rounded-2xl border-2 border-white/20 hover:border-white/40"
+                  onClick={() => window.location.href = '/resources'}
+                >
+                  <BookOpen className="mr-3 w-6 h-6 group-hover:animate-bounce" />
+                  Knowledge Hub
+                  <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 group-hover:scale-125 transition-all duration-300" />
                 </Button>
               </div>
             </div>

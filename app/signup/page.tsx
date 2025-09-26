@@ -35,23 +35,23 @@ export default function SignUpPage() {
     setError("")
 
     try {
-      // Submit to our API route
-      const response = await fetch('/api/demo-request', {
+      // Always log to backend (which writes to Supabase if configured)
+      await fetch('/api/demo-request', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       })
 
-      const result = await response.json()
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to submit demo request')
+      // Store minimal session locally and go straight to dashboard
+      const demoUser = {
+        id: `demo-${Date.now()}`,
+        name: formData.name || 'Teacher',
+        email: formData.email || '',
+        demo: true,
+        created_at: new Date().toISOString(),
       }
-
-      // Show success message
-      setIsSubmitted(true)
+      localStorage.setItem('taughtful_user', JSON.stringify(demoUser))
+      window.location.href = '/dashboard'
       
     } catch (error) {
       console.error('Error submitting demo request:', error)

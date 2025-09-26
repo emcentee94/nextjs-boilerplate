@@ -76,6 +76,7 @@ function getWeightedEightWays(subject) {
 
 export default function TaughtfulDashboard() {
   const [active, setActive] = useState('basics');
+  const [displayName, setDisplayName] = useState<string>('Teacher');
   const [subject, setSubject] = useState('English');
   const [year, setYear] = useState('5');
   const [duration, setDuration] = useState(60);
@@ -103,6 +104,16 @@ export default function TaughtfulDashboard() {
   const canNextClass = classSize > 0 && literacyTier && assessment;
 
   useEffect(() => {
+    // Load demo user (or real auth user if present) for greeting
+    try {
+      const raw = typeof window !== 'undefined' ? localStorage.getItem('taughtful_user') : null;
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed?.name) {
+          setDisplayName(parsed.name);
+        }
+      }
+    } catch {}
     if (aboriginalPedagogy && subject) {
       setSelectedEightWays(getWeightedEightWays(subject));
     } else {
@@ -230,7 +241,7 @@ export default function TaughtfulDashboard() {
     <div className="min-h-screen w-full bg-[#FDE5DA]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-extrabold text-[#333]">Teacher Dashboard</h1>
+          <h1 className="text-3xl font-extrabold text-[#333]">G'DAY {displayName?.toUpperCase?.() || 'TEACHER'}</h1>
           <Badge>Beta</Badge>
         </div>
 

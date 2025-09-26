@@ -15,8 +15,11 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import LearningAreaList from "@/src/components/curriculum/LearningAreaList"
+import { useState } from "react"
 
 export default function CurriculumPage() {
+  const [version, setVersion] = useState<'1.0' | '2.0'>('2.0')
+  const [region, setRegion] = useState<'NATIONAL' | 'VIC'>('NATIONAL')
   const curriculumHighlights = [
     {
       title: "8 Learning Areas",
@@ -77,6 +80,31 @@ export default function CurriculumPage() {
             Explore the comprehensive F–10 Australian Curriculum with its 8 learning areas, 
             general capabilities, and cross-curriculum priorities.
           </p>
+        </div>
+
+        {/* Region + Version */}
+        <div className="mb-6 flex items-center justify-center gap-4">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">Region</span>
+            <select
+              className="text-sm border rounded-md px-2 py-1 bg-white"
+              value={region}
+              onChange={(e) => {
+                const r = (e.target.value as 'NATIONAL' | 'VIC')
+                setRegion(r)
+                if (r === 'NATIONAL') setVersion('1.0')
+              }}
+            >
+              <option value="NATIONAL">Australia (AC v9)</option>
+              <option value="VIC">Victoria (VC 2.0)</option>
+            </select>
+          </div>
+          {region === 'VIC' && (
+            <div className="flex items-center gap-3">
+              <span className={`px-3 py-1 rounded-full text-sm ${version==='1.0' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-700'}`} onClick={() => setVersion('1.0')} role="button">Version 1.0</span>
+              <span className={`px-3 py-1 rounded-full text-sm ${version==='2.0' ? 'bg-[#FD6585] text-white' : 'bg-gray-100 text-gray-700'}`} onClick={() => setVersion('2.0')} role="button">Version 2.0</span>
+            </div>
+          )}
         </div>
 
         {/* Curriculum Highlights */}
@@ -152,7 +180,10 @@ export default function CurriculumPage() {
           </div>
 
           <div className="bg-white rounded-2xl p-8 shadow-lg">
-            <LearningAreaList />
+            <LearningAreaList version={version} />
+            {region !== 'VIC' && (
+              <p className="mt-3 text-xs text-gray-500">Victorian Curriculum 2.0 options are only available when Region is set to Victoria.</p>
+            )}
           </div>
         </div>
 

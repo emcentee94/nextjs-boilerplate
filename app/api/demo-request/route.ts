@@ -5,8 +5,8 @@ import { promises as fs } from 'fs'
 import path from 'path'
 
 // Use service role for server-side operations
-const supabaseUrl = 'https://kpdusbhqiswdiyzdwxpw.supabase.co'
-const supabaseKey = process.env.SUPABASE_KEY
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://kpdusbhqiswdiyzdwxpw.supabase.co'
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY
 
 // Only create Supabase client if key is available
 const supabase = supabaseKey ? createClient(supabaseUrl, supabaseKey) : null
@@ -75,8 +75,27 @@ export async function POST(request: NextRequest) {
       existingRequests.push(demoRequestData)
     }
 
-    // Save updated requests
+    // Save updated requests (file fallback for local/dev)
     await saveDemoRequests(existingRequests)
+
+    // Insert into Supabase when configured
+    if (supabase) {
+      const { error: insertError } = await supabase
+        .from('demo_requests')
+        .upsert({
+          name,
+          email,
+          school: school || null,
+          role: role || null,
+          message: message || null,
+          submitted_at: new Date().toISOString(),
+          status: 'pending'
+        }, { onConflict: 'email' })
+
+      if (insertError) {
+        console.error('Supabase insert error:', insertError)
+      }
+    }
 
     // Send email notification
     try {

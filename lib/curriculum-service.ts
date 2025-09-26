@@ -65,6 +65,26 @@ let cacheTimestamp: number = 0
 const CACHE_DURATION = 24 * 60 * 60 * 1000 // 24 hours
 
 export class CurriculumService {
+  private static normalize(value?: string): string {
+    return (value || "")
+      .toLowerCase()
+      .replace(/foundation year/g, "foundation")
+      .replace(/level\s+(\d+)/g, "year $1")
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim()
+  }
+
+  private static subjectAliases(subject: string): string[] {
+    const s = this.normalize(subject)
+    const aliases: Record<string, string[]> = {
+      "english as an additional language": ["eal", "english additional language", "english"],
+      "health and physical education": ["hpe", "health", "physical education"],
+      "design and technologies": ["design technologies"],
+      "digital technologies": ["digital tech", "ict"],
+    }
+    const list = aliases[s] || []
+    return [subject, ...list]
+  }
   /**
    * Fetch all curriculum data from Supabase Storage
    */
@@ -444,33 +464,80 @@ export class CurriculumService {
    */
   static async getCurriculumItemsForSubjectAndLevel(subject: string, yearLevel: string): Promise<CurriculumItem[]> {
     const curriculumData = await this.fetchAllCurriculumData();
-    
-    console.log("Searching for subject:", subject, "year level:", yearLevel);
-    console.log("Total learning areas:", curriculumData.learning_areas.length);
-    
-    // Get unique subjects and levels for debugging
-    const uniqueSubjects = [...new Set(curriculumData.learning_areas.map(item => item["Subject"] || item.subject).filter(Boolean))];
-    const uniqueLevels = [...new Set(curriculumData.learning_areas.map(item => item["Level"] || item.level).filter(Boolean))];
-    console.log("Available subjects:", uniqueSubjects.slice(0, 10));
-    console.log("Available levels:", uniqueLevels.slice(0, 10));
-    
+    const wantedLevel = this.normalize(yearLevel)
+    const wantedSubjects = this.subjectAliases(subject).map(s => this.normalize(s))
+
     const filtered = curriculumData.learning_areas.filter(item => {
-      const itemSubject = item["Subject"] || item.subject;
-      const itemLevel = item["Level"] || item.level;
-      const hasCode = !!(item["Code"] || item.code);
-      
-      const subjectMatch = itemSubject?.toLowerCase().includes(subject.toLowerCase());
-      const levelMatch = itemLevel?.toLowerCase().includes(yearLevel.toLowerCase());
-      
-      if (subjectMatch && levelMatch && hasCode) {
-        console.log("Match found:", itemSubject, itemLevel, item["Code"] || item.code);
-      }
-      
-      return subjectMatch && levelMatch && hasCode;
-    });
-    
-    console.log("Filtered results:", filtered.length);
-    return filtered;
+      const itemSubject = this.normalize(item["Subject"] || item.subject)
+      const itemLevel = this.normalize(item["Level"] || item.level)
+      const hasCode = !!(item["Code"] || item.code)
+
+      const subjectMatch = wantedSubjects.some(ws => itemSubject.includes(ws))
+      const levelMatch = itemLevel.includes(wantedLevel)
+      return subjectMatch && levelMatch && hasCode
+    }).sort((a, b) => {
+      const aLevel = this.normalize(a["Level"] || a.level)
+      const bLevel = this.normalize(b["Level"] || b.level)
+      const levelOrder = [
+        "foundation",
+        "year 1","year 2","year 3","year 4","year 5",
+        "year 6","year 7","year 8","year 9","year 10"
+      ]
+      const aIdx = levelOrder.findIndex(l => aLevel.startsWith(l))
+      const bIdx = levelOrder.findIndex(l => bLevel.startsWith(l))
+      if (aIdx !== bIdx) return (aIdx === -1 ? 999 : aIdx) - (bIdx === -1 ? 999 : bIdx)
+      const aStrand = (a["Strand"] || a.strand || "").toString()
+      const bStrand = (b["Strand"] || b.strand || "").toString()
+      if (aStrand !== bStrand) return aStrand.localeCompare(bStrand)
+      const aCode = (a["Code"] || a.code || "").toString()
+      const bCode = (b["Code"] || b.code || "").toString()
+      return aCode.localeCompare(bCode)
+    })
+
+    if (filtered.length > 0) return filtered
+
+    // Fallback 1: subject-only match (top 20)
+    const subjectOnly = curriculumData.learning_areas.filter(item => {
+      const itemSubject = this.normalize(item["Subject"] || item.subject)
+      const hasCode = !!(item["Code"] || item.code)
+      const subjectMatch = wantedSubjects.some(ws => itemSubject.includes(ws))
+      return subjectMatch && hasCode
+    }).sort((a, b) => {
+      const aLevel = this.normalize(a["Level"] || a.level)
+      const bLevel = this.normalize(b["Level"] || b.level)
+      const levelOrder = [
+        "foundation",
+        "year 1","year 2","year 3","year 4","year 5",
+        "year 6","year 7","year 8","year 9","year 10"
+      ]
+      const aIdx = levelOrder.findIndex(l => aLevel.startsWith(l))
+      const bIdx = levelOrder.findIndex(l => bLevel.startsWith(l))
+      if (aIdx !== bIdx) return (aIdx === -1 ? 999 : aIdx) - (bIdx === -1 ? 999 : bIdx)
+      const aStrand = (a["Strand"] || a.strand || "").toString()
+      const bStrand = (b["Strand"] || b.strand || "").toString()
+      if (aStrand !== bStrand) return aStrand.localeCompare(bStrand)
+      const aCode = (a["Code"] || a.code || "").toString()
+      const bCode = (b["Code"] || b.code || "").toString()
+      return aCode.localeCompare(bCode)
+    })
+    if (subjectOnly.length > 0) return subjectOnly
+
+    // Fallback 2: search achievement standards by subject
+    const standards = curriculumData.achievement_standards.filter(item => {
+      const itemSubject = this.normalize(item["Subject"] || item.subject)
+      return wantedSubjects.some(ws => itemSubject.includes(ws))
+    })
+    if (standards.length > 0) {
+      // Map to curriculum-like items
+      return standards.map(s => ({
+        ...s,
+        Code: s["Code"] || s.code || `STD-${Math.random().toString(36).slice(2,8)}`,
+        "Content Description": s["Description"] || s.description
+      }))
+    }
+
+    // Fallback 3: empty
+    return []
   }
 
   /**

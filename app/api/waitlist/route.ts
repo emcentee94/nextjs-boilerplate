@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
+import { sendWaitlistNotification } from "../../../lib/email-smtp"
 
 const waitlistSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -15,7 +16,7 @@ export async function POST(request: NextRequest) {
     // Validate the request body
     const validatedData = waitlistSchema.parse(body)
 
-    // Log the submission (in production, you'd save to database or send email)
+    // Log the submission
     console.log("New waitlist signup:", {
       email: validatedData.email,
       name: validatedData.name,
@@ -24,8 +25,24 @@ export async function POST(request: NextRequest) {
       timestamp: new Date().toISOString(),
     })
 
-    // TODO: Add email notification functionality here when ready
-    // This is where you'd integrate with Resend or another email service
+    // Send email notification
+    try {
+      const emailResult = await sendWaitlistNotification({
+        name: validatedData.name,
+        email: validatedData.email,
+        yearLevels: validatedData.yearLevels,
+        planningHeadache: validatedData.planningHeadache
+      })
+      
+      if (emailResult.success === false) {
+        console.warn('Email notification skipped:', emailResult.reason)
+      } else {
+        console.log('Waitlist notification email sent successfully')
+      }
+    } catch (emailError) {
+      console.error('Email notification failed:', emailError)
+      // Don't fail the entire request if email fails
+    }
 
     return NextResponse.json({ message: "Successfully joined waitlist!" }, { status: 200 })
   } catch (error) {

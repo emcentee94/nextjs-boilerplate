@@ -69,3 +69,56 @@ export async function sendDemoRequestNotification(formData: {
     return { success: false, reason: error instanceof Error ? error.message : 'Unknown email error' }
   }
 }
+
+export async function sendWaitlistNotification(formData: {
+  name: string
+  email: string
+  yearLevels: string
+  planningHeadache?: string
+}) {
+  try {
+    // Check if SMTP is configured
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.warn('SMTP not configured. Email notification skipped.')
+      console.log('Waitlist Signup Details:', {
+        name: formData.name,
+        email: formData.email,
+        yearLevels: formData.yearLevels,
+        planningHeadache: formData.planningHeadache,
+        timestamp: new Date().toISOString()
+      })
+      return { success: false, reason: 'SMTP not configured' }
+    }
+
+    // Email content
+    const mailOptions = {
+      from: `"Taughtful Waitlist" <${process.env.SMTP_USER}>`,
+      to: 'hello@taughtful.com.au',
+      subject: `New Waitlist Signup - ${formData.name}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #FD6585;">New Waitlist Signup</h2>
+          <p>A new waitlist signup has been submitted through the website.</p>
+          <p><strong>Details:</strong></p>
+          <ul>
+            <li><strong>Name:</strong> ${formData.name}</li>
+            <li><strong>Email:</strong> ${formData.email}</li>
+            <li><strong>Year Levels:</strong> ${formData.yearLevels}</li>
+            <li><strong>Planning Challenge:</strong> ${formData.planningHeadache || 'N/A'}</li>
+          </ul>
+          <p>This signup has been automatically logged.</p>
+          <p>Best regards,<br/>Taughtful System</p>
+        </div>
+      `,
+    }
+
+    // Send email
+    const info = await transporter.sendMail(mailOptions)
+    console.log('Waitlist notification email sent successfully:', info.messageId)
+    
+    return { success: true, messageId: info.messageId }
+  } catch (error) {
+    console.error('Error sending waitlist notification:', error)
+    return { success: false, reason: error instanceof Error ? error.message : 'Unknown email error' }
+  }
+}

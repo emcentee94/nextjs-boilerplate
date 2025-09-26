@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Taughtful - AI-Powered Lesson Planning
 
-## Getting Started
+Transform the way you learn and teach with AI that understands your unique style. Make every lesson engaging, personalized, and fun.
 
-First, run the development server:
+## Features
+
+- **RAG-Powered AI**: Retrieval-Augmented Generation for curriculum-aligned lesson plans
+- **Trauma-Informed**: Built with trauma-informed practices and cultural safety
+- **Australian Curriculum**: Aligned to ACARA v9, Victorian, NSW, and WA curricula
+- **Email Notifications**: Proton Mail SMTP integration for waitlist and demo requests
+- **Supabase Backend**: User authentication, database, and real-time features
+
+## Tech Stack
+
+- **Frontend**: Next.js 14, React, TypeScript, Tailwind CSS
+- **Backend**: Supabase (PostgreSQL, Auth, Storage)
+- **Email**: Proton Mail SMTP
+- **Deployment**: Vercel
+- **AI**: Anthropic Claude
+
+## Environment Variables
+
+Create a `.env.local` file with the following variables:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+
+# Email Configuration (Proton Mail)
+SMTP_HOST=smtp.protonmail.ch
+SMTP_PORT=587
+SMTP_USER=hello@taughtful.com.au
+SMTP_PASS=your_proton_smtp_token
+
+# AI Configuration
+ANTHROPIC_API_KEY=your_anthropic_api_key
+
+# Optional: Resend (alternative email service)
+RESEND_API_KEY=your_resend_api_key
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Development
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-## Learn More
+3. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-To learn more about Next.js, take a look at the following resources:
+## Deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project is configured for deployment on Vercel:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Connect your GitHub repository to Vercel
+2. Add environment variables in Vercel dashboard
+3. Deploy automatically on every push to main branch
 
-## Deploy on Vercel
+## Email Configuration
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The app uses Proton Mail SMTP for email notifications:
+- Waitlist signups → `hello@taughtful.com.au`
+- Demo requests → `hello@taughtful.com.au`
+- User authentication emails → via Supabase SMTP
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## License
+
+Private project - All rights reserved.

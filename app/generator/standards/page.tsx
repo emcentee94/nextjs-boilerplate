@@ -19,6 +19,10 @@ export default function StandardsGenerator() {
   const [year, setYear] = useState(yearParam)
   const [minutes, setMinutes] = useState(minutesParam)
   const [level, setLevel] = useState(levelParam)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [outcomes, setOutcomes] = useState<any[]>([])
+  const [selected, setSelected] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
     setAuthority(authorityParam)
@@ -28,6 +32,35 @@ export default function StandardsGenerator() {
     setMinutes(minutesParam)
     setLevel(levelParam)
   }, [authorityParam, versionParam, subjectParam, yearParam, minutesParam, levelParam])
+
+  useEffect(() => {
+    const controller = new AbortController()
+    async function fetchOutcomes() {
+      try {
+        setLoading(true)
+        setError(null)
+        setOutcomes([])
+        setSelected({})
+        // Map subject to learning area param expected by API
+        const learningAreaId = subject
+        const url = `/api/curriculum/search?learningAreaId=${encodeURIComponent(learningAreaId)}&yearLevel=${encodeURIComponent(year)}&limit=200`
+        const res = await fetch(url, { signal: controller.signal })
+        if (!res.ok) throw new Error(`Failed (${res.status})`)
+        const data = await res.json()
+        setOutcomes(Array.isArray(data.outcomes) ? data.outcomes : [])
+      } catch (e: any) {
+        if (e?.name !== 'AbortError') setError(e?.message || 'Failed to load standards')
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchOutcomes()
+    return () => controller.abort()
+  }, [subject, year])
+
+  function toggle(id: string) {
+    setSelected(prev => ({ ...prev, [id]: !prev[id] }))
+  }
 
   return (
     <div className="max-w-5xl mx-auto py-8 px-4">
@@ -54,7 +87,39 @@ export default function StandardsGenerator() {
       </div>
 
       <div className="mt-8 p-4 border rounded-lg bg-[#F7FBF3]">
-        Standards linked to {subject} ({authority} {version})
+        <div className="mb-3 font-semibold">Standards linked to {subject} ({authority} {version})</div>
+        {loading && <div className="text-sm">Loading…</div>}
+        {error && <div className="text-sm text-red-600">{error}</div>}
+        {!loading && !error && (
+          <div className="space-y-2 max-h-[50vh] overflow-y-auto">
+            {outcomes.length === 0 && <div className="text-sm text-[#666]">No standards found.</div>}
+            {outcomes.map((o) => (
+              <label key={o.id || o.Code} className="block p-3 rounded border bg-white hover:bg-[#fff8] cursor-pointer">
+                <div className="flex items-start gap-3">
+                  <input
+                    type="checkbox"
+                    checked={Boolean(selected[o.id || o.Code])}
+                    onChange={() => toggle(o.id || o.Code)}
+                    className="mt-1"
+                  />
+                  <div>
+                    <div className="text-sm font-semibold">
+                      {(o.Code || o.code) ? `${o.Code || o.code}: ` : ''}{o["Content Description"] || o.content_description || o["Achievement Standard"] || o.achievement_standard || 'Standard'}
+                    </div>
+                    {o["Elaboration"] || o.elaboration ? (
+                      <div className="text-xs text-[#555]">
+                        {o["Elaboration"] || o.elaboration}
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+              </label>
+            ))}
+          </div>
+        )}
+        <div className="mt-3 text-xs text-[#666]">
+          Selected: {Object.values(selected).filter(Boolean).length}
+        </div>
       </div>
     </div>
   )

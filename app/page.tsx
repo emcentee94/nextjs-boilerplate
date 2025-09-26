@@ -28,7 +28,6 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useState, useEffect } from "react"
-import Header from "@/components/header"
 
 const waitlistSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -140,16 +139,10 @@ export default function TaughtfulLanding() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-      
       {/* HERO SECTION */}
       <section className="pt-16 pb-24 px-4 bg-gradient-to-br from-white via-[#FDE5DA]/20 to-white relative overflow-hidden">
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-[#FD6585]/10 text-[#FD6585] px-4 py-2 rounded-full text-sm font-semibold mb-8 border border-[#FD6585]/20">
-              <Sparkles className="w-4 h-4" />
-              Trusted by 500+ Australian Teachers
-            </div>
             
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-balance leading-tight font-fredoka mb-8">
               <span className="text-foreground">Stop the</span>{" "}

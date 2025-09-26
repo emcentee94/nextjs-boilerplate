@@ -20,7 +20,6 @@ import {
   ArrowRight
 } from "lucide-react"
 import Link from "next/link"
-import Header from "@/components/header"
 
 export default function ResourcesPage() {
   const resourceCategories = [

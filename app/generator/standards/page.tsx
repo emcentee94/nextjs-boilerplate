@@ -23,6 +23,8 @@ export default function StandardsGenerator() {
   const [error, setError] = useState<string | null>(null)
   const [outcomes, setOutcomes] = useState<any[]>([])
   const [selected, setSelected] = useState<Record<string, boolean>>({})
+  const [showStandardsInfo, setShowStandardsInfo] = useState(false)
+  const [showSelectionInfo, setShowSelectionInfo] = useState(false)
 
   useEffect(() => {
     setAuthority(authorityParam)
@@ -216,7 +218,27 @@ export default function StandardsGenerator() {
               </div>
 
               <div className="rounded-xl border p-4 bg-[#F7FBF3] border-[#CBD5C0] mb-4">
-                <div className="text-xs text-[#666] mb-2 font-semibold">Available Standards</div>
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="text-xs text-[#666] font-semibold">Available Standards</div>
+                  <button
+                    onClick={() => setShowStandardsInfo(!showStandardsInfo)}
+                    className="w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors"
+                    title="What's this?"
+                  >
+                    ?
+                  </button>
+                </div>
+                {showStandardsInfo && (
+                  <div className="mb-3 p-3 rounded-lg bg-white border border-[#CBD5C0] text-xs">
+                    <div className="font-semibold text-[#888625] mb-1">Curriculum Standards Structure</div>
+                    <div className="space-y-1 text-[#666]">
+                      <div>• <strong>Content Descriptions:</strong> What students should learn (AC9E5LA01, etc.)</div>
+                      <div>• <strong>Achievement Standards:</strong> How well students should perform</div>
+                      <div>• <strong>Strands:</strong> Language (LA), Literature (LE), Literacy (LY)</div>
+                      <div>• <strong>Integration:</strong> Standards work together across subjects</div>
+                    </div>
+                  </div>
+                )}
                 {loading && <div className="text-sm text-[#666]">Loading standards...</div>}
                 {error && <div className="text-sm text-red-600">{error}</div>}
                 {!loading && !error && (
@@ -246,9 +268,31 @@ export default function StandardsGenerator() {
                     ))}
                   </div>
                 )}
-                <div className="mt-3 text-xs text-[#666] font-semibold">
-                  Selected: {Object.values(selected).filter(Boolean).length} standards
+                <div className="flex items-center justify-between mt-3">
+                  <div className="flex items-center gap-2">
+                    <div className="text-xs text-[#666] font-semibold">
+                      Selected: {Object.values(selected).filter(Boolean).length} standards
+                    </div>
+                    <button
+                      onClick={() => setShowSelectionInfo(!showSelectionInfo)}
+                      className="w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors"
+                      title="What's this?"
+                    >
+                      ?
+                    </button>
+                  </div>
                 </div>
+                {showSelectionInfo && (
+                  <div className="mt-2 p-3 rounded-lg bg-white border border-[#CBD5C0] text-xs">
+                    <div className="font-semibold text-[#888625] mb-1">Selection Tips</div>
+                    <div className="space-y-1 text-[#666]">
+                      <div>• <strong>3-5 standards:</strong> Optimal for focused lesson planning</div>
+                      <div>• <strong>Mix strands:</strong> Combine Language, Literature, Literacy</div>
+                      <div>• <strong>Progressive:</strong> Build from basic to complex skills</div>
+                      <div>• <strong>Relevant:</strong> Choose standards that match your lesson goals</div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="mt-8 flex flex-wrap items-center gap-3">

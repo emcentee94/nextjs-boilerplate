@@ -41,6 +41,12 @@ export default function LessonGeneratorPreview() {
   const [saving, setSaving] = useState(false)
   const [saveMsg, setSaveMsg] = useState<string | null>(null)
   const [saveErr, setSaveErr] = useState<string | null>(null)
+  const [showCurriculumInfo, setShowCurriculumInfo] = useState(false)
+  const [showVersionInfo, setShowVersionInfo] = useState(false)
+  const [showLevelInfo, setShowLevelInfo] = useState(false)
+  const [showSubjectInfo, setShowSubjectInfo] = useState(false)
+  const [showYearInfo, setShowYearInfo] = useState(false)
+  const [showDurationInfo, setShowDurationInfo] = useState(false)
 
   const isVCAA = authority === "VCAA"
   const isACARA = authority === "ACARA"
@@ -260,9 +266,18 @@ export default function LessonGeneratorPreview() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div>
-                  <label className="text-xs uppercase tracking-wide text-[#666] font-semibold">
-                    Curriculum
-                  </label>
+                  <div className="flex items-center gap-2 mb-1">
+                    <label className="text-xs uppercase tracking-wide text-[#666] font-semibold">
+                      Curriculum
+                    </label>
+                    <button
+                      onClick={() => setShowCurriculumInfo(!showCurriculumInfo)}
+                      className="w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors"
+                      title="What's this?"
+                    >
+                      ?
+                    </button>
+                  </div>
                   <select
                     value={authority}
                     onChange={(e) => setAuthority(e.target.value as Authority)}
@@ -274,13 +289,33 @@ export default function LessonGeneratorPreview() {
                     <option value="QCAA">QCAA (QLD)</option>
                     <option value="SCSA">SCSA (WA)</option>
                   </select>
+                  {showCurriculumInfo && (
+                    <div className="mt-2 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs">
+                      <div className="font-semibold text-[#888625] mb-1">Australian Curriculum Structure</div>
+                      <div className="space-y-1 text-[#666]">
+                        <div>• <strong>Learning Areas:</strong> 8 core subjects (English, Maths, Science, etc.)</div>
+                        <div>• <strong>General Capabilities:</strong> 7 essential skills (Literacy, Numeracy, ICT, etc.)</div>
+                        <div>• <strong>Cross-Curriculum Priorities:</strong> 3 key contexts (Indigenous, Asia, Sustainability)</div>
+                        <div>• <strong>Achievement Standards:</strong> Assessment criteria for each year level</div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {isVCAA && (
                   <div>
-                    <label className="text-xs uppercase tracking-wide text-[#666] font-semibold">
-                      Version
-                    </label>
+                    <div className="flex items-center gap-2 mb-1">
+                      <label className="text-xs uppercase tracking-wide text-[#666] font-semibold">
+                        Version
+                      </label>
+                      <button
+                        onClick={() => setShowVersionInfo(!showVersionInfo)}
+                        className="w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors"
+                        title="What's this?"
+                      >
+                        ?
+                      </button>
+                    </div>
                     <select
                       value={version}
                       onChange={(e) => setVersion(e.target.value as any)}
@@ -289,14 +324,34 @@ export default function LessonGeneratorPreview() {
                       <option value="V2.0">VC 2.0</option>
                       <option value="V1.0">VC 1.0</option>
                     </select>
+                    {showVersionInfo && (
+                      <div className="mt-2 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs">
+                        <div className="font-semibold text-[#888625] mb-1">VCAA Version 2.0</div>
+                        <div className="space-y-1 text-[#666]">
+                          <div>• <strong>New Features:</strong> Enhanced content descriptions and achievement standards</div>
+                          <div>• <strong>Foundation A–D:</strong> Inclusive levels for students with additional needs</div>
+                          <div>• <strong>EAL Support:</strong> Dedicated English as Additional Language curriculum</div>
+                          <div>• <strong>Implementation:</strong> Phased rollout from 2024-2026</div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
 
                 {isVCAA && (
                   <div>
-                    <label className="text-xs uppercase tracking-wide text-[#666] font-semibold">
-                      Level
-                    </label>
+                    <div className="flex items-center gap-2 mb-1">
+                      <label className="text-xs uppercase tracking-wide text-[#666] font-semibold">
+                        Level
+                      </label>
+                      <button
+                        onClick={() => setShowLevelInfo(!showLevelInfo)}
+                        className="w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors"
+                        title="What's this?"
+                      >
+                        ?
+                      </button>
+                    </div>
                     <select
                       value={levelBand}
                       onChange={(e) => setLevelBand(e.target.value)}
@@ -305,13 +360,34 @@ export default function LessonGeneratorPreview() {
                       <option>Standard</option>
                       {showFoundationAD && <option>Foundation A–D</option>}
                     </select>
+                    {showLevelInfo && (
+                      <div className="mt-2 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs">
+                        <div className="font-semibold text-[#888625] mb-1">Level Bands</div>
+                        <div className="space-y-1 text-[#666]">
+                          <div>• <strong>Standard:</strong> Regular curriculum expectations for most students</div>
+                          {showFoundationAD && (
+                            <div>• <strong>Foundation A–D:</strong> Inclusive levels for students with intellectual disabilities or learning delays</div>
+                          )}
+                          <div>• <strong>Differentiation:</strong> Allows for personalized learning pathways</div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <div>
-                  <label className="text-xs uppercase tracking-wide text-[#666] font-semibold">Subject</label>
+                  <div className="flex items-center gap-2 mb-1">
+                    <label className="text-xs uppercase tracking-wide text-[#666] font-semibold">Subject</label>
+                    <button
+                      onClick={() => setShowSubjectInfo(!showSubjectInfo)}
+                      className="w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors"
+                      title="What's this?"
+                    >
+                      ?
+                    </button>
+                  </div>
                   <div className="mt-1 relative">
                     <select
                       value={subject}
@@ -335,10 +411,31 @@ export default function LessonGeneratorPreview() {
                       ▾
                     </span>
                   </div>
+                  {showSubjectInfo && (
+                    <div className="mt-2 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs">
+                      <div className="font-semibold text-[#888625] mb-1">Learning Areas</div>
+                      <div className="space-y-1 text-[#666]">
+                        <div>• <strong>English:</strong> Language, Literature, Literacy strands</div>
+                        <div>• <strong>Mathematics:</strong> Number, Algebra, Measurement, Statistics</div>
+                        <div>• <strong>Science:</strong> Understanding, Inquiry Skills, Human Endeavour</div>
+                        <div>• <strong>HASS:</strong> History, Geography, Civics, Economics</div>
+                        <div>• <strong>Plus:</strong> Arts, Technologies, Health & PE, Languages</div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div>
-                  <label className="text-xs uppercase tracking-wide text-[#666] font-semibold">Year Level</label>
+                  <div className="flex items-center gap-2 mb-1">
+                    <label className="text-xs uppercase tracking-wide text-[#666] font-semibold">Year Level</label>
+                    <button
+                      onClick={() => setShowYearInfo(!showYearInfo)}
+                      className="w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors"
+                      title="What's this?"
+                    >
+                      ?
+                    </button>
+                  </div>
                   <div className="mt-1 relative">
                     <select
                       value={year}
@@ -355,14 +452,46 @@ export default function LessonGeneratorPreview() {
                       ▾
                     </span>
                   </div>
+                  {showYearInfo && (
+                    <div className="mt-2 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs">
+                      <div className="font-semibold text-[#888625] mb-1">Year Level Progression</div>
+                      <div className="space-y-1 text-[#666]">
+                        <div>• <strong>Foundation (F):</strong> Ages 5-6, foundational skills</div>
+                        <div>• <strong>Years 1-2:</strong> Early primary, building basics</div>
+                        <div>• <strong>Years 3-4:</strong> Middle primary, developing skills</div>
+                        <div>• <strong>Years 5-6:</strong> Upper primary, consolidating</div>
+                        <div>• <strong>Years 7-10:</strong> Secondary, extending and applying</div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
               <div className="mt-6">
-                <div className="flex items-center justify_between">
-                  <label className="text-xs uppercase tracking-wide text-[#666] font-semibold">Duration</label>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <label className="text-xs uppercase tracking-wide text-[#666] font-semibold">Duration</label>
+                    <button
+                      onClick={() => setShowDurationInfo(!showDurationInfo)}
+                      className="w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors"
+                      title="What's this?"
+                    >
+                      ?
+                    </button>
+                  </div>
                   <span className="text-sm font-semibold">{minutes} mins</span>
                 </div>
+                {showDurationInfo && (
+                  <div className="mt-2 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs">
+                    <div className="font-semibold text-[#888625] mb-1">Lesson Duration Guidelines</div>
+                    <div className="space-y-1 text-[#666]">
+                      <div>• <strong>10-20 mins:</strong> Quick activities, warm-ups, transitions</div>
+                      <div>• <strong>30-45 mins:</strong> Standard lesson length for most activities</div>
+                      <div>• <strong>60-90 mins:</strong> Extended lessons, projects, investigations</div>
+                      <div>• <strong>90+ mins:</strong> Double periods, complex tasks, assessments</div>
+                    </div>
+                  </div>
+                )}
                 <div className="mt-3">
                   <div className="relative">
                     <div className="mb-1 text-xs font-semibold text-[#888625]">Lesson Duration</div>

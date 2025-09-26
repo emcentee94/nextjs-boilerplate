@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { VCAACurriculumPDFGenerator } from '@/lib/pdf-generator/vcaa-curriculum-pdf';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     const generator = new VCAACurriculumPDFGenerator();

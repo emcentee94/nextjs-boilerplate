@@ -33,14 +33,12 @@ export class VCAACurriculumPDFGenerator {
 
   private addHeader(title: string, level: number = 1) {
     this.doc.fontSize(level === 1 ? 20 : level === 2 ? 16 : 14)
-           .font('Helvetica-Bold')
            .text(title, { align: 'left' });
     this.doc.moveDown(0.5);
   }
 
   private addContent(text: string) {
     this.doc.fontSize(11)
-           .font('Helvetica')
            .text(text, { align: 'justify', lineGap: 2 });
     this.doc.moveDown();
   }
@@ -48,7 +46,6 @@ export class VCAACurriculumPDFGenerator {
   private addBulletList(items: string[]) {
     items.forEach(item => {
       this.doc.fontSize(11)
-             .font('Helvetica')
              .text('• ' + item, { continued: false });
     });
     this.doc.moveDown();

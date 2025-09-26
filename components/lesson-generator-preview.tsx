@@ -526,17 +526,38 @@ export default function LessonGeneratorPreview() {
               </a>
               <a
                 href="/resources/assessment-planning"
-                className="text-xs px-2 py-1 rounded_full bg-white border border-[#e9e9e9] hover:border-[#888625]"
+                className="text-xs px-2 py-1 rounded-full bg-white border border-[#e9e9e9] hover:border-[#888625]"
               >
                 Assessment & Planning
               </a>
               <a
                 href="/resources/wellbeing-support"
-                className="text-xs px-2 py-1 rounded_full bg-white border border-[#e9e9e9] hover:border-[#888625]"
+                className="text-xs px-2 py-1 rounded-full bg-white border border-[#e9e9e9] hover:border-[#888625]"
               >
                 Wellbeing & Support
               </a>
             </div>
+            {/* Export buttons (wires in once lessonPlan is available in this view) */}
+            {false && (
+              <div className="mt-4 flex gap-2">
+                <button
+                  onClick={async () => {
+                    /* call /api/lesson-plan/export with { format:'pdf', lessonPlan } */
+                  }}
+                  className="px-4 py-2 rounded border"
+                >
+                  Download PDF
+                </button>
+                <button
+                  onClick={async () => {
+                    /* call /api/lesson-plan/export with { format:'docx', lessonPlan } */
+                  }}
+                  className="px-4 py-2 rounded border"
+                >
+                  Download DOCX
+                </button>
+              </div>
+            )}
           </div>
         </section>
       </div>

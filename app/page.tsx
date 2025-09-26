@@ -157,18 +157,23 @@ export default function TaughtfulLanding() {
           <div className="flex justify-center">
             <div className="text-center animate-fade-in">
               <div className="flex flex-col sm:flex-row gap-6 pt-4 justify-center">
-                <Button asChild size="lg" className="px-10 py-6 text-xl font-bold bg-[#FD6585] hover:bg-[#FD6585]/90 text-white border-2 border-white/20 hover:border-white/40 hover:scale-110 hover:-translate-y-2 transition-all duration-500 rounded-2xl shadow-lg hover:shadow-xl group">
-                  <a href="/signup" data-cta="try-demo">
-                    <Users className="mr-3 w-6 h-6 group-hover:animate-pulse" aria-hidden="true" />
-                    🎯 Try Demo Mode
-                  </a>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={() => window.location.href = '/signup'}
+                  className="px-10 py-6 text-xl font-bold bg-gradient-to-r from-transparent to-[#FD6585]/5 border-3 border-foreground hover:bg-gradient-to-r hover:from-[#FD6585]/10 hover:to-[#FF9A2E]/10 hover:border-[#FD6585] hover:scale-110 hover:-translate-y-2 transition-all duration-500 rounded-2xl shadow-lg hover:shadow-xl group"
+                >
+                  <Users className="mr-3 w-6 h-6 group-hover:animate-pulse" />
+                  🎯 Try Demo Mode
                 </Button>
-                <Button asChild size="lg" className="bg-gradient-to-r from-[#888625] to-[#4CAF50] hover:from-[#888625]/90 hover:to-[#4CAF50]/90 text-white px-10 py-6 text-xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110 hover:-translate-y-2 group rounded-2xl border-2 border-white/20 hover:border-white/40">
-                  <a href="/resources" data-cta="knowledge-hub">
-                    <BookOpen className="mr-3 w-6 h-6 group-hover:animate-bounce" aria-hidden="true" />
-                    Knowledge Hub
-                    <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 group-hover:scale-125 transition-all duration-300" aria-hidden="true" />
-                  </a>
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-[#888625] to-[#4CAF50] hover:from-[#888625]/90 hover:to-[#4CAF50]/90 text-white px-10 py-6 text-xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110 hover:-translate-y-2 group rounded-2xl border-2 border-white/20 hover:border-white/40"
+                  onClick={() => window.location.href = '/resources'}
+                >
+                  <BookOpen className="mr-3 w-6 h-6 group-hover:animate-bounce" />
+                  Knowledge Hub
+                  <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 group-hover:scale-125 transition-all duration-300" />
                 </Button>
               </div>
             </div>

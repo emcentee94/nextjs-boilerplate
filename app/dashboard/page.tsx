@@ -21,7 +21,7 @@ import {
   HeartHandshake,
   UsersRound
 } from "lucide-react"
-import Header from "@/components/header"
+// Removed local Header to avoid duplicate with global layout header
 
 const statItems = [
   { icon: <Timer className="w-4 h-4" />, label: "Time Saved", value: "3.8 hrs" },
@@ -287,7 +287,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-[#FDE5DA]">
-      <Header />
       <div className="mx-auto max-w-7xl px-4 py-6">
         {/* Header */}
         <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

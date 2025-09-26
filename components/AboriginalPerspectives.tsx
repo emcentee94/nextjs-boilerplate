@@ -105,8 +105,7 @@ export default function AboriginalPerspectivesNarrativeGrid() {
                 Our stance
               </h3>
               <p className="mt-3 text-stone-700">
-                Inclusion should be meaningful and safe. Prescriptive localisation that burdens teachers
-                or oversteps cultural protocols is avoided. Instead, teachers are guided with clear
+                Inclusion should be meaningful and safe. Teachers are guided with clear
                 language, perspective indicators, and pathways to reputable training and resources—so
                 alignment is achievable in everyday planning.
               </p>
@@ -164,12 +163,16 @@ export default function AboriginalPerspectivesNarrativeGrid() {
           </div>
         </div>
 
-        <p className="mt-12 text-lg text-stone-700">
-          This is deliberate, research-driven work. By making Aboriginal perspectives a natural
-          part of planning, <span className="font-semibold">Taughtful</span> stands with educators and First Nations
-          communities—building classrooms that are inclusive, standards-aligned, and enriched by
-          the world’s oldest continuous cultures.
-        </p>
+        <div className="mt-12 flex items-start gap-3 text-emerald-700">
+          <Leaf className="w-6 h-6 mt-1" aria-hidden />
+          <BadgeCheck className="w-6 h-6 mt-1" aria-hidden />
+          <p className="text-lg font-bold leading-relaxed">
+            This is deliberate, research-driven work. By making Aboriginal perspectives a natural
+            part of planning, <span className="font-semibold">Taughtful</span> stands with educators and First Nations
+            communities—building classrooms that are inclusive, standards-aligned, and enriched by
+            the world’s oldest continuous cultures.
+          </p>
+        </div>
 
         {/* Community Priorities → Our Commitments grid removed */}
       </div>

@@ -191,27 +191,7 @@ export default function TaughtfulLanding() {
             </div>
 
         <div className="container mx-auto max-w-6xl relative z-10">
-          {/* Testimonial Cards Row */}
-          <div className="mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
-              <Card className="rounded-2xl shadow-lg border-2 border-[#FD6585] bg-[#FD6585] text-white">
-                <CardContent className="p-6 md:p-8">
-                  <p className="text-base md:text-lg italic leading-relaxed">
-                    "I've tested AI tools for quizzes, slides, and lessons—options are obvious, slides dated, language awkward, visuals wrong. I end up reworking everything."
-                  </p>
-                  <p className="mt-3 text-sm font-semibold">— Matt, Year 9 Science teacher (VIC)</p>
-                </CardContent>
-              </Card>
-              <Card className="rounded-2xl shadow-lg border-2 border-[#888625] bg-[#888625] text-white">
-                <CardContent className="p-6 md:p-8">
-                  <p className="text-base md:text-lg italic leading-relaxed">
-                    "Taughtful's plans just get it. No more tweaking generic AI output—it's thoughtful from the start."
-                  </p>
-                  <p className="mt-3 text-sm font-semibold">— Safi, Year 5 teacher (VIC)</p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+          {/* Testimonial Cards Removed */}
 
           {/* SECRET SAUCE: RAG EXPLANATION */}
           <section id="how-it-works" className="py-12 px-4 bg-transparent relative overflow-hidden rounded-3xl mx-4 md:mx-6 lg:mx-8">

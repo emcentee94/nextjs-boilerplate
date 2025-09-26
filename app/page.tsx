@@ -28,6 +28,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useState, useEffect } from "react"
 import { motion } from 'framer-motion'
+import RAGSection from "@/components/RAGSection"
 
 const waitlistSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -214,98 +215,7 @@ export default function TaughtfulLanding() {
 
           {/* SECRET SAUCE: RAG EXPLANATION */}
           <section id="how-it-works" className="py-12 px-4 bg-transparent relative overflow-hidden rounded-3xl mx-4 md:mx-6 lg:mx-8">
-            <div className="container mx-auto max-w-6xl relative z-10">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-center mb-2 font-fredoka text-foreground leading-tight tracking-tight">
-                Our Secret Sauce? <span className="text-[#888625]">RAG.</span>
-              </h2>
-              <p className="text-center text-gray-700 mb-6 max-w-3xl mx-auto font-nunito">
-                Retrieval‑Augmented Generation means Taughtful checks real curriculum and pedagogy first—then writes. Less fluff, more classroom‑ready.
-              </p>
-              
-              {/* Testimonial */}
-              <Card className="mb-6 p-4 bg-white/80 rounded-2xl shadow-md max-w-2xl mx-auto">
-                <CardContent className="p-0">
-                  <p className="text-gray-700 italic text-center text-lg md:text-xl leading-relaxed font-nunito">
-                    "As a teacher in a high-trauma school, Taughtful's plans just get it. No more tweaking generic AI output—it's thoughtful from the start."
-                  </p>
-                  <p className="text-right text-sm text-gray-500 mt-2">— Sarah T., Year 5 Teacher, QLD</p>
-                </CardContent>
-              </Card>
-              
-              {/* 3-Step Process */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
-                {[
-                  { number: 1, title: 'Retrieve', desc: 'Searches trusted curriculum, pedagogy, and exemplars—no guessing.' },
-                  { number: 2, title: 'Ground', desc: 'Builds to your year level with real achievement standards and scaffolds.' },
-                  { number: 3, title: 'Deliver', desc: 'Hands you plans, quizzes, and slides you can teach tomorrow.' }
-                ].map((step, index) => (
-                  <motion.div
-                    key={step.number}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.2 }}
-                    className="p-4 bg-[#888625]/10 rounded-2xl shadow-lg border border-[#888625]"
-                  >
-                    <div className="w-12 h-12 bg-[#888625] rounded-full flex items-center justify-center mx-auto mb-2">
-                      <span className="text-xl font-black text-white font-fredoka">{step.number}</span>
-                  </div>
-                    <span className="block font-bold text-foreground mb-1 font-fredoka text-base">{step.title}</span>
-                    <p className="text-gray-600 text-sm">{step.desc}</p>
-                  </motion.div>
-                ))}
-                </div>
-
-              {/* Credibility badges */}
-              <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
-                <span className="text-xs md:text-sm px-3 py-1 rounded-full bg-white/70 border border-[#888625]/30 text-[#333333]">Aligned to AC v9 & VCAA 2.0</span>
-                <span className="text-xs md:text-sm px-3 py-1 rounded-full bg-white/70 border border-[#888625]/30 text-[#333333]">Cites sources</span>
-                <span className="text-xs md:text-sm px-3 py-1 rounded-full bg-white/70 border border-[#888625]/30 text-[#333333]">Privacy‑safe</span>
-                <span className="text-xs md:text-sm px-3 py-1 rounded-full bg-white/70 border border-[#888625]/30 text-[#333333]">Reduces rework</span>
-              </div>
-
-              <p className="text-lg md:text-xl font-bold text-foreground font-fredoka mb-6 text-center">
-                The payoff? <span className="text-[#FD6585]">No rewrites. No wasted time. Just teaching resources that click</span>—making sign‑up a no‑brainer.
-              </p>
-              
-              {/* Side-by-side comparison */}
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <Card className="rounded-2xl border bg-white shadow-lg">
-                  <CardHeader className="pb-2">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                        <span className="text-red-600 text-xl">✕</span>
-                      </div>
-                      <CardTitle className="text-xl font-bold font-fredoka text-gray-900">Generic AI Tools</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <ComparisonRow icon="📊" text={<>Slides feel <span className="font-semibold text-red-600">dated and generic</span></>} />
-                    <ComparisonRow icon="❓" text={<><span className="font-semibold text-red-600">Quiz options</span> are obvious or irrelevant</>} />
-                    <ComparisonRow icon="💬" text={<>Tone is <span className="font-semibold text-red-600">awkward or too stiff</span></>} />
-                    <ComparisonRow icon="🖼️" text={<>Diagrams are <span className="font-semibold text-red-600">wrong or irrelevant</span></>} />
-                    <ComparisonRow icon="⏰" text={<>"Saves time" but forces <span className="font-semibold text-red-600">rework</span></>} />
-                  </CardContent>
-                </Card>
-
-                <Card className="rounded-2xl border bg-white shadow-lg">
-                  <CardHeader className="pb-2">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                        <CheckCircle className="h-6 w-6 text-green-600" />
-                  </div>
-                      <CardTitle className="text-xl font-bold font-fredoka text-gray-900">Taughtful with RAG</CardTitle>
-                </div>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <ComparisonRow icon="📊" text={<>Slides follow <span className="font-semibold text-[#888625]">evidence-based pedagogy</span></>} />
-                    <ComparisonRow icon="❓" text={<><span className="font-semibold text-[#888625]">Quiz options</span> use real student misconceptions</>} />
-                    <ComparisonRow icon="💬" text={<><span className="font-semibold text-[#888625]">Teacher-ready tone</span>, scaffolded and natural</>} />
-                    <ComparisonRow icon="🖼️" text={<><span className="font-semibold text-[#888625]">Curriculum-aligned</span> visuals</>} />
-                    <ComparisonRow icon="⏰" text={<><span className="font-semibold text-[#888625]">Classroom-ready</span> on day one</>} />
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
+            <RAGSection />
           </section>
         </div>
       </section>

@@ -41,12 +41,12 @@ export default function LessonGeneratorPreview() {
   const [saving, setSaving] = useState(false)
   const [saveMsg, setSaveMsg] = useState<string | null>(null)
   const [saveErr, setSaveErr] = useState<string | null>(null)
-  const [showCurriculumInfo, setShowCurriculumInfo] = useState(false)
-  const [showVersionInfo, setShowVersionInfo] = useState(false)
-  const [showLevelInfo, setShowLevelInfo] = useState(false)
-  const [showSubjectInfo, setShowSubjectInfo] = useState(false)
-  const [showYearInfo, setShowYearInfo] = useState(false)
-  const [showDurationInfo, setShowDurationInfo] = useState(false)
+  const [showCurriculumInfo, setShowCurriculumInfo] = useState(true)
+  const [showVersionInfo, setShowVersionInfo] = useState(true)
+  const [showLevelInfo, setShowLevelInfo] = useState(true)
+  const [showSubjectInfo, setShowSubjectInfo] = useState(true)
+  const [showYearInfo, setShowYearInfo] = useState(true)
+  const [showDurationInfo, setShowDurationInfo] = useState(true)
 
   const isVCAA = authority === "VCAA"
   const isACARA = authority === "ACARA"
@@ -289,17 +289,24 @@ export default function LessonGeneratorPreview() {
                     <option value="QCAA">QCAA (QLD)</option>
                     <option value="SCSA">SCSA (WA)</option>
                   </select>
-                  {showCurriculumInfo && (
-                    <div className="mt-2 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs">
-                      <div className="font-semibold text-[#888625] mb-1">Australian Curriculum Structure</div>
-                      <div className="space-y-1 text-[#666]">
-                        <div>• <strong>Learning Areas:</strong> 8 core subjects (English, Maths, Science, etc.)</div>
-                        <div>• <strong>General Capabilities:</strong> 7 essential skills (Literacy, Numeracy, ICT, etc.)</div>
-                        <div>• <strong>Cross-Curriculum Priorities:</strong> 3 key contexts (Indigenous, Asia, Sustainability)</div>
-                        <div>• <strong>Achievement Standards:</strong> Assessment criteria for each year level</div>
-                      </div>
-                    </div>
-                  )}
+             {showCurriculumInfo && (
+               <div className="mt-2 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs relative">
+                 <button
+                   onClick={() => setShowCurriculumInfo(false)}
+                   className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors flex items-center justify-center"
+                   title="Close"
+                 >
+                   ×
+                 </button>
+                 <div className="font-semibold text-[#888625] mb-1">Australian Curriculum Structure</div>
+                 <div className="space-y-1 text-[#666]">
+                   <div>• <strong>Learning Areas:</strong> 8 core subjects (English, Maths, Science, etc.)</div>
+                   <div>• <strong>General Capabilities:</strong> 7 essential skills (Literacy, Numeracy, ICT, etc.)</div>
+                   <div>• <strong>Cross-Curriculum Priorities:</strong> 3 key contexts (Indigenous, Asia, Sustainability)</div>
+                   <div>• <strong>Achievement Standards:</strong> Assessment criteria for each year level</div>
+                 </div>
+               </div>
+             )}
                 </div>
 
                 {isVCAA && (
@@ -325,7 +332,14 @@ export default function LessonGeneratorPreview() {
                       <option value="V1.0">VC 1.0</option>
                     </select>
                     {showVersionInfo && (
-                      <div className="mt-2 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs">
+                      <div className="mt-2 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs relative">
+                        <button
+                          onClick={() => setShowVersionInfo(false)}
+                          className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors flex items-center justify-center"
+                          title="Close"
+                        >
+                          ×
+                        </button>
                         <div className="font-semibold text-[#888625] mb-1">VCAA Version 2.0</div>
                         <div className="space-y-1 text-[#666]">
                           <div>• <strong>New Features:</strong> Enhanced content descriptions and achievement standards</div>
@@ -361,7 +375,14 @@ export default function LessonGeneratorPreview() {
                       {showFoundationAD && <option>Foundation A–D</option>}
                     </select>
                     {showLevelInfo && (
-                      <div className="mt-2 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs">
+                      <div className="mt-2 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs relative">
+                        <button
+                          onClick={() => setShowLevelInfo(false)}
+                          className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors flex items-center justify-center"
+                          title="Close"
+                        >
+                          ×
+                        </button>
                         <div className="font-semibold text-[#888625] mb-1">Level Bands</div>
                         <div className="space-y-1 text-[#666]">
                           <div>• <strong>Standard:</strong> Regular curriculum expectations for most students</div>
@@ -412,7 +433,14 @@ export default function LessonGeneratorPreview() {
                     </span>
                   </div>
                   {showSubjectInfo && (
-                    <div className="mt-2 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs">
+                    <div className="mt-2 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs relative">
+                      <button
+                        onClick={() => setShowSubjectInfo(false)}
+                        className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors flex items-center justify-center"
+                        title="Close"
+                      >
+                        ×
+                      </button>
                       <div className="font-semibold text-[#888625] mb-1">Learning Areas</div>
                       <div className="space-y-1 text-[#666]">
                         <div>• <strong>English:</strong> Language, Literature, Literacy strands</div>
@@ -453,7 +481,14 @@ export default function LessonGeneratorPreview() {
                     </span>
                   </div>
                   {showYearInfo && (
-                    <div className="mt-2 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs">
+                    <div className="mt-2 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs relative">
+                      <button
+                        onClick={() => setShowYearInfo(false)}
+                        className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors flex items-center justify-center"
+                        title="Close"
+                      >
+                        ×
+                      </button>
                       <div className="font-semibold text-[#888625] mb-1">Year Level Progression</div>
                       <div className="space-y-1 text-[#666]">
                         <div>• <strong>Foundation (F):</strong> Ages 5-6, foundational skills</div>
@@ -482,7 +517,14 @@ export default function LessonGeneratorPreview() {
                   <span className="text-sm font-semibold">{minutes} mins</span>
                 </div>
                 {showDurationInfo && (
-                  <div className="mt-2 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs">
+                  <div className="mt-2 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs relative">
+                    <button
+                      onClick={() => setShowDurationInfo(false)}
+                      className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors flex items-center justify-center"
+                      title="Close"
+                    >
+                      ×
+                    </button>
                     <div className="font-semibold text-[#888625] mb-1">Lesson Duration Guidelines</div>
                     <div className="space-y-1 text-[#666]">
                       <div>• <strong>10-20 mins:</strong> Quick activities, warm-ups, transitions</div>

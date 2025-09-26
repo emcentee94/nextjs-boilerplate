@@ -23,8 +23,8 @@ export default function StandardsGenerator() {
   const [error, setError] = useState<string | null>(null)
   const [outcomes, setOutcomes] = useState<any[]>([])
   const [selected, setSelected] = useState<Record<string, boolean>>({})
-  const [showStandardsInfo, setShowStandardsInfo] = useState(false)
-  const [showSelectionInfo, setShowSelectionInfo] = useState(false)
+  const [showStandardsInfo, setShowStandardsInfo] = useState(true)
+  const [showSelectionInfo, setShowSelectionInfo] = useState(true)
 
   useEffect(() => {
     setAuthority(authorityParam)
@@ -229,7 +229,14 @@ export default function StandardsGenerator() {
                   </button>
                 </div>
                 {showStandardsInfo && (
-                  <div className="mb-3 p-3 rounded-lg bg-white border border-[#CBD5C0] text-xs">
+                  <div className="mb-3 p-3 rounded-lg bg-white border border-[#CBD5C0] text-xs relative">
+                    <button
+                      onClick={() => setShowStandardsInfo(false)}
+                      className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors flex items-center justify-center"
+                      title="Close"
+                    >
+                      ×
+                    </button>
                     <div className="font-semibold text-[#888625] mb-1">Curriculum Standards Structure</div>
                     <div className="space-y-1 text-[#666]">
                       <div>• <strong>Content Descriptions:</strong> What students should learn (AC9E5LA01, etc.)</div>
@@ -283,7 +290,14 @@ export default function StandardsGenerator() {
                   </div>
                 </div>
                 {showSelectionInfo && (
-                  <div className="mt-2 p-3 rounded-lg bg-white border border-[#CBD5C0] text-xs">
+                  <div className="mt-2 p-3 rounded-lg bg-white border border-[#CBD5C0] text-xs relative">
+                    <button
+                      onClick={() => setShowSelectionInfo(false)}
+                      className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors flex items-center justify-center"
+                      title="Close"
+                    >
+                      ×
+                    </button>
                     <div className="font-semibold text-[#888625] mb-1">Selection Tips</div>
                     <div className="space-y-1 text-[#666]">
                       <div>• <strong>3-5 standards:</strong> Optimal for focused lesson planning</div>

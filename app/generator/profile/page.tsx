@@ -23,11 +23,10 @@ export default function ClassProfileGenerator() {
   const [selectedStandards, setSelectedStandards] = useState<string[]>([])
   const [classSize, setClassSize] = useState(25)
   const [abilityRange, setAbilityRange] = useState("Mixed")
-  const [specialNeeds, setSpecialNeeds] = useState<string[]>([])
-  const [culturalBackgrounds, setCulturalBackgrounds] = useState<string[]>([])
-  const [showClassSizeInfo, setShowClassSizeInfo] = useState(false)
-  const [showAbilityInfo, setShowAbilityInfo] = useState(false)
-  const [showNeedsInfo, setShowNeedsInfo] = useState(false)
+  const [learnerProfiles, setLearnerProfiles] = useState<string[]>([])
+  const [showClassSizeInfo, setShowClassSizeInfo] = useState(true)
+  const [showAbilityInfo, setShowAbilityInfo] = useState(true)
+  const [showInclusiveInfo, setShowInclusiveInfo] = useState(true)
 
   useEffect(() => {
     setAuthority(authorityParam)
@@ -103,8 +102,14 @@ export default function ClassProfileGenerator() {
   const activeKey = "profile"
 
   const abilityOptions = ["Mixed", "Above Average", "Average", "Below Average", "Wide Range"]
-  const specialNeedsOptions = ["Autism Spectrum", "ADHD", "Dyslexia", "Dyscalculia", "Hearing Impairment", "Visual Impairment", "Physical Disability", "Speech/Language", "Gifted & Talented", "English as Additional Language"]
-  const culturalOptions = ["Aboriginal & Torres Strait Islander", "Asian", "European", "African", "Middle Eastern", "Pacific Islander", "Mixed Heritage", "Other"]
+  const learnerProfileOptions = [
+    "Attention & Focus Needs (e.g., ADHD)",
+    "Communication & Language Needs (e.g., speech/language, EAL)",
+    "Literacy & Numeracy Supports (e.g., dyslexia, dyscalculia)",
+    "Sensory & Physical Supports (e.g., hearing, vision, mobility)",
+    "Social & Emotional Regulation Supports (e.g., trauma impact, autistic traits)",
+    "Learning Extension (Gifted & Talented)"
+  ]
 
   function toggleArray(array: string[], setter: (arr: string[]) => void, value: string) {
     if (array.includes(value)) {
@@ -221,7 +226,14 @@ export default function ClassProfileGenerator() {
                     </button>
                   </div>
                   {showClassSizeInfo && (
-                    <div className="mb-3 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs">
+                    <div className="mb-3 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs relative">
+                      <button
+                        onClick={() => setShowClassSizeInfo(false)}
+                        className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors flex items-center justify-center"
+                        title="Close"
+                      >
+                        ×
+                      </button>
                       <div className="font-semibold text-[#888625] mb-1">Class Size Impact</div>
                       <div className="space-y-1 text-[#666]">
                         <div>• <strong>Small (15-20):</strong> More individual attention, detailed activities</div>
@@ -260,7 +272,14 @@ export default function ClassProfileGenerator() {
                     </button>
                   </div>
                   {showAbilityInfo && (
-                    <div className="mb-3 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs">
+                    <div className="mb-3 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs relative">
+                      <button
+                        onClick={() => setShowAbilityInfo(false)}
+                        className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors flex items-center justify-center"
+                        title="Close"
+                      >
+                        ×
+                      </button>
                       <div className="font-semibold text-[#888625] mb-1">Differentiation Strategies</div>
                       <div className="space-y-1 text-[#666]">
                         <div>• <strong>Mixed:</strong> Tiered activities, flexible grouping</div>
@@ -282,23 +301,30 @@ export default function ClassProfileGenerator() {
                   </select>
                 </div>
 
-                {/* Special Needs */}
+                {/* Inclusive Teaching */}
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <label className="text-xs uppercase tracking-wide text-[#666] font-semibold">
-                      Special Needs & Support
+                      Inclusive Teaching
                     </label>
                     <button
-                      onClick={() => setShowNeedsInfo(!showNeedsInfo)}
+                      onClick={() => setShowInclusiveInfo(!showInclusiveInfo)}
                       className="w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors"
                       title="What's this?"
                     >
                       ?
                     </button>
                   </div>
-                  {showNeedsInfo && (
-                    <div className="mb-3 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs">
-                      <div className="font-semibold text-[#888625] mb-1">Inclusive Teaching</div>
+                  {showInclusiveInfo && (
+                    <div className="mb-3 p-3 rounded-lg bg-[#F7FBF3] border border-[#CBD5C0] text-xs relative">
+                      <button
+                        onClick={() => setShowInclusiveInfo(false)}
+                        className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#888625]/20 text-[#888625] text-xs font-bold hover:bg-[#888625]/30 transition-colors flex items-center justify-center"
+                        title="Close"
+                      >
+                        ×
+                      </button>
+                      <div className="font-semibold text-[#888625] mb-1">Inclusive Teaching (applies to all lessons)</div>
                       <div className="space-y-1 text-[#666]">
                         <div>• <strong>Universal Design:</strong> Accessible for all learners</div>
                         <div>• <strong>Trauma-Informed:</strong> Safe, predictable environments</div>
@@ -306,40 +332,28 @@ export default function ClassProfileGenerator() {
                       </div>
                     </div>
                   )}
-                  <div className="grid grid-cols-2 gap-2">
-                    {specialNeedsOptions.map((need) => (
-                      <label key={need} className="flex items-center gap-2 p-2 rounded-lg border bg-white hover:bg-[#fff8] cursor-pointer transition-colors">
+                </div>
+
+                {/* Learner Profiles */}
+                <div>
+                  <label className="text-xs uppercase tracking-wide text-[#666] font-semibold mb-2 block">
+                    Learner Profiles (select any that apply for planning supports)
+                  </label>
+                  <div className="grid grid-cols-1 gap-2">
+                    {learnerProfileOptions.map((profile) => (
+                      <label key={profile} className="flex items-center gap-2 p-2 rounded-lg border bg-white hover:bg-[#fff8] cursor-pointer transition-colors">
                         <input
                           type="checkbox"
-                          checked={specialNeeds.includes(need)}
-                          onChange={() => toggleArray(specialNeeds, setSpecialNeeds, need)}
+                          checked={learnerProfiles.includes(profile)}
+                          onChange={() => toggleArray(learnerProfiles, setLearnerProfiles, profile)}
                           className="accent-[#888625]"
                         />
-                        <span className="text-xs">{need}</span>
+                        <span className="text-xs">{profile}</span>
                       </label>
                     ))}
                   </div>
                 </div>
 
-                {/* Cultural Backgrounds */}
-                <div>
-                  <label className="text-xs uppercase tracking-wide text-[#666] font-semibold mb-2 block">
-                    Cultural Backgrounds
-                  </label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {culturalOptions.map((background) => (
-                      <label key={background} className="flex items-center gap-2 p-2 rounded-lg border bg-white hover:bg-[#fff8] cursor-pointer transition-colors">
-                        <input
-                          type="checkbox"
-                          checked={culturalBackgrounds.includes(background)}
-                          onChange={() => toggleArray(culturalBackgrounds, setCulturalBackgrounds, background)}
-                          className="accent-[#888625]"
-                        />
-                        <span className="text-xs">{background}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
               </div>
 
               <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -362,8 +376,7 @@ export default function ClassProfileGenerator() {
                       selectedStandards: JSON.stringify(selectedStandards),
                       classSize: String(classSize),
                       abilityRange,
-                      specialNeeds: JSON.stringify(specialNeeds),
-                      culturalBackgrounds: JSON.stringify(culturalBackgrounds)
+                      specialNeeds: JSON.stringify(specialNeeds)
                     })
                     window.location.href = `/generator/pedagogy?${params.toString()}`
                   }}
@@ -414,18 +427,6 @@ export default function ClassProfileGenerator() {
                 </div>
               )}
 
-              {culturalBackgrounds.length > 0 && (
-                <div className="rounded-xl border p-4 bg-white">
-                  <div className="text-xs text-[#666] mb-2 font-semibold">Cultural Backgrounds</div>
-                  <div className="flex flex-wrap gap-1">
-                    {culturalBackgrounds.map((background) => (
-                      <span key={background} className="text-xs px-2 py-1 rounded-full bg-[#888625]/10 text-[#888625] border border-[#CBD5C0]">
-                        {background}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               <div className="rounded-xl border p-4 bg-white">
                 <div className="text-xs text-[#666] mb-2">Personalization Impact</div>
@@ -433,7 +434,6 @@ export default function ClassProfileGenerator() {
                   <li>Lesson activities adapted for class size</li>
                   <li>Differentiation strategies for ability range</li>
                   <li>Inclusive supports for special needs</li>
-                  <li>Culturally respectful content and examples</li>
                 </ul>
               </div>
             </div>

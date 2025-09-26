@@ -16,7 +16,6 @@ export default function PedagogyGenerator() {
   const classSizeParam = parseInt(searchParams.get("classSize") || "25", 10)
   const abilityRangeParam = searchParams.get("abilityRange") || "Mixed"
   const specialNeedsParam = searchParams.get("specialNeeds") || "[]"
-  const culturalBackgroundsParam = searchParams.get("culturalBackgrounds") || "[]"
 
   const [authority, setAuthority] = useState(authorityParam)
   const [version, setVersion] = useState(versionParam)
@@ -28,7 +27,6 @@ export default function PedagogyGenerator() {
   const [classSize, setClassSize] = useState(classSizeParam)
   const [abilityRange, setAbilityRange] = useState(abilityRangeParam)
   const [specialNeeds, setSpecialNeeds] = useState<string[]>([])
-  const [culturalBackgrounds, setCulturalBackgrounds] = useState<string[]>([])
   const [pedagogyApproach, setPedagogyApproach] = useState("Trauma-Informed")
   const [scaffoldingLevel, setScaffoldingLevel] = useState("Moderate")
   const [indigenousPerspectives, setIndigenousPerspectives] = useState(true)
@@ -48,13 +46,11 @@ export default function PedagogyGenerator() {
     try {
       setSelectedStandards(JSON.parse(selectedStandardsParam))
       setSpecialNeeds(JSON.parse(specialNeedsParam))
-      setCulturalBackgrounds(JSON.parse(culturalBackgroundsParam))
     } catch {
       setSelectedStandards([])
       setSpecialNeeds([])
-      setCulturalBackgrounds([])
     }
-  }, [authorityParam, versionParam, subjectParam, yearParam, minutesParam, levelParam, selectedStandardsParam, classSizeParam, abilityRangeParam, specialNeedsParam, culturalBackgroundsParam])
+  }, [authorityParam, versionParam, subjectParam, yearParam, minutesParam, levelParam, selectedStandardsParam, classSizeParam, abilityRangeParam, specialNeedsParam])
 
   const tabs = [
     {
@@ -334,7 +330,6 @@ export default function PedagogyGenerator() {
                       classSize: String(classSize),
                       abilityRange,
                       specialNeeds: JSON.stringify(specialNeeds),
-                      culturalBackgrounds: JSON.stringify(culturalBackgrounds),
                       pedagogyApproach,
                       scaffoldingLevel,
                       indigenousPerspectives: String(indigenousPerspectives)

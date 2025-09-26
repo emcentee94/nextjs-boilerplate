@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import TaughtfulSurvey from './taughtful-survey';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   BookOpen,
@@ -453,6 +454,9 @@ export default function TaughtfulDashboard() {
                             <p className="text-sm text-gray-700">{generatedLessonPlan.indigenousPerspectives}</p>
                           </div>
                         )}
+                      </div>
+                      <div className="mt-6">
+                        <TaughtfulSurvey />
                       </div>
                     </div>
                   )}

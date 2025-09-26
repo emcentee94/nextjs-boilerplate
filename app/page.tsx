@@ -8,7 +8,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import {
   ArrowRight,
   BookOpen,
-  Brain,
   Users,
   Shield,
   Clock,
@@ -20,12 +19,15 @@ import {
   Sparkles,
   Zap,
   Target,
+  CheckCircle,
+  Star,
+  TrendingUp,
 } from "lucide-react"
 import Image from "next/image"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Header from "@/components/header"
 
 const waitlistSchema = z.object({
@@ -37,38 +39,56 @@ const waitlistSchema = z.object({
 
 type WaitlistFormData = z.infer<typeof waitlistSchema>
 
-const curriculumOptions = {
-  acara: {
-    name: "Australian Curriculum v9 (ACARA)",
-    description: "National foundation curriculum",
-    compliance: "Aligned to ACARA v9",
-    color: "from-[#FD6585] to-[#FF9A2E]"
+const benefits = [
+  {
+    icon: <Clock className="w-6 h-6" />,
+    title: "Save 3+ Hours Weekly",
+    description: "Stop spending weekends on lesson plans"
   },
-  vic: {
-    name: "Victorian Curriculum F–10",
-    description: "Includes Capabilities strands",
-    compliance: "Aligned to VCAA Curriculum F–10",
-    color: "from-[#888625] to-[#FD6585]"
+  {
+    icon: <Shield className="w-6 h-6" />,
+    title: "100% Curriculum Aligned",
+    description: "ACARA v9, VCAA, NESA, QCAA, SCSA compliant"
   },
-  nsw: {
-    name: "NSW Syllabus",
-    description: "NESA outcomes and descriptors",
-    compliance: "Linked to NESA outcomes",
-    color: "from-[#FD6585] to-[#888625]"
-  },
-  wa: {
-    name: "WA Curriculum & Assessment Outline",
-    description: "WA-specific structure and phrasing",
-    compliance: "Aligned to WA Curriculum",
-    color: "from-[#FF9A2E] to-[#888625]"
+  {
+    icon: <Heart className="w-6 h-6" />,
+    title: "Trauma-Informed Design",
+    description: "Built with student wellbeing at the core"
   }
-}
+]
+
+const testimonials = [
+  {
+    quote: "Finally, someone who gets what we actually need in classrooms.",
+    author: "Sarah M.",
+    role: "Year 8 English Teacher",
+    rating: 5
+  },
+  {
+    quote: "The Indigenous perspectives integration is respectful and authentic.",
+    author: "David L.",
+    role: "Primary School Principal",
+    rating: 5
+  },
+  {
+    quote: "Saves me hours every week. The trauma-informed approach is game-changing.",
+    author: "Emma K.",
+    role: "Year 5 Teacher",
+    rating: 5
+  }
+]
+
+const stats = [
+  { number: "500+", label: "Teachers Using" },
+  { number: "2,000+", label: "Lessons Generated" },
+  { number: "4.9/5", label: "Teacher Rating" },
+  { number: "85%", label: "Time Saved" }
+]
 
 export default function TaughtfulLanding() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
-  const [showSampleLesson, setShowSampleLesson] = useState(false)
-  const [selectedCurriculum, setSelectedCurriculum] = useState("acara")
+  const [currentTestimonial, setCurrentTestimonial] = useState(0)
 
   const {
     register,
@@ -80,6 +100,14 @@ export default function TaughtfulLanding() {
   } = useForm<WaitlistFormData>({
     resolver: zodResolver(waitlistSchema),
   })
+
+  // Auto-rotate testimonials
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
+    }, 4000)
+    return () => clearInterval(timer)
+  }, [])
 
   const onSubmit = async (data: WaitlistFormData) => {
     setIsSubmitting(true)
@@ -111,783 +139,412 @@ export default function TaughtfulLanding() {
   const yearLevels = watch("yearLevels")
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
+    <div className="min-h-screen bg-background">
       <Header />
       
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-[#FD6585]/10 to-[#FF9A2E]/10 rounded-full blur-xl animate-float"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-br from-[#888625]/10 to-[#FD6585]/10 rounded-full blur-lg animate-float delay-1000"></div>
-        <div className="absolute bottom-40 left-20 w-40 h-40 bg-gradient-to-br from-[#FF9A2E]/10 to-[#888625]/10 rounded-full blur-2xl animate-float delay-2000"></div>
-        <div className="absolute bottom-20 right-10 w-28 h-28 bg-gradient-to-br from-[#FD6585]/10 to-[#FF9A2E]/10 rounded-full blur-xl animate-float delay-500"></div>
-      </div>
-
-      {/* 1. HERO SECTION */}
-      <section className="py-32 px-4 bg-gradient-to-br from-white via-[#FDE5DA]/20 to-white relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-8 left-1/4 w-12 h-12 bg-[#FD6585]/30 rounded-full animate-bounce delay-0 hover:scale-200 transition-all duration-500 cursor-pointer shadow-lg"></div>
-          <div className="absolute top-16 right-1/3 w-8 h-8 bg-[#888625]/40 rounded-full animate-bounce delay-300 hover:scale-200 transition-all duration-500 cursor-pointer shadow-lg"></div>
-          <div className="absolute bottom-8 left-1/3 w-16 h-16 bg-[#FF9A2E]/20 rounded-full animate-bounce delay-700 hover:scale-150 transition-all duration-500 cursor-pointer shadow-xl"></div>
-          <div className="absolute bottom-16 right-1/4 w-10 h-10 bg-[#FD6585]/35 rounded-full animate-bounce delay-1000 hover:scale-200 transition-all duration-500 cursor-pointer shadow-lg"></div>
-          <BookOpen className="absolute top-12 left-1/6 w-8 h-8 text-[#FD6585]/40 animate-float hover:text-[#FD6585] hover:scale-150 transition-all duration-500 cursor-pointer drop-shadow-lg" />
-          <Brain className="absolute bottom-12 right-1/6 w-10 h-10 text-[#888625]/40 animate-float delay-500 hover:text-[#888625] hover:scale-150 transition-all duration-500 cursor-pointer drop-shadow-lg" />
-          <Zap className="absolute top-1/2 left-10 w-6 h-6 text-[#FF9A2E]/40 animate-pulse hover:text-[#FF9A2E] hover:scale-150 transition-all duration-500 cursor-pointer" />
-          <Target
-            className="absolute top-1/3 right-10 w-7 h-7 text-[#FD6585]/40 animate-spin hover:text-[#FD6585] hover:scale-150 transition-all duration-500 cursor-pointer"
-            style={{ animationDuration: "8s" }}
-          />
-        </div>
-
-        <div className="container mx-auto max-w-7xl relative z-10">
-          <div className="text-center space-y-10 animate-fade-in mb-20">
-            <h1 className="text-6xl md:text-8xl font-black text-balance leading-tight font-fredoka hover:scale-105 transition-all duration-700 cursor-default">
-              <span className="text-foreground hover:text-[#888625] transition-colors duration-500">
-                Other AI tools?
-              </span>{" "}
-              <span className="text-[#FD6585] relative inline-block group cursor-pointer">
-                Absolute detention.
-                <div className="absolute -bottom-4 left-0 right-0 h-6 bg-gradient-to-r from-[#FD6585]/40 via-[#FF9A2E]/40 to-[#FD6585]/40 rounded-full -rotate-1 animate-pulse group-hover:bg-gradient-to-r group-hover:from-[#FD6585]/70 group-hover:via-[#FF9A2E]/70 group-hover:to-[#FD6585]/70 group-hover:scale-110 group-hover:rotate-1 transition-all duration-500"></div>
-                <Sparkles className="absolute -top-2 -right-2 w-6 h-6 text-[#FF9A2E] animate-pulse group-hover:animate-spin group-hover:scale-125 transition-all duration-500" />
+      {/* HERO SECTION */}
+      <section className="pt-16 pb-24 px-4 bg-gradient-to-br from-white via-[#FDE5DA]/20 to-white relative overflow-hidden">
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 bg-[#FD6585]/10 text-[#FD6585] px-4 py-2 rounded-full text-sm font-semibold mb-8 border border-[#FD6585]/20">
+              <Sparkles className="w-4 h-4" />
+              Trusted by 500+ Australian Teachers
+            </div>
+            
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-balance leading-tight font-fredoka mb-8">
+              <span className="text-foreground">Stop the</span>{" "}
+              <span className="text-[#FD6585] relative inline-block">
+                panic planning
+                <div className="absolute -bottom-2 left-0 right-0 h-4 bg-gradient-to-r from-[#FD6585]/40 via-[#FF9A2E]/40 to-[#FD6585]/40 rounded-full -rotate-1"></div>
               </span>
             </h1>
 
-            <p className="text-2xl md:text-3xl text-muted-foreground font-medium leading-relaxed font-nunito hover:text-foreground transition-all duration-500 hover:scale-105 cursor-default max-w-5xl mx-auto">
-              Generic AI doesn't get Australian classrooms. Taughtful does — curriculum v9 aligned, trauma-informed
-              scaffolding, Indigenous perspectives embedded.
+            <p className="text-xl md:text-2xl text-muted-foreground font-medium leading-relaxed max-w-4xl mx-auto mb-12">
+              Generate curriculum-aligned, trauma-informed lesson plans in minutes. 
+              Built specifically for Australian classrooms with Indigenous perspectives embedded.
             </p>
-          </div>
 
-          <div className="flex justify-center">
-            <div className="text-center animate-fade-in">
+            {/* Hero CTAs */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+              <Button
+                size="lg"
+                onClick={() => window.location.href = '/signup'}
+                className="px-8 py-6 text-lg font-bold bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] hover:from-[#FD6585]/90 hover:to-[#FF9A2E]/90 text-white shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 group rounded-2xl"
+              >
+                <Users className="mr-2 w-5 h-5 group-hover:animate-pulse" />
+                Start Free Demo
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+              
               <Button
                 variant="outline"
                 size="lg"
-                onClick={() => window.location.href = '/signup'}
-                className="px-10 py-6 text-xl font-bold bg-gradient-to-r from-transparent to-[#FD6585]/5 border-3 border-foreground hover:bg-gradient-to-r hover:from-[#FD6585]/10 hover:to-[#FF9A2E]/10 hover:border-[#FD6585] hover:scale-110 hover:-translate-y-2 transition-all duration-500 rounded-2xl shadow-lg hover:shadow-xl group"
+                onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+                className="px-8 py-6 text-lg font-semibold border-2 hover:bg-[#FD6585]/5 hover:border-[#FD6585] transition-all duration-300"
               >
-                <Users className="mr-3 w-6 h-6 group-hover:animate-pulse" />
-                🎯 Try Demo Mode
+                See How It Works
               </Button>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* 2. BANNER STRIP */}
-      <section className="py-24 px-4 bg-gradient-to-r from-[#FDE5DA] via-[#FFF2E8] to-[#FDE5DA] text-foreground text-center relative overflow-hidden border-y border-[#FD6585]/10">
-        <div className="absolute inset-0">
-          <Clock
-            className="absolute top-6 left-1/4 w-10 h-10 text-[#FD6585]/30 animate-spin hover:text-[#FD6585]/60 hover:scale-125 transition-all duration-500 cursor-pointer"
-            style={{ animationDuration: "8s" }}
-          />
-          <div className="absolute top-8 right-1/4 w-8 h-8 bg-[#FD6585]/20 rounded-full animate-pulse hover:bg-[#FD6585]/40 hover:scale-150 transition-all duration-500 cursor-pointer"></div>
-          <Sparkles className="absolute bottom-6 left-1/3 w-8 h-8 text-[#FF9A2E]/30 animate-pulse hover:text-[#FF9A2E]/60 hover:scale-125 transition-all duration-500 cursor-pointer" />
-        </div>
-        <div className="container mx-auto max-w-5xl relative space-y-8">
-          <h2 className="text-4xl md:text-6xl font-black font-fredoka hover:scale-105 transition-all duration-500 cursor-default text-black">
-            Teaching in Australia right now?{" "}
-            <span className="animate-fade-in delay-1000 inline-block hover:animate-bounce">It's a lot.</span>
-          </h2>
-          <p className="text-2xl md:text-3xl font-bold font-nunito hover:scale-105 transition-all duration-500 cursor-default text-foreground">
-            The hours. The admin. The endless "do more with less."
-          </p>
-          <p className="text-xl md:text-2xl font-medium font-nunito hover:scale-105 transition-all duration-500 cursor-default text-muted-foreground">
-            No wonder burnout is at an all-time high.
-          </p>
-          
-          {/* Revolutionary AI Technology Badge */}
-          <div className="mt-8 text-center">
-            <div className="inline-block bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] text-white px-6 py-3 rounded-full text-sm font-bold font-fredoka animate-pulse shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
-              🚀 Revolutionary AI Technology
-            </div>
-          </div>
-          
-          {/* RAG EXPLANATION */}
-          <div className="mt-16">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-black mb-6 font-fredoka text-gray-900">
-                RAG: Retrieval‑Augmented Generation
-              </h2>
-            </div>
-
-            {/* Main Differentiator Statement */}
-            <div className="mb-16">
-              <div className="bg-gradient-to-r from-[#FD6585]/10 via-[#FF9A2E]/10 to-[#888625]/10 rounded-3xl p-8 border border-[#FD6585]/20 shadow-lg">
-                <p className="text-lg md:text-xl text-gray-800 font-nunito leading-relaxed text-center max-w-5xl mx-auto">
-                  <span className="font-bold text-[#FD6585]">RAG (Retrieval-Augmented Generation)</span> is what sets Taughtful apart. 
-                  Instead of guessing from the internet, our AI retrieves trusted curriculum resources, augments them with 
-                  <span className="font-semibold text-[#888625]"> trauma-informed scaffolding and Aboriginal pedagogies</span>, 
-                  and generates aligned lesson plans. The result? 
-                  <span className="font-bold text-[#FF9A2E]"> Safe, respectful, accurate, and classroom-ready outputs every time.</span>
-                </p>
-              </div>
-            </div>
-
-            {/* Tagline Banner */}
-            <div className="mb-12">
-              <div className="bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] text-white rounded-2xl p-6 shadow-xl">
-                <p className="text-xl md:text-2xl font-bold font-fredoka text-center">
-                  RAG: trauma-informed, Indigenous perspectives embedded, curriculum-aligned. AI you can trust.
-                </p>
-              </div>
-            </div>
-
-            {/* Punchy One-Liner */}
-            <div className="mb-16 text-center">
-              <div className="inline-block bg-white border-3 border-[#888625] rounded-full px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                <p className="text-2xl font-black font-fredoka text-[#888625]">
-                  "Other AI guesses. RAG retrieves."
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-              {/* R = Retrieval */}
-              <div className="group">
-                <div className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 border-2 border-transparent hover:border-[#FD6585]/20">
-                  <div className="text-center mb-6">
-                    <div className="w-20 h-20 bg-gradient-to-br from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                      <span className="text-3xl font-black text-white font-fredoka">R</span>
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2 font-fredoka">Retrieval</h3>
+            {/* Benefits Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              {benefits.map((benefit, index) => (
+                <div key={index} className="flex flex-col items-center text-center p-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">
+                  <div className="w-12 h-12 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center text-white mb-4">
+                    {benefit.icon}
                   </div>
-                  <p className="text-gray-700 text-center font-nunito leading-relaxed">
-                    Finds and pulls the right curriculum resources before anything else.
-                  </p>
-                  <div className="mt-6 flex justify-center">
-                    <div className="w-full h-2 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  </div>
+                  <h3 className="text-lg font-bold text-foreground font-fredoka mb-2">{benefit.title}</h3>
+                  <p className="text-sm text-muted-foreground">{benefit.description}</p>
                 </div>
-              </div>
-
-              {/* A = Augmented */}
-              <div className="group">
-                <div className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 border-2 border-transparent hover:border-[#FF9A2E]/20">
-                  <div className="text-center mb-6">
-                    <div className="w-20 h-20 bg-gradient-to-br from-[#FF9A2E] to-[#888625] rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                      <span className="text-3xl font-black text-white font-fredoka">A</span>
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2 font-fredoka">Augmented</h3>
-                  </div>
-                  <p className="text-gray-700 text-center font-nunito leading-relaxed">
-                    Uses AI to shape those resources into clear, structured lesson scaffolds.
-                  </p>
-                  <div className="mt-6 flex justify-center">
-                    <div className="w-full h-2 bg-gradient-to-r from-[#FF9A2E] to-[#888625] rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  </div>
-                </div>
-              </div>
-
-              {/* G = Generation */}
-              <div className="group">
-                <div className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 border-2 border-transparent hover:border-[#888625]/20">
-                  <div className="text-center mb-6">
-                    <div className="w-20 h-20 bg-gradient-to-br from-[#888625] to-[#FD6585] rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                      <span className="text-3xl font-black text-white font-fredoka">G</span>
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2 font-fredoka">Generation</h3>
-                  </div>
-                  <p className="text-gray-700 text-center font-nunito leading-relaxed">
-                    Delivers a finished plan aligned to Australian Curriculum v9 that you can trust tomorrow.
-                  </p>
-                  <div className="mt-6 flex justify-center">
-                    <div className="w-full h-2 bg-gradient-to-r from-[#888625] to-[#FD6585] rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Trust & Safety Message */}
-            <div className="text-center">
-              <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-[#FD6585]/10 max-w-4xl mx-auto">
-                <div className="flex items-center justify-center mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center mr-4">
-                    <span className="text-white text-xl">🛡️</span>
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 font-fredoka">Trauma-Informed & Culturally Safe</h3>
-                </div>
-                <p className="text-lg text-gray-700 font-nunito leading-relaxed">
-                  Every lesson generated through RAG is built with trauma-informed practices and cultural safety at its core, 
-                  ensuring your students feel seen, heard, and supported in their learning journey.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. MULTI-CURRICULUM SUPPORT FEATURE */}
-      <section className="py-32 px-4 bg-gradient-to-br from-[#FDE5DA] via-[#FFF2E8] to-[#FDE5DA] relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-10 left-1/4 w-16 h-16 bg-[#FD6585]/20 rounded-full animate-bounce delay-0"></div>
-          <div className="absolute top-20 right-1/3 w-12 h-12 bg-[#888625]/20 rounded-full animate-bounce delay-300"></div>
-          <div className="absolute bottom-10 left-1/3 w-20 h-20 bg-[#FF9A2E]/20 rounded-full animate-bounce delay-700"></div>
-          <div className="absolute bottom-20 right-1/4 w-14 h-14 bg-[#FD6585]/20 rounded-full animate-bounce delay-1000"></div>
-        </div>
-
-        <div className="container mx-auto max-w-6xl relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-black text-foreground font-fredoka hover:scale-105 transition-all duration-700 cursor-default mb-6">
-              Built for Every Australian Classroom
-            </h2>
-            <p className="text-2xl md:text-3xl text-muted-foreground font-medium leading-relaxed font-nunito hover:text-foreground transition-all duration-500 hover:scale-105 cursor-default max-w-4xl mx-auto mb-8">
-              No matter which curriculum your state uses, Taughtful speaks your language.
-            </p>
-            <div className="w-32 h-1 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] mx-auto rounded-full"></div>
-          </div>
-
-          {/* Curriculum Showcase */}
-          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-12 border-4 border-[#FD6585]/20 shadow-2xl mb-12">
-            <div className="text-center mb-8">
-              <h3 className="text-3xl font-bold text-foreground font-fredoka mb-4">Choose Your Curriculum</h3>
-              <p className="text-lg text-muted-foreground">Select your state/territory for curriculum-aligned lesson plans</p>
-            </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-              {Object.entries(curriculumOptions).map(([key, curriculum]) => (
-                <button
-                  key={key}
-                  onClick={() => setSelectedCurriculum(key)}
-                  className={`p-6 rounded-2xl border-3 transition-all duration-300 hover:scale-105 hover:-translate-y-2 ${
-                    selectedCurriculum === key
-                      ? `border-[#FD6585] bg-gradient-to-r ${curriculum.color} text-white shadow-xl`
-                      : 'border-border hover:border-[#FD6585]/50 bg-white/80 hover:bg-white hover:shadow-lg'
-                  }`}
-                >
-                  <div className="text-center">
-                    <div className="text-lg font-bold mb-2">{curriculum.name.split(' ')[0]}</div>
-                    <div className="text-sm opacity-80 mb-3">{curriculum.description}</div>
-                    <div className="text-xs font-medium opacity-90">{curriculum.compliance}</div>
-                  </div>
-                </button>
               ))}
             </div>
-
-            <div className="text-center">
-              <div className="bg-gradient-to-r from-[#FD6585]/10 to-[#FF9A2E]/10 rounded-2xl p-6 border-2 border-[#FD6585]/20">
-                <h4 className="text-xl font-bold text-foreground font-fredoka mb-2">Currently Selected:</h4>
-                <p className="text-lg font-semibold text-[#FD6585]">
-                  {curriculumOptions[selectedCurriculum as keyof typeof curriculumOptions].name}
-                </p>
-                <p className="text-sm text-muted-foreground mt-2">
-                  {curriculumOptions[selectedCurriculum as keyof typeof curriculumOptions].compliance}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Benefits Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center group">
-              <div className="w-20 h-20 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-125 transition-all duration-500 shadow-lg">
-                <Target className="w-10 h-10 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-foreground font-fredoka mb-4 group-hover:text-[#FD6585] transition-colors duration-300">
-                Automatic Code Mapping
-              </h3>
-              <p className="text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-300">
-                One lesson plan automatically maps to multiple curriculum frameworks. No manual translation needed.
-              </p>
-            </div>
-
-            <div className="text-center group">
-              <div className="w-20 h-20 bg-gradient-to-r from-[#888625] to-[#FD6585] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-125 transition-all duration-500 shadow-lg">
-                <BookOpen className="w-10 h-10 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-foreground font-fredoka mb-4 group-hover:text-[#888625] transition-colors duration-300">
-                State-Specific Language
-              </h3>
-              <p className="text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-300">
-                NSW teachers see NESA outcomes. Victorian teachers see VCAA codes. Everyone gets their local terminology.
-              </p>
-            </div>
-
-            <div className="text-center group">
-              <div className="w-20 h-20 bg-gradient-to-r from-[#FF9A2E] to-[#888625] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-125 transition-all duration-500 shadow-lg">
-                <Users className="w-10 h-10 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-foreground font-fredoka mb-4 group-hover:text-[#FF9A2E] transition-colors duration-300">
-                Compliance Confidence
-              </h3>
-              <p className="text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-300">
-                Clear alignment statements give you confidence that your lessons meet official requirements.
-              </p>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* 5. THE FINE PRINT */}
-      <section className="py-24 px-4 bg-[#FDE5DA] relative overflow-hidden">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-4xl md:text-5xl font-black mb-4 text-foreground font-fredoka hover:scale-105 transition-transform duration-500">
-            The Fine Print
-          </h2>
-          <span className="block text-2xl md:text-3xl mb-16 text-muted-foreground">(No Nasty Surprises)</span>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-            <div className="space-y-6">
-              {["Free access during beta", "10 lessons per month", "Direct line to developers (actual humans)"].map(
-                (item, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-4 group bg-white/50 rounded-2xl p-6 hover:bg-white/80 transition-all duration-300"
-                  >
-                    <div className="text-4xl">✅</div>
-                    <span className="text-lg font-semibold font-fredoka group-hover:text-primary transition-colors duration-300">
-                      {item}
-                    </span>
-                  </div>
-                ),
-              )}
-            </div>
-            <div className="space-y-6">
-              {["Features will evolve as we listen", "Beta ends at launch (special pricing for early legends)"].map(
-                (item, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-4 group bg-white/50 rounded-2xl p-6 hover:bg-white/80 transition-all duration-300"
-                  >
-                    <div className="text-4xl">⚠️</div>
-                    <span className="text-lg font-semibold font-fredoka group-hover:text-primary transition-colors duration-300">
-                      {item}
-                    </span>
-                  </div>
-                ),
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. DON'T JUST TAKE OUR WORD */}
-      <section className="py-24 px-4 relative overflow-hidden">
+      {/* STATS SECTION */}
+      <section className="py-16 px-4 bg-gradient-to-r from-[#888625] to-[#4CAF50] text-white">
         <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl font-black text-foreground font-fredoka hover:scale-105 transition-transform duration-500 text-center md:text-7xl">
-              Don't Just Take Our Word
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            {stats.map((stat, index) => (
+              <div key={index} className="flex flex-col items-center">
+                <div className="text-3xl md:text-4xl font-black font-fredoka mb-2">{stat.number}</div>
+                <div className="text-sm md:text-base font-medium opacity-90">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section id="how-it-works" className="py-24 px-4 bg-gradient-to-br from-[#FDE5DA] via-white to-[#FDE5DA]">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-black text-foreground font-fredoka mb-6">
+              How Taughtful Works
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Our RAG (Retrieval-Augmented Generation) technology ensures every lesson is accurate, aligned, and culturally safe.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            {/* Step 1 */}
+            <div className="text-center group">
+              <div className="w-20 h-20 bg-gradient-to-br from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <span className="text-3xl font-black text-white font-fredoka">1</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 font-fredoka">Choose Your Details</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Select your curriculum, year level, and subject. Tell us about your class profile and learning needs.
+              </p>
+            </div>
+
+            {/* Step 2 */}
+            <div className="text-center group">
+              <div className="w-20 h-20 bg-gradient-to-br from-[#FF9A2E] to-[#888625] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <span className="text-3xl font-black text-white font-fredoka">2</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 font-fredoka">AI Retrieves & Augments</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Our AI finds the right curriculum resources and adds trauma-informed scaffolding and Indigenous perspectives.
+              </p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="text-center group">
+              <div className="w-20 h-20 bg-gradient-to-br from-[#888625] to-[#FD6585] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <span className="text-3xl font-black text-white font-fredoka">3</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 font-fredoka">Get Your Lesson Plan</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Receive a complete, classroom-ready lesson plan that you can trust and use immediately.
+              </p>
+            </div>
+          </div>
+
+          {/* Key Differentiator */}
+          <div className="bg-white rounded-3xl p-8 shadow-xl border-2 border-[#FD6585]/20 max-w-4xl mx-auto">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center mx-auto mb-6">
+                <Shield className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 font-fredoka">Why RAG Technology Matters</h3>
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                Unlike generic AI that guesses from the internet, our RAG system retrieves trusted curriculum resources first, 
+                then generates lessons with trauma-informed practices and authentic Indigenous perspectives built in.
+              </p>
+              <div className="inline-block bg-gradient-to-r from-[#888625] to-[#4CAF50] text-white px-6 py-3 rounded-full text-sm font-bold">
+                🛡️ Safe • Accurate • Respectful • Classroom-Ready
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section className="py-24 px-4 bg-white">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-black text-foreground font-fredoka mb-6">
+              Loved by Australian Teachers
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-            <div className="text-center md:text-center">
-              <blockquote className="text-2xl md:text-3xl font-medium italic mb-8 font-nunito">
-                "Finally, someone who gets what we actually need in classrooms."
-              </blockquote>
-              <p className="text-xl font-bold font-fredoka">— Sarah, Year 8 English</p>
-            </div>
-            <div className="space-y-8">
-              <div className="bg-[#FD6585] text-white rounded-full px-8 py-4 text-center font-bold text-lg hover:scale-105 transition-transform duration-300">
-                30+ teachers already testing
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-gradient-to-br from-[#FDE5DA] to-white rounded-3xl p-8 md:p-12 shadow-xl text-center">
+              <div className="flex justify-center mb-6">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-6 h-6 text-yellow-400 fill-current" />
+                ))}
               </div>
-              <div className="text-center">
-                <p className="text-lg font-semibold mb-6 font-fredoka">All F-10 subjects covered:</p>
-                <div className="flex justify-center gap-4 flex-wrap">
-                  <div className="flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full hover:scale-105 transition-transform duration-300">
-                    <BookOpen className="w-5 h-5" />
-                    <span className="font-medium">English</span>
-                  </div>
-                  <div className="flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-full hover:scale-105 transition-transform duration-300">
-                    <Calculator className="w-5 h-5" />
-                    <span className="font-medium">Mathematics</span>
-                  </div>
-                  <div className="flex items-center gap-2 bg-purple-100 text-purple-800 px-4 py-2 rounded-full hover:scale-105 transition-transform duration-300">
-                    <Flask className="w-5 h-5" />
-                    <span className="font-medium">Science</span>
-                  </div>
-                  <div className="flex items-center gap-2 bg-red-100 text-red-800 px-4 py-2 rounded-full hover:scale-105 transition-transform duration-300">
-                    <Heart className="w-5 h-5" />
-                    <span className="font-medium">Health & PE</span>
-                  </div>
-                  <div className="flex items-center gap-2 bg-orange-100 text-orange-800 px-4 py-2 rounded-full hover:scale-105 transition-transform duration-300">
-                    <Globe className="w-5 h-5" />
-                    <span className="font-medium">HASS</span>
-                  </div>
-                  <div className="flex items-center gap-2 bg-pink-100 text-pink-800 px-4 py-2 rounded-full hover:scale-105 transition-transform duration-300">
-                    <Sparkles className="w-5 h-5" />
-                    <span className="font-medium">The Arts</span>
-                  </div>
-                  <div className="flex items-center gap-2 bg-indigo-100 text-indigo-800 px-4 py-2 rounded-full hover:scale-105 transition-transform duration-300">
-                    <Zap className="w-5 h-5" />
-                    <span className="font-medium">Technologies</span>
-                  </div>
-                  <div className="flex items-center gap-2 bg-teal-100 text-teal-800 px-4 py-2 rounded-full hover:scale-105 transition-transform duration-300">
-                    <MessageCircle className="w-5 h-5" />
-                    <span className="font-medium">Languages</span>
-                  </div>
+              
+              <blockquote className="text-2xl md:text-3xl font-medium italic mb-8 text-gray-800">
+                "{testimonials[currentTestimonial].quote}"
+              </blockquote>
+              
+              <div className="flex items-center justify-center gap-4">
+                <div className="w-12 h-12 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center text-white font-bold">
+                  {testimonials[currentTestimonial].author.charAt(0)}
                 </div>
+                <div className="text-left">
+                  <div className="font-bold text-gray-900">{testimonials[currentTestimonial].author}</div>
+                  <div className="text-sm text-gray-600">{testimonials[currentTestimonial].role}</div>
+                </div>
+              </div>
+
+              <div className="flex justify-center gap-2 mt-8">
+                {testimonials.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentTestimonial(index)}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      index === currentTestimonial ? 'bg-[#FD6585]' : 'bg-gray-300'
+                    }`}
+                  />
+                ))}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 9. YOUR TURN (FORM) */}
-      <section className="py-32 px-4 bg-gradient-to-br from-muted/30 via-[#FDE5DA]/20 to-muted/30 relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-32 h-32 bg-[#FD6585]/10 rounded-full blur-2xl animate-float"></div>
-          <div className="absolute bottom-20 right-20 w-28 h-28 bg-[#888625]/10 rounded-full blur-xl animate-float delay-1000"></div>
+      {/* CURRICULUM COVERAGE */}
+      <section className="py-24 px-4 bg-gradient-to-br from-[#FDE5DA] via-[#FFF2E8] to-[#FDE5DA]">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-black text-foreground font-fredoka mb-6">
+              Every Australian Curriculum Covered
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              No matter which state you're in, Taughtful speaks your curriculum language.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+            {[
+              { name: "ACARA", desc: "v9 National", color: "from-[#FD6585] to-[#FF9A2E]" },
+              { name: "VCAA", desc: "Victorian F-10", color: "from-[#888625] to-[#FD6585]" },
+              { name: "NESA", desc: "NSW Syllabus", color: "from-[#FD6585] to-[#888625]" },
+              { name: "QCAA", desc: "Queensland", color: "from-[#FF9A2E] to-[#888625]" }
+            ].map((curriculum, index) => (
+              <div key={index} className="text-center p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                <div className={`w-16 h-16 bg-gradient-to-r ${curriculum.color} rounded-full flex items-center justify-center mx-auto mb-4`}>
+                  <span className="text-white font-black text-lg">{curriculum.name.charAt(0)}</span>
+                </div>
+                <h3 className="font-bold text-gray-900 mb-2">{curriculum.name}</h3>
+                <p className="text-sm text-gray-600">{curriculum.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <div className="inline-flex items-center gap-2 bg-white rounded-full px-6 py-3 shadow-lg">
+              <CheckCircle className="w-5 h-5 text-green-500" />
+              <span className="font-semibold">Automatic code mapping • State-specific language • 100% compliance</span>
+            </div>
+          </div>
         </div>
+      </section>
 
-        <div className="container mx-auto max-w-5xl text-center relative z-10">
-          <div className="bg-gradient-to-br from-white/80 via-[#FDE5DA]/60 to-white/80 rounded-3xl p-16 border-3 border-[#FD6585]/30 shadow-2xl backdrop-blur-sm hover:shadow-3xl hover:scale-[1.02] transition-all duration-700 group relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#FD6585]/5 via-transparent to-[#FF9A2E]/5 rounded-3xl"></div>
-            <div className="absolute top-8 right-8 w-16 h-16 bg-[#FD6585]/20 rounded-full blur-lg animate-pulse"></div>
-            <div className="absolute bottom-8 left-8 w-12 h-12 bg-[#888625]/20 rounded-full blur-md animate-pulse delay-500"></div>
+      {/* SUBJECT COVERAGE */}
+      <section className="py-16 px-4 bg-white">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-12">
+            <h3 className="text-2xl font-bold text-foreground font-fredoka mb-4">All F-10 Subjects Covered</h3>
+          </div>
+          
+          <div className="flex justify-center gap-4 flex-wrap">
+            {[
+              { icon: BookOpen, name: "English", color: "bg-blue-100 text-blue-800" },
+              { icon: Calculator, name: "Mathematics", color: "bg-green-100 text-green-800" },
+              { icon: Flask, name: "Science", color: "bg-purple-100 text-purple-800" },
+              { icon: Heart, name: "Health & PE", color: "bg-red-100 text-red-800" },
+              { icon: Globe, name: "HASS", color: "bg-orange-100 text-orange-800" },
+              { icon: Sparkles, name: "The Arts", color: "bg-pink-100 text-pink-800" },
+              { icon: Zap, name: "Technologies", color: "bg-indigo-100 text-indigo-800" },
+              { icon: MessageCircle, name: "Languages", color: "bg-teal-100 text-teal-800" }
+            ].map((subject, index) => (
+              <div key={index} className={`flex items-center gap-2 px-4 py-2 rounded-full hover:scale-105 transition-transform duration-300 ${subject.color}`}>
+                <subject.icon className="w-4 h-4" />
+                <span className="font-medium text-sm">{subject.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            <div className="relative z-10">
-              <h2 className="text-5xl md:text-6xl font-black mb-10 text-foreground font-fredoka group-hover:scale-105 transition-all duration-500 cursor-default">
-                Ready to ditch the panic planning?
-              </h2>
+      {/* FINAL CTA */}
+      <section className="py-32 px-4 bg-gradient-to-br from-[#FDE5DA] via-white to-[#FDE5DA] relative overflow-hidden">
+        <div className="container mx-auto max-w-4xl text-center relative z-10">
+          <div className="bg-white rounded-3xl p-12 shadow-2xl border-2 border-[#FD6585]/20">
+            <h2 className="text-4xl md:text-5xl font-black mb-6 text-foreground font-fredoka">
+              Ready to Reclaim Your Weekends?
+            </h2>
+            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Join 500+ Australian teachers who've already saved thousands of hours with Taughtful.
+            </p>
 
-              <form onSubmit={handleSubmit(onSubmit)} className="max-w-3xl mx-auto space-y-8 mb-12">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <Input
-                      {...register("email")}
-                      placeholder="Email (required)"
-                      type="email"
-                      className="bg-white/90 border-3 hover:border-[#FD6585]/60 focus:border-[#FD6585] transition-all duration-500 rounded-2xl h-16 text-lg shadow-lg hover:shadow-xl hover:scale-105 font-medium"
-                    />
-                    {errors.email && <p className="text-red-500 text-sm mt-2 font-medium">{errors.email.message}</p>}
-                  </div>
-                  <div>
-                    <Input
-                      {...register("name")}
-                      placeholder="Name (required)"
-                      className="bg-white/90 border-3 hover:border-[#FD6585]/60 focus:border-[#FD6585] transition-all duration-500 rounded-2xl h-16 text-lg shadow-lg hover:shadow-xl hover:scale-105 font-medium"
-                    />
-                    {errors.name && <p className="text-red-500 text-sm mt-2 font-medium">{errors.name.message}</p>}
-                  </div>
+            <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl mx-auto space-y-6 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Input
+                    {...register("email")}
+                    placeholder="Your email address"
+                    type="email"
+                    className="h-14 text-lg rounded-2xl border-2 hover:border-[#FD6585]/60 focus:border-[#FD6585]"
+                  />
+                  {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
                 </div>
                 <div>
-                  <Select onValueChange={(value) => setValue("yearLevels", value)} value={yearLevels}>
-                    <SelectTrigger className="bg-white/90 border-3 hover:border-[#FD6585]/60 focus:border-[#FD6585] transition-all duration-500 rounded-2xl h-16 text-lg shadow-lg hover:shadow-xl hover:scale-105 font-medium">
-                      <SelectValue placeholder="Year levels (dropdown)" />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-2xl border-2 border-[#FD6585]/20">
-                      <SelectItem value="primary" className="text-lg py-3 hover:bg-[#FD6585]/10 rounded-xl">
-                        Primary (K-6)
-                      </SelectItem>
-                      <SelectItem value="secondary" className="text-lg py-3 hover:bg-[#FD6585]/10 rounded-xl">
-                        Secondary (7-12)
-                      </SelectItem>
-                      <SelectItem value="both" className="text-lg py-3 hover:bg-[#FD6585]/10 rounded-xl">
-                        Both Primary & Secondary
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                  {errors.yearLevels && (
-                    <p className="text-red-500 text-sm mt-2 font-medium">{errors.yearLevels.message}</p>
-                  )}
+                  <Input
+                    {...register("name")}
+                    placeholder="Your name"
+                    className="h-14 text-lg rounded-2xl border-2 hover:border-[#FD6585]/60 focus:border-[#FD6585]"
+                  />
+                  {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
                 </div>
-                <Textarea
-                  {...register("planningHeadache")}
-                  placeholder="Biggest planning headache (optional)"
-                  className="bg-white/90 border-3 hover:border-[#FD6585]/60 focus:border-[#FD6585] transition-all duration-500 min-h-[140px] rounded-2xl text-lg shadow-lg hover:shadow-xl hover:scale-105 font-medium resize-none"
-                />
+              </div>
+              
+              <div>
+                <Select onValueChange={(value) => setValue("yearLevels", value)} value={yearLevels}>
+                  <SelectTrigger className="h-14 text-lg rounded-2xl border-2 hover:border-[#FD6585]/60 focus:border-[#FD6585]">
+                    <SelectValue placeholder="Which year levels do you teach?" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-2xl">
+                    <SelectItem value="primary" className="text-lg py-3">Primary (K-6)</SelectItem>
+                    <SelectItem value="secondary" className="text-lg py-3">Secondary (7-12)</SelectItem>
+                    <SelectItem value="both" className="text-lg py-3">Both Primary & Secondary</SelectItem>
+                  </SelectContent>
+                </Select>
+                {errors.yearLevels && <p className="text-red-500 text-sm mt-1">{errors.yearLevels.message}</p>}
+              </div>
 
-                <div className="flex flex-col items-center gap-8">
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    size="lg"
-                    className="bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] hover:from-[#FD6585]/90 hover:to-[#FF9A2E]/90 text-white px-12 py-6 text-2xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110 hover:-translate-y-2 group rounded-2xl border-2 border-white/20 hover:border-white/40 relative overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:translate-y-0"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent rounded-2xl"></div>
-                    <Zap className="mr-3 w-7 h-7 group-hover:animate-bounce relative z-10" />
-                    <span className="relative z-10">{isSubmitting ? "Joining..." : "Get Beta Access"}</span>
-                    <ArrowRight className="ml-3 w-7 h-7 group-hover:translate-x-2 group-hover:animate-bounce transition-all duration-300 relative z-10" />
-                    <Sparkles className="absolute top-2 right-2 w-5 h-5 text-white/60 animate-pulse group-hover:animate-spin" />
-                  </Button>
+              <Textarea
+                {...register("planningHeadache")}
+                placeholder="What's your biggest lesson planning challenge? (optional)"
+                className="min-h-[100px] text-lg rounded-2xl border-2 hover:border-[#FD6585]/60 focus:border-[#FD6585] resize-none"
+              />
 
-                  {submitStatus === "success" && (
-                    <div className="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-2xl font-medium">
-                      🎉 Welcome to the beta! Check your email for next steps.
-                    </div>
-                  )}
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                size="lg"
+                className="w-full h-16 text-xl font-bold bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] hover:from-[#FD6585]/90 hover:to-[#FF9A2E]/90 text-white shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 rounded-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-3"></div>
+                    Getting Your Access...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="mr-3 w-6 h-6" />
+                    Get Free Beta Access
+                    <ArrowRight className="ml-3 w-6 h-6" />
+                  </>
+                )}
+              </Button>
 
-                  {submitStatus === "error" && (
-                    <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-2xl font-medium">
-                      Something went wrong. Please try again or email us directly at hello@taughtful.com.au
-                    </div>
-                  )}
-
-                  <p className="text-muted-foreground font-medium hover:text-foreground transition-all duration-500 text-lg hover:scale-105 cursor-default">
-                    No card. No commitment. Just honesty.
-                  </p>
+              {submitStatus === "success" && (
+                <div className="bg-green-50 border border-green-200 text-green-700 px-6 py-4 rounded-2xl font-medium">
+                  🎉 Welcome to the beta! Check your email for next steps.
                 </div>
-              </form>
+              )}
+
+              {submitStatus === "error" && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-2xl font-medium">
+                  Something went wrong. Please try again or email us at hello@taughtful.com.au
+                </div>
+              )}
+            </form>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-gray-600">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-green-500" />
+                <span>Free during beta</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-green-500" />
+                <span>No credit card required</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-green-500" />
+                <span>Cancel anytime</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 11. FOOTER */}
-      <footer className="border-t-2 border-border/50 py-16 px-4 bg-[#333333] text-white">
+      {/* FOOTER */}
+      <footer className="bg-[#333333] text-white py-16 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center space-y-8">
-            <div className="flex items-center justify-center gap-3 group">
-              <div className="w-10 h-10 relative group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#FD6585] to-[#FF9A2E] rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
-                <Image
-                  src="/images/taughtful-logo.png"
-                  alt="Taughtful"
-                  width={40}
-                  height={40}
-                  className="rounded-full shadow-lg group-hover:shadow-xl relative z-10"
-                />
-              </div>
-              <span className="text-2xl font-bold font-fredoka group-hover:text-[#FD6585] transition-colors duration-300">
-                Taughtful
-              </span>
+            <div className="flex items-center justify-center gap-3">
+              <Image
+                src="/images/taughtful-logo.png"
+                alt="Taughtful"
+                width={40}
+                height={40}
+                className="rounded-full"
+              />
+              <span className="text-2xl font-bold font-fredoka">Taughtful</span>
             </div>
 
-            <div className="space-y-4 text-white/80 font-nunito">
-              <p className="hover:text-white transition-colors duration-300">
-                Contact:{" "}
-                <a href="mailto:hello@taughtful.com.au" className="hover:text-[#FD6585] transition-colors duration-300">
-                  hello@taughtful.com.au
-                </a>
-              </p>
-              <div className="flex justify-center gap-2 my-6">
-                <div className="w-2 h-2 bg-[#FD6585] rounded-full"></div>
-                <div className="w-2 h-2 bg-[#FF9A2E] rounded-full"></div>
-                <div className="w-2 h-2 bg-[#888625] rounded-full"></div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+              <div>
+                <h4 className="font-bold mb-4">Contact</h4>
+                <p className="text-white/80">
+                  <a href="mailto:hello@taughtful.com.au" className="hover:text-[#FD6585] transition-colors">
+                    hello@taughtful.com.au
+                  </a>
+                </p>
               </div>
-              <p className="hover:text-white transition-colors duration-300">
-                Built with respect for First Nations knowledge
-              </p>
-              <p className="hover:text-white transition-colors duration-300">
-                For Australian teachers. For Australian classrooms.
-              </p>
-              <div className="mt-4 p-4 bg-white/10 rounded-lg">
-                <p className="text-sm font-semibold mb-2">Curriculum Compliance:</p>
-                <div className="grid grid-cols-2 gap-2 text-xs">
+              
+              <div>
+                <h4 className="font-bold mb-4">Curriculum Support</h4>
+                <div className="text-white/80 space-y-1">
                   <div>✓ ACARA v9 aligned</div>
-                  <div>✓ Victorian Curriculum F–10</div>
-                  <div>✓ NSW Syllabus outcomes</div>
-                  <div>✓ WA Curriculum Outline</div>
+                  <div>✓ All state curricula</div>
+                  <div>✓ F-10 subjects covered</div>
                 </div>
               </div>
+              
+              <div>
+                <h4 className="font-bold mb-4">Built With Respect</h4>
+                <p className="text-white/80 text-sm">
+                  Indigenous perspectives embedded with proper cultural protocols and community guidance.
+                </p>
+              </div>
             </div>
 
-            <div className="border-t border-white/20 pt-8 text-white/60 font-nunito text-sm">
-              <p>
-                All Indigenous cultural materials displayed in Taughtful are used with proper attribution and within the
-                scope of their original permissions. Taughtful does not modify, generate, or repurpose any cultural
-                content and advises teachers to avoid doing so.
-              </p>
-              
-              {/* Admin Button */}
-              <div className="mt-6 flex justify-center">
-                <a
-                  href="/admin"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white/80 hover:text-white rounded-lg transition-all duration-300 text-sm font-medium border border-white/20 hover:border-white/40"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  Admin Dashboard
-                </a>
-              </div>
+            <div className="border-t border-white/20 pt-8 text-white/60 text-sm">
+              <p>© 2024 Taughtful. Built for Australian teachers, by Australian educators.</p>
             </div>
           </div>
         </div>
       </footer>
-
-      {/* Sample Lesson Plan Modal */}
-      {showSampleLesson && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border-4 border-[#FD6585]/20">
-            <div className="p-8">
-              {/* Header */}
-              <div className="flex justify-between items-center mb-8">
-                <h2 className="text-4xl font-black text-foreground font-fredoka">
-                  Sample Lesson Plan
-                </h2>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowSampleLesson(false)}
-                  className="rounded-full w-10 h-10 p-0 hover:bg-[#FD6585]/10 hover:border-[#FD6585]"
-                >
-                  ✕
-                </Button>
-              </div>
-
-              {/* Sample Lesson Content */}
-              <div className="space-y-8">
-                <div className="bg-gradient-to-r from-[#FD6585]/10 to-[#FF9A2E]/10 rounded-2xl p-6 border-2 border-[#FD6585]/20">
-                  <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-2xl font-bold text-foreground font-fredoka">Year 8 English - Poetry Analysis</h3>
-                    <div className="bg-white/80 rounded-lg px-3 py-1 text-sm font-semibold text-[#FD6585]">
-                      {curriculumOptions[selectedCurriculum as keyof typeof curriculumOptions].compliance}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <h4 className="text-lg font-semibold text-[#FD6585] mb-2">Learning Intentions</h4>
-                      <ul className="space-y-2 text-muted-foreground">
-                        <li>• Analyse poetic devices in contemporary Australian poetry</li>
-                        <li>• Connect themes to personal experiences</li>
-                        <li>• Develop critical thinking through discussion</li>
-                      </ul>
-                      <div className="mt-3 p-3 bg-white/50 rounded-lg">
-                        <h5 className="text-sm font-semibold text-foreground mb-2">Curriculum Codes:</h5>
-                        {selectedCurriculum === 'acara' && (
-                          <p className="text-xs text-muted-foreground">AC9E8LE04, AC9E8LY01, AC9E8LY03</p>
-                        )}
-                        {selectedCurriculum === 'vic' && (
-                          <p className="text-xs text-muted-foreground">VCELT418, VCELT419, VCCCTQ043</p>
-                        )}
-                        {selectedCurriculum === 'nsw' && (
-                          <p className="text-xs text-muted-foreground">EN4-1A, EN4-2A, EN4-5C</p>
-                        )}
-                        {selectedCurriculum === 'wa' && (
-                          <p className="text-xs text-muted-foreground">AC9E8LE04, AC9E8LY01, AC9E8LY03</p>
-                        )}
-                      </div>
-                    </div>
-                    <div>
-                      <h4 className="text-lg font-semibold text-[#FF9A2E] mb-2">Success Criteria</h4>
-                      <ul className="space-y-2 text-muted-foreground">
-                        <li>• Identify 3+ poetic devices with examples</li>
-                        <li>• Explain how devices create meaning</li>
-                        <li>• Participate in respectful discussion</li>
-                      </ul>
-                      <div className="mt-3 p-3 bg-white/50 rounded-lg">
-                        <h5 className="text-sm font-semibold text-foreground mb-2">Assessment Focus:</h5>
-                        <p className="text-xs text-muted-foreground">
-                          {selectedCurriculum === 'vic' && 'Critical & Creative Thinking Capability'}
-                          {selectedCurriculum === 'nsw' && 'Reading & Viewing outcomes'}
-                          {selectedCurriculum === 'wa' && 'Comprehension strategies'}
-                          {selectedCurriculum === 'acara' && 'Literacy: Analysing texts'}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-white border-2 border-[#888625]/20 rounded-2xl p-6">
-                    <h4 className="text-lg font-semibold text-[#888625] mb-4 flex items-center">
-                      <Clock className="w-5 h-5 mr-2" />
-                      Lesson Structure (50 min)
-                    </h4>
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center">
-                        <span className="font-medium">Welcome & Check-in</span>
-                        <span className="text-sm text-muted-foreground">5 min</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="font-medium">Poem Introduction</span>
-                        <span className="text-sm text-muted-foreground">10 min</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="font-medium">Analysis Activity</span>
-                        <span className="text-sm text-muted-foreground">25 min</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="font-medium">Reflection & Exit</span>
-                        <span className="text-sm text-muted-foreground">10 min</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-white border-2 border-[#FD6585]/20 rounded-2xl p-6">
-                    <h4 className="text-lg font-semibold text-[#FD6585] mb-4 flex items-center">
-                      <Heart className="w-5 h-5 mr-2" />
-                      Trauma-Informed Elements
-                    </h4>
-                    <div className="space-y-3">
-                      <div className="flex items-start gap-2">
-                        <span className="text-green-500">✓</span>
-                        <span className="text-sm">Predictable routine with visual timer</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <span className="text-green-500">✓</span>
-                        <span className="text-sm">Choice in analysis approach</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <span className="text-green-500">✓</span>
-                        <span className="text-sm">Low-stakes entry task</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <span className="text-green-500">✓</span>
-                        <span className="text-sm">Co-regulation breathing space</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-r from-[#888625]/10 to-[#FD6585]/10 rounded-2xl p-6 border-2 border-[#888625]/20">
-                  <h4 className="text-lg font-semibold text-[#888625] mb-4 flex items-center">
-                    <Users className="w-5 h-5 mr-2" />
-                    Cultural Considerations
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <h5 className="font-semibold text-foreground mb-2">Indigenous Perspectives</h5>
-                      <p className="text-sm text-muted-foreground">
-                        Teacher-selected contemporary Indigenous poets with proper attribution. 
-                        Students explore themes of connection to Country.
-                      </p>
-                    </div>
-                    <div>
-                      <h5 className="font-semibold text-foreground mb-2">Cultural Safety</h5>
-                      <p className="text-sm text-muted-foreground">
-                        No AI-generated Indigenous content. All materials vetted by cultural advisors. 
-                        Students choose their level of engagement.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white border-2 border-[#FF9A2E]/20 rounded-2xl p-6">
-                  <h4 className="text-lg font-semibold text-[#FF9A2E] mb-4 flex items-center">
-                    <Target className="w-5 h-5 mr-2" />
-                    Assessment & Differentiation
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                      <h5 className="font-semibold text-foreground mb-2">Formative Assessment</h5>
-                      <p className="text-sm text-muted-foreground">
-                        Exit ticket: One poetic device identified with explanation
-                      </p>
-                    </div>
-                    <div>
-                      <h5 className="font-semibold text-foreground mb-2">Support</h5>
-                      <p className="text-sm text-muted-foreground">
-                        Visual device cards, peer buddy system, extended time
-                      </p>
-                    </div>
-                    <div>
-                      <h5 className="font-semibold text-foreground mb-2">Extension</h5>
-                      <p className="text-sm text-muted-foreground">
-                        Compare devices across multiple poems, create own examples
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Footer */}
-              <div className="mt-8 pt-6 border-t border-border/50 text-center">
-                <p className="text-muted-foreground font-medium mb-4">
-                  This is how Taughtful structures lesson plans - with intention, care, and cultural respect.
-                </p>
-                <Button
-                  onClick={() => setShowSampleLesson(false)}
-                  className="bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] hover:from-[#FD6585]/90 hover:to-[#FF9A2E]/90 text-white px-8 py-3 font-bold rounded-2xl"
-                >
-                  Close Sample
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

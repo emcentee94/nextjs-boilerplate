@@ -20,7 +20,6 @@ import {
   Zap,
   Target,
   CheckCircle,
-  Star,
   TrendingUp,
 } from "lucide-react"
 import Image from "next/image"
@@ -28,6 +27,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useState, useEffect } from "react"
+import { motion } from 'framer-motion'
 
 const waitlistSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -37,45 +37,6 @@ const waitlistSchema = z.object({
 })
 
 type WaitlistFormData = z.infer<typeof waitlistSchema>
-
-const benefits = [
-  {
-    icon: <Clock className="w-6 h-6" />,
-    title: "Save 3+ Hours Weekly",
-    description: "Stop spending weekends on lesson plans"
-  },
-  {
-    icon: <Shield className="w-6 h-6" />,
-    title: "100% Curriculum Aligned",
-    description: "ACARA v9, VCAA, NESA, QCAA, SCSA compliant"
-  },
-  {
-    icon: <Heart className="w-6 h-6" />,
-    title: "Trauma-Informed Design",
-    description: "Built with student wellbeing at the core"
-  }
-]
-
-const testimonials = [
-  {
-    quote: "Finally, someone who gets what we actually need in classrooms.",
-    author: "Sarah M.",
-    role: "Year 8 English Teacher",
-    rating: 5
-  },
-  {
-    quote: "The Indigenous perspectives integration is respectful and authentic.",
-    author: "David L.",
-    role: "Primary School Principal",
-    rating: 5
-  },
-  {
-    quote: "Saves me hours every week. The trauma-informed approach is game-changing.",
-    author: "Emma K.",
-    role: "Year 5 Teacher",
-    rating: 5
-  }
-]
 
 const stats = [
   { number: "30+", label: "Teachers Testing" },
@@ -87,7 +48,7 @@ const stats = [
 export default function TaughtfulLanding() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
-  const [currentTestimonial, setCurrentTestimonial] = useState(0)
+  // Testimonials removed; no rotation state needed
 
   const {
     register,
@@ -100,13 +61,7 @@ export default function TaughtfulLanding() {
     resolver: zodResolver(waitlistSchema),
   })
 
-  // Auto-rotate testimonials
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
-    }, 4000)
-    return () => clearInterval(timer)
-  }, [])
+  // Removed testimonial rotation effect
 
   const onSubmit = async (data: WaitlistFormData) => {
     setIsSubmitting(true)
@@ -138,9 +93,9 @@ export default function TaughtfulLanding() {
   const yearLevels = watch("yearLevels")
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-[#FDE5DA] via-[#FFF2E8] to-[#FDE5DA]">
       {/* HERO SECTION */}
-      <section className="pt-16 pb-24 px-4 bg-gradient-to-br from-white via-[#FDE5DA]/20 to-white relative overflow-hidden">
+      <section className="pt-16 pb-24 px-4 bg-transparent relative overflow-hidden rounded-3xl mx-4 md:mx-6 lg:mx-8">
         {/* Playful Background Elements */}
         <div className="absolute inset-0 pointer-events-none">
           {/* Floating circles */}
@@ -161,7 +116,7 @@ export default function TaughtfulLanding() {
             <path d="M0,50 Q50,80 100,50 T200,50" stroke="#888625" strokeWidth="3" fill="none" className="animate-pulse" style={{animationDelay: '1s'}}/>
           </svg>
         </div>
-        
+
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-16">
             
@@ -174,59 +129,52 @@ export default function TaughtfulLanding() {
               </span>
             </h1>
 
-            <p className="text-2xl md:text-3xl lg:text-4xl text-gray-700 font-bold leading-relaxed max-w-5xl mx-auto mb-16">
-              Generate <span className="bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] bg-clip-text text-transparent font-black">curriculum-aligned</span>, <em className="text-[#888625] font-black">trauma-informed</em> lesson plans in <span className="underline decoration-[#FD6585] decoration-4 underline-offset-4 font-black">minutes</span>. 
+            <p className="text-xl md:text-2xl lg:text-3xl text-gray-600 leading-relaxed max-w-4xl mx-auto mb-16 font-nunito">
+              Generate <span className="text-[#888625] font-semibold">curriculum-aligned, trauma-informed</span> lesson plans in minutes.
               <br className="hidden md:block" />
-              Built specifically for <span className="bg-[#888625] text-white px-3 py-1 rounded-full font-black">Australian classrooms</span> with Indigenous perspectives embedded.
+              Built specifically for Australian classrooms.
             </p>
 
             {/* Hero CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-              <Button
-                size="lg"
-                onClick={() => window.location.href = '/signup'}
-                className="px-8 py-6 text-lg font-bold bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] hover:from-[#FD6585]/90 hover:to-[#FF9A2E]/90 text-white shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 group rounded-2xl"
+            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={() => window.location.href = '/signup'}
+                className="w-48 h-48 rounded-full border-2 border-[#FD6585] text-[#FD6585] hover:bg-[#FD6585]/10 shadow-md hover:shadow-lg transition-all duration-700 group flex flex-col items-center justify-center text-center font-nunito bg-[#FD6585]/5 px-4"
               >
-                <Users className="mr-2 w-5 h-5 group-hover:animate-pulse" />
-                Start Free Demo
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <Users className="w-6 h-6 mb-2 group-hover:animate-pulse" />
+                <span className="text-lg font-semibold mb-1 text-wrap">Start Free Demo</span>
+                <span className="text-sm opacity-80 text-wrap">✨ No signup needed</span>
               </Button>
               
               <Button
                 variant="outline"
                 size="lg"
                 onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-8 py-6 text-lg font-semibold border-2 hover:bg-[#FD6585]/5 hover:border-[#FD6585] transition-all duration-300"
+                className="w-48 h-48 rounded-full border-2 border-[#888625] text-[#888625] hover:bg-[#888625]/10 shadow-md hover:shadow-lg transition-all duration-700 group flex flex-col items-center justify-center text-center font-nunito bg-[#888625]/5 px-4"
               >
-                See How It Works
-              </Button>
+                <ArrowRight className="w-6 h-6 mb-2 group-hover:animate-pulse rotate-90" />
+                <span className="text-lg font-semibold mb-1 text-wrap">See How It Works</span>
+                <span className="text-sm opacity-70 text-wrap">🤔 Just curious?</span>
+                </Button>
             </div>
 
-            {/* Benefits Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              {benefits.map((benefit, index) => (
-                <div key={index} className="flex flex-col items-center text-center p-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">
-                  <div className="w-12 h-12 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center text-white mb-4">
-                    {benefit.icon}
-                  </div>
-                  <h3 className="text-lg font-bold text-foreground font-fredoka mb-2">{benefit.title}</h3>
-                  <p className="text-sm text-muted-foreground">{benefit.description}</p>
-                </div>
-              ))}
-            </div>
+            {/* Remove this entire benefits grid */}
+
           </div>
         </div>
       </section>
 
 
       {/* RAG COMPARISON SECTION */}
-      <section id="how-it-works" className="py-24 px-4 bg-gradient-to-br from-[#FDE5DA] via-white to-[#FDE5DA] relative overflow-hidden">
+      <section id="how-it-works" className="py-12 px-4 bg-transparent relative overflow-hidden border-4 border-[#888625] rounded-3xl mx-4 md:mx-6 lg:mx-8">
         {/* Decorative Elements */}
         <div className="absolute inset-0 pointer-events-none">
           {/* Paper airplane paths */}
           <div className="absolute top-16 left-8 transform rotate-12">
             <div className="w-8 h-8 text-[#FF9A2E]/30 animate-pulse">✈️</div>
-          </div>
+            </div>
           <div className="absolute top-32 right-12 transform -rotate-12">
             <div className="w-6 h-6 text-[#FD6585]/40 animate-bounce" style={{animationDelay: '0.5s', animationDuration: '2s'}}>🎯</div>
           </div>
@@ -239,176 +187,133 @@ export default function TaughtfulLanding() {
           <svg className="absolute top-1/3 left-1/4 w-32 h-16 opacity-20" viewBox="0 0 100 50">
             <line x1="0" y1="25" x2="100" y2="25" stroke="#888625" strokeWidth="2" strokeDasharray="5,5" className="animate-pulse"/>
           </svg>
-        </div>
-        
+            </div>
+
         <div className="container mx-auto max-w-6xl relative z-10">
-          {/* Teacher Quote */}
-          <div className="mb-12 text-center">
-            <div className="inline-flex items-center gap-2 bg-[#FD6585]/10 text-[#FD6585] px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-[#FD6585]/20">
-              Built for teachers, not tech demos
-            </div>
-            
-            <Card className="rounded-2xl border inline-block text-left max-w-3xl bg-white shadow-lg">
-              <CardContent className="p-6 md:p-8">
-                <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-white text-lg">"</span>
-                  </div>
-                  <p className="text-base md:text-lg text-gray-700 italic leading-relaxed">
+          {/* Testimonial Cards Row */}
+          <div className="mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
+              <Card className="rounded-2xl shadow-lg border-2 border-[#FD6585] bg-[#FD6585] text-white">
+                <CardContent className="p-6 md:p-8">
+                  <p className="text-base md:text-lg italic leading-relaxed">
                     "I've tested AI tools for quizzes, slides, and lessons—options are obvious, slides dated, language awkward, visuals wrong. I end up reworking everything."
-                    <span className="block mt-3 not-italic text-gray-600 font-medium"> — Year 9 Science teacher (VIC)</span>
                   </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Punchy RAG explainer */}
-          <div className="mb-12">
-            <Card className="rounded-3xl border bg-gradient-to-r from-[#FD6585]/5 via-[#FF9A2E]/5 to-[#888625]/5 shadow-xl">
-              <CardContent className="p-8 md:p-12 space-y-8 text-center">
-                <div className="flex items-center justify-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center">
-                    <Sparkles className="h-6 w-6 text-white" />
-                  </div>
-                  <h3 className="text-2xl md:text-3xl font-black text-foreground font-fredoka">The Secret Sauce: RAG</h3>
-                </div>
-                
-                <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-4xl mx-auto">
-                  This is where <span className="font-bold text-[#FD6585]">Taughtful leaps ahead of every other AI tool</span>. RAG—Retrieval‑Augmented Generation—means our AI doesn't wing it. It <span className="font-bold text-[#888625]">hunts down trusted curriculum, pedagogy frameworks, and assessment examples first</span>, then crafts content grounded in that evidence.
-                </p>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="p-6 bg-white rounded-2xl shadow-lg border border-[#FD6585]/10">
-                    <div className="w-16 h-16 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-2xl font-black text-white font-fredoka">1</span>
-                    </div>
-                    <span className="block font-bold text-foreground mb-2 font-fredoka text-lg">Retrieve</span>
-                    <p className="text-gray-600">Finds only vetted sources you'd trust in class.</p>
-                  </div>
-                  <div className="p-6 bg-white rounded-2xl shadow-lg border border-[#FF9A2E]/10">
-                    <div className="w-16 h-16 bg-gradient-to-r from-[#FF9A2E] to-[#888625] rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-2xl font-black text-white font-fredoka">2</span>
-                    </div>
-                    <span className="block font-bold text-foreground mb-2 font-fredoka text-lg">Ground</span>
-                    <p className="text-gray-600">Anchors language, structure, and examples in real pedagogy.</p>
-                  </div>
-                  <div className="p-6 bg-white rounded-2xl shadow-lg border border-[#888625]/10">
-                    <div className="w-16 h-16 bg-gradient-to-r from-[#888625] to-[#FD6585] rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-2xl font-black text-white font-fredoka">3</span>
-                    </div>
-                    <span className="block font-bold text-foreground mb-2 font-fredoka text-lg">Deliver</span>
-                    <p className="text-gray-600">Hands you lessons, quizzes, and slides that are <span className="font-bold">classroom‑ready</span>.</p>
-                  </div>
-                </div>
-                
-                <p className="text-xl md:text-2xl font-bold text-foreground font-fredoka">
-                  The payoff? <span className="text-[#FD6585]">No rewrites. No wasted time. Just teaching resources that click</span>—making sign‑up a no‑brainer.
-                </p>
-                
-                <Button 
-                  size="lg" 
-                  className="px-8 py-6 text-lg font-bold bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] hover:from-[#FD6585]/90 hover:to-[#FF9A2E]/90 text-white shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 rounded-2xl"
-                  onClick={() => window.location.href = '/signup'}
-                >
-                  <Users className="mr-2 w-5 h-5" />
-                  Try Demo Mode
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Side-by-side comparison */}
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            <Card className="rounded-2xl border bg-white shadow-lg">
-              <CardHeader className="pb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                    <span className="text-red-600 text-xl">✕</span>
-                  </div>
-                  <CardTitle className="text-xl md:text-2xl font-bold font-fredoka text-gray-900">Generic AI Tools</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <ComparisonRow icon="📊" text={<>Slides feel <span className="font-semibold text-red-600">dated and generic</span></>} />
-                <ComparisonRow icon="❓" text={<><span className="font-semibold text-red-600">Quiz options</span> are obvious or irrelevant</>} />
-                <ComparisonRow icon="💬" text={<>Tone is <span className="font-semibold text-red-600">awkward or too stiff</span></>} />
-                <ComparisonRow icon="🖼️" text={<>Diagrams are <span className="font-semibold text-red-600">wrong or irrelevant</span></>} />
-                <ComparisonRow icon="⏰" text={<>"Saves time" but forces <span className="font-semibold text-red-600">rework</span></>} />
-              </CardContent>
-            </Card>
-
-            <Card className="rounded-2xl border bg-white shadow-lg">
-              <CardHeader className="pb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                    <CheckCircle className="h-6 w-6 text-green-600" />
-                  </div>
-                  <CardTitle className="text-xl md:text-2xl font-bold font-fredoka text-gray-900">Taughtful with RAG</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <ComparisonRow icon="📊" text={<>Slides follow <span className="font-semibold text-[#888625]">evidence-based pedagogy</span></>} />
-                <ComparisonRow icon="❓" text={<><span className="font-semibold text-[#888625]">Quiz options</span> use real student misconceptions</>} />
-                <ComparisonRow icon="💬" text={<><span className="font-semibold text-[#888625]">Teacher-ready tone</span>, scaffolded and natural</>} />
-                <ComparisonRow icon="🖼️" text={<><span className="font-semibold text-[#888625]">Curriculum-aligned</span> visuals</>} />
-                <ComparisonRow icon="⏰" text={<><span className="font-semibold text-[#888625]">Classroom-ready</span> on day one</>} />
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* TESTIMONIALS */}
-      <section className="py-24 px-4 bg-white">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-foreground font-fredoka mb-6">
-              Loved by Australian Teachers
-            </h2>
-          </div>
-
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-gradient-to-br from-[#FDE5DA] to-white rounded-3xl p-8 md:p-12 shadow-xl text-center">
-              <div className="flex justify-center mb-6">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-6 h-6 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              
-              <blockquote className="text-2xl md:text-3xl font-medium italic mb-8 text-gray-800">
-                "{testimonials[currentTestimonial].quote}"
-              </blockquote>
-              
-              <div className="flex items-center justify-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center text-white font-bold">
-                  {testimonials[currentTestimonial].author.charAt(0)}
-                </div>
-                <div className="text-left">
-                  <div className="font-bold text-gray-900">{testimonials[currentTestimonial].author}</div>
-                  <div className="text-sm text-gray-600">{testimonials[currentTestimonial].role}</div>
-                </div>
-              </div>
-
-              <div className="flex justify-center gap-2 mt-8">
-                {testimonials.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentTestimonial(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      index === currentTestimonial ? 'bg-[#FD6585]' : 'bg-gray-300'
-                    }`}
-                  />
-                ))}
-              </div>
+                  <p className="mt-3 text-sm font-semibold">— Matt, Year 9 Science teacher (VIC)</p>
+                </CardContent>
+              </Card>
+              <Card className="rounded-2xl shadow-lg border-2 border-[#888625] bg-[#888625] text-white">
+                <CardContent className="p-6 md:p-8">
+                  <p className="text-base md:text-lg italic leading-relaxed">
+                    "Taughtful's plans just get it. No more tweaking generic AI output—it's thoughtful from the start."
+                  </p>
+                  <p className="mt-3 text-sm font-semibold">— Safi, Year 5 teacher (VIC)</p>
+                </CardContent>
+              </Card>
             </div>
           </div>
+
+          {/* SECRET SAUCE: RAG EXPLANATION */}
+          <section id="how-it-works" className="py-12 px-4 bg-transparent relative overflow-hidden rounded-3xl mx-4 md:mx-6 lg:mx-8">
+            <div className="container mx-auto max-w-6xl relative z-10">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-center mb-2 font-fredoka text-foreground leading-tight tracking-tight">
+                Our Secret Sauce? <span className="text-[#888625]">RAG.</span>
+              </h2>
+              <p className="text-center text-gray-700 mb-6 max-w-3xl mx-auto font-nunito">
+                Retrieval‑Augmented Generation means Taughtful checks real curriculum and pedagogy first—then writes. Less fluff, more classroom‑ready.
+              </p>
+              
+              {/* Testimonial */}
+              <Card className="mb-6 p-4 bg-white/80 rounded-2xl shadow-md max-w-2xl mx-auto">
+                <CardContent className="p-0">
+                  <p className="text-gray-700 italic text-center text-lg md:text-xl leading-relaxed font-nunito">
+                    "As a teacher in a high-trauma school, Taughtful's plans just get it. No more tweaking generic AI output—it's thoughtful from the start."
+                  </p>
+                  <p className="text-right text-sm text-gray-500 mt-2">— Sarah T., Year 5 Teacher, QLD</p>
+                </CardContent>
+              </Card>
+              
+              {/* 3-Step Process */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+                {[
+                  { number: 1, title: 'Retrieve', desc: 'Searches trusted curriculum, pedagogy, and exemplars—no guessing.' },
+                  { number: 2, title: 'Ground', desc: 'Builds to your year level with real achievement standards and scaffolds.' },
+                  { number: 3, title: 'Deliver', desc: 'Hands you plans, quizzes, and slides you can teach tomorrow.' }
+                ].map((step, index) => (
+                  <motion.div
+                    key={step.number}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.2 }}
+                    className="p-4 bg-[#888625]/10 rounded-2xl shadow-lg border border-[#888625]"
+                  >
+                    <div className="w-12 h-12 bg-[#888625] rounded-full flex items-center justify-center mx-auto mb-2">
+                      <span className="text-xl font-black text-white font-fredoka">{step.number}</span>
+                  </div>
+                    <span className="block font-bold text-foreground mb-1 font-fredoka text-base">{step.title}</span>
+                    <p className="text-gray-600 text-sm">{step.desc}</p>
+                  </motion.div>
+                ))}
+                </div>
+
+              {/* Credibility badges */}
+              <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+                <span className="text-xs md:text-sm px-3 py-1 rounded-full bg-white/70 border border-[#888625]/30 text-[#333333]">Aligned to AC v9 & VCAA 2.0</span>
+                <span className="text-xs md:text-sm px-3 py-1 rounded-full bg-white/70 border border-[#888625]/30 text-[#333333]">Cites sources</span>
+                <span className="text-xs md:text-sm px-3 py-1 rounded-full bg-white/70 border border-[#888625]/30 text-[#333333]">Privacy‑safe</span>
+                <span className="text-xs md:text-sm px-3 py-1 rounded-full bg-white/70 border border-[#888625]/30 text-[#333333]">Reduces rework</span>
+              </div>
+
+              <p className="text-lg md:text-xl font-bold text-foreground font-fredoka mb-6 text-center">
+                The payoff? <span className="text-[#FD6585]">No rewrites. No wasted time. Just teaching resources that click</span>—making sign‑up a no‑brainer.
+              </p>
+              
+              {/* Side-by-side comparison */}
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <Card className="rounded-2xl border bg-white shadow-lg">
+                  <CardHeader className="pb-2">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                        <span className="text-red-600 text-xl">✕</span>
+                      </div>
+                      <CardTitle className="text-xl font-bold font-fredoka text-gray-900">Generic AI Tools</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <ComparisonRow icon="📊" text={<>Slides feel <span className="font-semibold text-red-600">dated and generic</span></>} />
+                    <ComparisonRow icon="❓" text={<><span className="font-semibold text-red-600">Quiz options</span> are obvious or irrelevant</>} />
+                    <ComparisonRow icon="💬" text={<>Tone is <span className="font-semibold text-red-600">awkward or too stiff</span></>} />
+                    <ComparisonRow icon="🖼️" text={<>Diagrams are <span className="font-semibold text-red-600">wrong or irrelevant</span></>} />
+                    <ComparisonRow icon="⏰" text={<>"Saves time" but forces <span className="font-semibold text-red-600">rework</span></>} />
+                  </CardContent>
+                </Card>
+
+                <Card className="rounded-2xl border bg-white shadow-lg">
+                  <CardHeader className="pb-2">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <CheckCircle className="h-6 w-6 text-green-600" />
+                  </div>
+                      <CardTitle className="text-xl font-bold font-fredoka text-gray-900">Taughtful with RAG</CardTitle>
+                </div>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <ComparisonRow icon="📊" text={<>Slides follow <span className="font-semibold text-[#888625]">evidence-based pedagogy</span></>} />
+                    <ComparisonRow icon="❓" text={<><span className="font-semibold text-[#888625]">Quiz options</span> use real student misconceptions</>} />
+                    <ComparisonRow icon="💬" text={<><span className="font-semibold text-[#888625]">Teacher-ready tone</span>, scaffolded and natural</>} />
+                    <ComparisonRow icon="🖼️" text={<><span className="font-semibold text-[#888625]">Curriculum-aligned</span> visuals</>} />
+                    <ComparisonRow icon="⏰" text={<><span className="font-semibold text-[#888625]">Classroom-ready</span> on day one</>} />
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </section>
         </div>
       </section>
+
+      {/* TESTIMONIALS REMOVED */}
 
       {/* CURRICULUM COVERAGE */}
-      <section className="py-24 px-4 bg-gradient-to-br from-[#FDE5DA] via-[#FFF2E8] to-[#FDE5DA]">
+      <section className="py-24 px-4 bg-transparent rounded-3xl mx-4 md:mx-6 lg:mx-8">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black text-foreground font-fredoka mb-6">
@@ -421,22 +326,22 @@ export default function TaughtfulLanding() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
             {[
-              { name: "ACARA", desc: "v9 National", color: "from-[#FD6585] to-[#FF9A2E]" },
-              { name: "VCAA", desc: "Victorian F-10", color: "from-[#888625] to-[#FD6585]" },
-              { name: "NESA", desc: "NSW Syllabus", color: "from-[#FD6585] to-[#888625]" },
-              { name: "QCAA", desc: "Queensland", color: "from-[#FF9A2E] to-[#888625]" }
+              { name: "ACARA", desc: "v9 National", tint: "bg-[#FF9A2E]/10" },
+              { name: "VCAA", desc: "Victorian F-10", tint: "bg-[#FF9A2E]/15" },
+              { name: "NESA", desc: "NSW Syllabus", tint: "bg-[#FF9A2E]/20" },
+              { name: "QCAA", desc: "Queensland", tint: "bg-[#FF9A2E]/25" }
             ].map((curriculum, index) => (
-              <div key={index} className="text-center p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                <div className={`w-16 h-16 bg-gradient-to-r ${curriculum.color} rounded-full flex items-center justify-center mx-auto mb-4`}>
+              <div key={index} className={`text-center p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 ${curriculum.tint}`}>
+                <div className="w-16 h-16 bg-[#FF9A2E] rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-white font-black text-lg">{curriculum.name.charAt(0)}</span>
                 </div>
                 <h3 className="font-bold text-gray-900 mb-2">{curriculum.name}</h3>
-                <p className="text-sm text-gray-600">{curriculum.desc}</p>
+                <p className="text-sm text-gray-700">{curriculum.desc}</p>
               </div>
             ))}
           </div>
 
-          <div className="text-center">
+            <div className="text-center">
             <div className="inline-flex items-center gap-2 bg-white rounded-full px-6 py-3 shadow-lg">
               <CheckCircle className="w-5 h-5 text-green-500" />
               <span className="font-semibold">Automatic code mapping • State-specific language • 100% compliance</span>
@@ -446,13 +351,13 @@ export default function TaughtfulLanding() {
       </section>
 
       {/* SUBJECT COVERAGE */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-16 px-4 bg-white/70 backdrop-blur-sm rounded-3xl mx-4 md:mx-6 lg:mx-8">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
             <h3 className="text-2xl font-bold text-foreground font-fredoka mb-4">All F-10 Subjects Covered</h3>
           </div>
-          
-          <div className="flex justify-center gap-4 flex-wrap">
+
+                <div className="flex justify-center gap-4 flex-wrap">
             {[
               { icon: BookOpen, name: "English", color: "bg-blue-100 text-blue-800" },
               { icon: Calculator, name: "Mathematics", color: "bg-green-100 text-green-800" },
@@ -473,61 +378,61 @@ export default function TaughtfulLanding() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="py-32 px-4 bg-gradient-to-br from-[#FDE5DA] via-white to-[#FDE5DA] relative overflow-hidden">
+      <section className="py-32 px-4 bg-transparent relative overflow-hidden rounded-3xl mx-4 md:mx-6 lg:mx-8">
         <div className="container mx-auto max-w-4xl text-center relative z-10">
           <div className="bg-white rounded-3xl p-12 shadow-2xl border-2 border-[#FD6585]/20">
             <h2 className="text-4xl md:text-5xl font-black mb-6 text-foreground font-fredoka">
               Ready to Reclaim Your Weekends?
-            </h2>
+              </h2>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
               Join 500+ Australian teachers who've already saved thousands of hours with Taughtful.
             </p>
 
             <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl mx-auto space-y-6 mb-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Input
-                    {...register("email")}
+                  <div>
+                    <Input
+                      {...register("email")}
                     placeholder="Your email address"
-                    type="email"
+                      type="email"
                     className="h-14 text-lg rounded-2xl border-2 hover:border-[#FD6585]/60 focus:border-[#FD6585]"
-                  />
+                    />
                   {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
-                </div>
-                <div>
-                  <Input
-                    {...register("name")}
+                  </div>
+                  <div>
+                    <Input
+                      {...register("name")}
                     placeholder="Your name"
                     className="h-14 text-lg rounded-2xl border-2 hover:border-[#FD6585]/60 focus:border-[#FD6585]"
-                  />
+                    />
                   {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
                 </div>
               </div>
               
-              <div>
-                <Select onValueChange={(value) => setValue("yearLevels", value)} value={yearLevels}>
+                <div>
+                  <Select onValueChange={(value) => setValue("yearLevels", value)} value={yearLevels}>
                   <SelectTrigger className="h-14 text-lg rounded-2xl border-2 hover:border-[#FD6585]/60 focus:border-[#FD6585]">
                     <SelectValue placeholder="Which year levels do you teach?" />
-                  </SelectTrigger>
+                    </SelectTrigger>
                   <SelectContent className="rounded-2xl">
                     <SelectItem value="primary" className="text-lg py-3">Primary (K-6)</SelectItem>
                     <SelectItem value="secondary" className="text-lg py-3">Secondary (7-12)</SelectItem>
                     <SelectItem value="both" className="text-lg py-3">Both Primary & Secondary</SelectItem>
-                  </SelectContent>
-                </Select>
+                    </SelectContent>
+                  </Select>
                 {errors.yearLevels && <p className="text-red-500 text-sm mt-1">{errors.yearLevels.message}</p>}
-              </div>
+                </div>
 
-              <Textarea
-                {...register("planningHeadache")}
+                <Textarea
+                  {...register("planningHeadache")}
                 placeholder="What's your biggest lesson planning challenge? (optional)"
                 className="min-h-[100px] text-lg rounded-2xl border-2 hover:border-[#FD6585]/60 focus:border-[#FD6585] resize-none"
-              />
+                />
 
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                size="lg"
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    size="lg"
                 className="w-full h-16 text-xl font-bold bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] hover:from-[#FD6585]/90 hover:to-[#FF9A2E]/90 text-white shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 rounded-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 {isSubmitting ? (
@@ -542,20 +447,20 @@ export default function TaughtfulLanding() {
                     <ArrowRight className="ml-3 w-6 h-6" />
                   </>
                 )}
-              </Button>
+                  </Button>
 
-              {submitStatus === "success" && (
+                  {submitStatus === "success" && (
                 <div className="bg-green-50 border border-green-200 text-green-700 px-6 py-4 rounded-2xl font-medium">
-                  🎉 Welcome to the beta! Check your email for next steps.
-                </div>
-              )}
+                      🎉 Welcome to the beta! Check your email for next steps.
+                    </div>
+                  )}
 
-              {submitStatus === "error" && (
+                  {submitStatus === "error" && (
                 <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-2xl font-medium">
                   Something went wrong. Please try again or email us at hello@taughtful.com.au
                 </div>
               )}
-            </form>
+              </form>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-gray-600">
               <div className="flex items-center gap-2">
@@ -576,25 +481,17 @@ export default function TaughtfulLanding() {
       </section>
 
       {/* INDIGENOUS PERSPECTIVES BANNER */}
-      <section className="py-12 px-4 bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 border-t-4 border-[#888625] border-b-4">
+      <section className="py-12 px-4 bg-transparent rounded-3xl mx-4 md:mx-6 lg:mx-8">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center">
-            <div className="inline-flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-r from-[#888625] to-[#4CAF50] rounded-full flex items-center justify-center">
-                <span className="text-white text-2xl">🤝</span>
-              </div>
-              <h3 className="text-2xl md:text-3xl font-black font-fredoka text-[#888625]">
-                Respectful Teaching Starts with Local Voices
-              </h3>
+            <div className="inline-flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-[#888625] rounded-full flex items-center justify-center text-white">🤝</div>
+              <h3 className="text-xl md:text-2xl font-bold font-fredoka text-[#888625]">Respectful teaching starts with local voices</h3>
             </div>
-            
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border-2 border-[#888625]/20">
-              <p className="text-lg md:text-xl text-gray-800 leading-relaxed max-w-4xl mx-auto">
-                <span className="font-bold text-[#888625]">Taughtful</span> provides <em className="font-semibold">curriculum-aligned scaffolds</em> with <span className="bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] bg-clip-text text-transparent font-bold">trauma-informed</span> and <span className="underline decoration-[#888625] decoration-2 underline-offset-2 font-bold">Indigenous perspectives</span> built in. 
-                <br className="hidden md:block" />
-                We <strong className="text-[#888625]">encourage teachers</strong> to adapt and enrich these with guidance from <span className="bg-[#888625] text-white px-2 py-1 rounded font-bold">local Aboriginal and Torres Strait Islander communities</span>. 
-                <br />
-                <span className="text-xl font-black text-[#FD6585] italic">Respectful teaching starts with local voices.</span>
+
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-[#888625]/20">
+              <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto">
+                Taughtful provides curriculum‑aligned scaffolds with trauma‑informed and Indigenous perspectives. Please adapt with guidance from local Aboriginal and Torres Strait Islander communities.
               </p>
             </div>
           </div>
@@ -606,13 +503,13 @@ export default function TaughtfulLanding() {
         <div className="container mx-auto max-w-6xl">
           <div className="text-center space-y-8">
             <div className="flex items-center justify-center gap-3">
-              <Image
-                src="/images/taughtful-logo.png"
-                alt="Taughtful"
-                width={40}
-                height={40}
+                <Image
+                  src="/images/taughtful-logo.png"
+                  alt="Taughtful"
+                  width={40}
+                  height={40}
                 className="rounded-full"
-              />
+                />
               <span className="text-2xl font-bold font-fredoka">Taughtful</span>
             </div>
 
@@ -621,9 +518,9 @@ export default function TaughtfulLanding() {
                 <h4 className="font-bold mb-4">Contact</h4>
                 <p className="text-white/80">
                   <a href="mailto:hello@taughtful.com.au" className="hover:text-[#FD6585] transition-colors">
-                    hello@taughtful.com.au
-                  </a>
-                </p>
+                  hello@taughtful.com.au
+                </a>
+              </p>
               </div>
               
               <div>

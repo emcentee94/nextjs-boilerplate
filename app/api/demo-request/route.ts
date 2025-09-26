@@ -7,6 +7,7 @@ import path from 'path'
 // Use service role for server-side operations
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://kpdusbhqiswdiyzdwxpw.supabase.co'
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY
+const isProduction = process.env.VERCEL_ENV === 'production' || process.env.NODE_ENV === 'production'
 
 // Only create Supabase client if key is available
 const supabase = supabaseKey ? createClient(supabaseUrl, supabaseKey) : null
@@ -49,9 +50,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Load existing demo requests
-    const existingRequests = await loadDemoRequests()
-    
     // Create demo request data
     const demoRequestData = {
       id: `demo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -64,22 +62,11 @@ export async function POST(request: NextRequest) {
       status: 'pending'
     }
 
-    // Check if email already exists
-    const existingIndex = existingRequests.findIndex(req => req.email === email)
-    
-    if (existingIndex !== -1) {
-      // Update existing request
-      existingRequests[existingIndex] = demoRequestData
-    } else {
-      // Add new request
-      existingRequests.push(demoRequestData)
-    }
-
-    // Save updated requests (file fallback for local/dev)
-    await saveDemoRequests(existingRequests)
-
-    // Insert into Supabase when configured
-    if (supabase) {
+    // In production, require Supabase and insert first
+    if (isProduction) {
+      if (!supabase) {
+        return NextResponse.json({ error: 'Supabase not configured' }, { status: 500 })
+      }
       const { error: insertError } = await supabase
         .from('demo_requests')
         .upsert({
@@ -91,9 +78,37 @@ export async function POST(request: NextRequest) {
           submitted_at: new Date().toISOString(),
           status: 'pending'
         }, { onConflict: 'email' })
-
       if (insertError) {
         console.error('Supabase insert error:', insertError)
+        return NextResponse.json({ error: 'Failed to save to Supabase' }, { status: 500 })
+      }
+    } else {
+      // Development: keep file-based log as a fallback
+      const existingRequests = await loadDemoRequests()
+      const existingIndex = existingRequests.findIndex((req: any) => req.email === email)
+      if (existingIndex !== -1) {
+        existingRequests[existingIndex] = demoRequestData
+      } else {
+        existingRequests.push(demoRequestData)
+      }
+      await saveDemoRequests(existingRequests)
+
+      // Also try Supabase if available in dev
+      if (supabase) {
+        const { error: insertError } = await supabase
+          .from('demo_requests')
+          .upsert({
+            name,
+            email,
+            school: school || null,
+            role: role || null,
+            message: message || null,
+            submitted_at: new Date().toISOString(),
+            status: 'pending'
+          }, { onConflict: 'email' })
+        if (insertError) {
+          console.warn('Supabase insert failed in dev; continuing with file log:', insertError)
+        }
       }
     }
 

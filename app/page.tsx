@@ -29,6 +29,8 @@ import { z } from "zod"
 import { useState, useEffect } from "react"
 import { motion } from 'framer-motion'
 import RAGSection from "@/components/RAGSection"
+import CurriculumCoverage from "@/components/CurriculumCoverage"
+import AboriginalPerspectivesNarrativeGrid from "@/components/AboriginalPerspectives"
 
 const waitlistSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -116,6 +118,17 @@ export default function TaughtfulLanding() {
           <svg className="absolute bottom-1/4 right-0 w-64 h-32 opacity-10 rotate-180" viewBox="0 0 200 100">
             <path d="M0,50 Q50,80 100,50 T200,50" stroke="#888625" strokeWidth="3" fill="none" className="animate-pulse" style={{animationDelay: '1s'}}/>
           </svg>
+
+          {/* Organic leaf shapes */}
+          <svg className="absolute top-12 right-1/4 w-28 h-28 opacity-15" viewBox="0 0 200 200">
+            <path d="M100 10 C140 40 160 90 120 130 C80 170 40 140 30 100 C20 60 60 20 100 10 Z" fill="#FF9A2E"/>
+          </svg>
+          <svg className="absolute bottom-16 left-8 w-24 h-24 opacity-15" viewBox="0 0 200 200">
+            <path d="M100 20 C150 50 150 120 100 160 C50 120 50 50 100 20 Z" fill="#888625"/>
+          </svg>
+          <svg className="absolute top-1/3 left-10 w-16 h-16 opacity-20" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" fill="#FDE5DA" />
+          </svg>
         </div>
 
         <div className="container mx-auto max-w-6xl relative z-10">
@@ -131,7 +144,7 @@ export default function TaughtfulLanding() {
             </h1>
 
             <p className="text-xl md:text-2xl lg:text-3xl text-gray-600 leading-relaxed max-w-4xl mx-auto mb-16 font-nunito">
-              Generate <span className="text-[#888625] font-semibold">curriculum-aligned, trauma-informed</span> lesson plans in minutes.
+              Generate curriculum-aligned, culturally safe and trauma-informed resources in minutes.
               <br className="hidden md:block" />
               Built specifically for Australian classrooms.
             </p>
@@ -142,23 +155,27 @@ export default function TaughtfulLanding() {
                   variant="outline"
                   size="lg"
                   onClick={() => window.location.href = '/signup'}
-                className="w-48 h-48 rounded-full border-2 border-[#FD6585] text-[#FD6585] hover:bg-[#FD6585]/10 shadow-md hover:shadow-lg transition-all duration-700 group flex flex-col items-center justify-center text-center font-nunito bg-[#FD6585]/5 px-4"
+                className="px-8 py-5 rounded-2xl border-2 border-[#FD6585] text-[#FD6585] bg-[#FD6585]/5 shadow-md transition-all duration-300 hover:bg-[#FD6585] hover:text-white hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.02] group font-nunito"
               >
-                <Users className="w-6 h-6 mb-2 group-hover:animate-pulse" />
-                <span className="text-lg font-semibold mb-1 text-wrap">Start Free Demo</span>
-                <span className="text-sm opacity-80 text-wrap">✨ No signup needed</span>
-              </Button>
+                <div className="flex items-center gap-3 justify-center">
+                  <Users className="w-6 h-6 group-hover:animate-pulse" />
+                  <span className="text-lg font-semibold">Start Free Demo</span>
+                </div>
+                <div className="text-sm opacity-90 mt-1">✨ No signup needed</div>
+                </Button>
               
               <Button
                 variant="outline"
                 size="lg"
                 onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
-                className="w-48 h-48 rounded-full border-2 border-[#888625] text-[#888625] hover:bg-[#888625]/10 shadow-md hover:shadow-lg transition-all duration-700 group flex flex-col items-center justify-center text-center font-nunito bg-[#888625]/5 px-4"
+                className="px-8 py-5 rounded-2xl border-2 border-[#888625] text-[#888625] bg-[#888625]/5 shadow-md transition-all duration-300 hover:bg-[#888625] hover:text-white hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.02] group font-nunito"
               >
-                <ArrowRight className="w-6 h-6 mb-2 group-hover:animate-pulse rotate-90" />
-                <span className="text-lg font-semibold mb-1 text-wrap">See How It Works</span>
-                <span className="text-sm opacity-70 text-wrap">🤔 Just curious?</span>
-                </Button>
+                <div className="flex items-center gap-3 justify-center">
+                  <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                  <span className="text-lg font-semibold">See How It Works</span>
+              </div>
+                <div className="text-sm opacity-90 mt-1">🤔 Just curious?</div>
+              </Button>
             </div>
 
             {/* Remove this entire benefits grid */}
@@ -188,7 +205,7 @@ export default function TaughtfulLanding() {
           <svg className="absolute top-1/3 left-1/4 w-32 h-16 opacity-20" viewBox="0 0 100 50">
             <line x1="0" y1="25" x2="100" y2="25" stroke="#888625" strokeWidth="2" strokeDasharray="5,5" className="animate-pulse"/>
           </svg>
-            </div>
+        </div>
 
         <div className="container mx-auto max-w-6xl relative z-10">
           {/* Testimonial Cards Removed */}
@@ -196,58 +213,30 @@ export default function TaughtfulLanding() {
           {/* SECRET SAUCE: RAG EXPLANATION */}
           <section id="how-it-works" className="py-12 px-4 bg-transparent relative overflow-hidden rounded-3xl mx-4 md:mx-6 lg:mx-8">
             <RAGSection />
-          </section>
+      </section>
         </div>
       </section>
+
+      {/* Parallax Section Divider */}
+      <div aria-hidden="true" className="mx-4 md:mx-6 lg:mx-8">
+        <svg className="w-full h-16 text-emerald-100" viewBox="0 0 1440 320" fill="currentColor">
+          <path d="M0,224L48,197.3C96,171,192,117,288,96C384,75,480,85,576,117.3C672,149,768,203,864,224C960,245,1056,235,1152,218.7C1248,203,1344,181,1392,170.7L1440,160L1440,320L0,320Z" />
+        </svg>
+      </div>
 
       {/* TESTIMONIALS REMOVED */}
 
       {/* CURRICULUM COVERAGE */}
-      <section className="py-24 px-4 bg-transparent rounded-3xl mx-4 md:mx-6 lg:mx-8">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-foreground font-fredoka mb-6">
-              Every Australian Curriculum Covered
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              No matter which state you're in, Taughtful speaks your curriculum language.
-            </p>
-          </div>
+      <CurriculumCoverage />
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-            {[
-              { name: "ACARA", desc: "v9 National", tint: "bg-[#FF9A2E]/10" },
-              { name: "VCAA", desc: "Victorian F-10", tint: "bg-[#FF9A2E]/15" },
-              { name: "NESA", desc: "NSW Syllabus", tint: "bg-[#FF9A2E]/20" },
-              { name: "QCAA", desc: "Queensland", tint: "bg-[#FF9A2E]/25" }
-            ].map((curriculum, index) => (
-              <div key={index} className={`text-center p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 ${curriculum.tint}`}>
-                <div className="w-16 h-16 bg-[#FF9A2E] rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-white font-black text-lg">{curriculum.name.charAt(0)}</span>
-                </div>
-                <h3 className="font-bold text-gray-900 mb-2">{curriculum.name}</h3>
-                <p className="text-sm text-gray-700">{curriculum.desc}</p>
-              </div>
-            ))}
-          </div>
-
-            <div className="text-center">
-            <div className="inline-flex items-center gap-2 bg-white rounded-full px-6 py-3 shadow-lg">
-              <CheckCircle className="w-5 h-5 text-green-500" />
-              <span className="font-semibold">Automatic code mapping • State-specific language • 100% compliance</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SUBJECT COVERAGE */}
+      {/* SUBJECT COVERAGE (icons) */}
       <section className="py-16 px-4 bg-white/70 backdrop-blur-sm rounded-3xl mx-4 md:mx-6 lg:mx-8">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
             <h3 className="text-2xl font-bold text-foreground font-fredoka mb-4">All F-10 Subjects Covered</h3>
           </div>
 
-                <div className="flex justify-center gap-4 flex-wrap">
+          <div className="flex justify-center gap-4 flex-wrap">
             {[
               { icon: BookOpen, name: "English", color: "bg-blue-100 text-blue-800" },
               { icon: Calculator, name: "Mathematics", color: "bg-green-100 text-green-800" },
@@ -276,16 +265,38 @@ export default function TaughtfulLanding() {
             <div className="inline-flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-[#888625] rounded-full flex items-center justify-center text-white">🤝</div>
               <h3 className="text-xl md:text-2xl font-bold font-fredoka text-[#888625]">Respectful teaching starts with local voices</h3>
-            </div>
+        </div>
 
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-[#888625]/20">
               <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto">
                 Taughtful provides curriculum‑aligned scaffolds with trauma‑informed and Indigenous perspectives. Please adapt with guidance from local Aboriginal and Torres Strait Islander communities.
               </p>
             </div>
+            
+            {/* Cultural integrity value props */}
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+              <div className="rounded-2xl border border-[#888625]/30 bg-[#FDE5DA]/60 p-4 shadow-sm">
+                <p className="text-sm md:text-base text-[#333333]">
+                  “<span className="font-bold">Guided, not guessed.</span> Taughtful shows <em>where</em> Indigenous perspectives belong in your plan, provides <span className="font-bold">checklists and sources</span>, and lets you decide what’s appropriate.”
+                </p>
+              </div>
+              <div className="rounded-2xl border border-[#888625]/30 bg-[#FF9A2E]/10 p-4 shadow-sm">
+                <p className="text-sm md:text-base text-[#333333]">
+                  “<span className="font-bold">Abstain over invent.</span> When cultural content needs authority, Taughtful holds the line—and points you to the right pathway.”
+                </p>
+              </div>
+              <div className="rounded-2xl border border-[#888625]/30 bg-[#888625]/10 p-4 shadow-sm">
+                <p className="text-sm md:text-base text-[#333333]">
+                  “<span className="font-bold">From tokenism to intention.</span> Replace vague add-ons with <span className="font-bold">specific, curriculum-aligned steps</span> and authentic resources.”
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
+
+      {/* ABORIGINAL PERSPECTIVES NARRATIVE + GRID */}
+      <AboriginalPerspectivesNarrativeGrid />
 
       {/* FOOTER */}
       <footer className="bg-[#333333] text-white py-16 px-4">
@@ -330,7 +341,7 @@ export default function TaughtfulLanding() {
             </div>
 
             <div className="border-t border-white/20 pt-8 text-white/60 text-sm">
-              <p>© 2024 Taughtful. Built for Australian teachers, by Australian educators.</p>
+              <p>© 2025 Taughtful. Built for Australian teachers, by Australian educators.</p>
             </div>
           </div>
         </div>

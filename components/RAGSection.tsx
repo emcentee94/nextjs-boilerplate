@@ -1,6 +1,7 @@
 "use client"
 
 import { Card, CardContent } from "@/components/ui/card"
+import { motion } from "framer-motion"
 import { Check, X, Search, Layers, Rocket, AlertTriangle, Sparkles, Star } from "lucide-react"
 
 export default function RAGSection() {
@@ -84,7 +85,12 @@ export default function RAGSection() {
 
       {/* Comparison */}
       <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-        <Card className="bg-red-50 rounded-2xl shadow-md border border-red-200 w-full h-full">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: [0, -3, 0] }}
+          transition={{ duration: 0.5, y: { duration: 4, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" } }}
+        >
+          <Card className="bg-red-50 rounded-2xl shadow-md border border-red-200 w-full h-full">
           <CardContent className="px-6 md:px-8 py-6 md:py-8 text-center flex flex-col justify-between h-full">
             <div className="flex flex-col items-center mb-4 md:mb-6">
               <AlertTriangle className="text-red-500 w-8 h-8 mb-2" />
@@ -98,9 +104,15 @@ export default function RAGSection() {
               <li className="flex items-start"><X className="text-red-500 mt-1 mr-3" /> <span>“Saves time” but <span className="font-semibold">forces rework</span></span></li>
             </ul>
           </CardContent>
-        </Card>
+          </Card>
+        </motion.div>
 
-        <Card className="bg-[#888625]/10 rounded-2xl shadow-md border border-[#888625]/30 w-full h-full">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: [0, -3, 0] }}
+          transition={{ duration: 0.5, delay: 0.25, y: { duration: 4.5, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" } }}
+        >
+          <Card className="bg-[#888625]/10 rounded-2xl shadow-md border border-[#888625]/30 w-full h-full">
           <CardContent className="px-6 md:px-8 py-6 md:py-8 text-center flex flex-col justify-between h-full">
             <div className="flex flex-col items-center mb-4 md:mb-6">
               <Sparkles className="text-[#888625] w-8 h-8 mb-2" />
@@ -114,8 +126,12 @@ export default function RAGSection() {
               <li className="flex items-start"><Check className="text-[#888625] mt-1 mr-3" /> <span><span className="font-semibold">Classroom-ready</span> on day one</span></li>
             </ul>
           </CardContent>
-        </Card>
+          </Card>
+        </motion.div>
       </div>
+
+      {/* Quotes under comparison removed */}
+
     </div>
   )
 }

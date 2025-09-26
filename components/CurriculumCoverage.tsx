@@ -141,19 +141,7 @@ export default function CurriculumCoverage() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto text-center">
-        <h3 className="text-lg font-semibold text-gray-900 mb-6">All F–10 Learning Areas</h3>
-        <div className="flex flex-wrap justify-center gap-3">
-          {areas.map((a) => (
-            <span
-              key={a.name}
-              className={`px-4 py-2 rounded-full text-sm font-medium shadow-md ${a.color} hover:scale-105 hover:shadow-lg transition transform`}
-            >
-              {a.name}
-            </span>
-          ))}
-        </div>
-      </div>
+      {/* All F–10 Learning Areas section removed as requested */}
     </section>
   )
 }

@@ -12,10 +12,7 @@ import Link from "next/link"
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
-    school: "",
-    role: "",
-    message: ""
+    email: ""
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -137,11 +134,11 @@ export default function SignUpPage() {
 
           <Card className="shadow-xl border-0 bg-white/80 backdrop-blur-sm">
             <CardHeader className="text-center pb-4">
-              <CardTitle className="text-2xl font-bold text-gray-900">
-                Request Demo Access
-              </CardTitle>
+          <CardTitle className="text-2xl font-bold text-gray-900">
+            Try Demo Mode
+          </CardTitle>
               <CardDescription className="text-gray-600">
-                Fill out the form below and we'll send you demo access details
+            Enter your name and email to access the dashboard
               </CardDescription>
             </CardHeader>
             <CardContent className="p-6">
@@ -184,52 +181,6 @@ export default function SignUpPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="school" className="block text-sm font-medium text-gray-700 mb-2">
-                      School/Organization
-                    </label>
-                    <Input
-                      id="school"
-                      name="school"
-                      type="text"
-                      value={formData.school}
-                      onChange={handleInputChange}
-                      placeholder="Your school or organization"
-                      className="border-gray-300 focus:border-[#FD6585] focus:ring-[#FD6585]"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-2">
-                      Role
-                    </label>
-                    <Input
-                      id="role"
-                      name="role"
-                      type="text"
-                      value={formData.role}
-                      onChange={handleInputChange}
-                      placeholder="Teacher, Principal, etc."
-                      className="border-gray-300 focus:border-[#FD6585] focus:ring-[#FD6585]"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                    Additional Message
-                  </label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    placeholder="Tell us about your teaching needs or any specific questions..."
-                    rows={4}
-                    className="border-gray-300 focus:border-[#FD6585] focus:ring-[#FD6585]"
-                  />
-                </div>
-
                 <Button
                   type="submit"
                   disabled={isSubmitting}
@@ -238,12 +189,12 @@ export default function SignUpPage() {
                   {isSubmitting ? (
                     <>
                       <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                      Sending Request...
+                      Signing In...
                     </>
                   ) : (
                     <>
                       <Mail className="mr-2 w-5 h-5" />
-                      Send Demo Request
+                      Continue to Dashboard
                       <ArrowRight className="ml-2 w-5 h-5" />
                     </>
                   )}

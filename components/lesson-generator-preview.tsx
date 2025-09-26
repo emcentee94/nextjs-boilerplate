@@ -38,6 +38,9 @@ export default function LessonGeneratorPreview() {
   const [authority, setAuthority] = useState<Authority>("ACARA")
   const [version, setVersion] = useState<"V1.0" | "V2.0">("V2.0")
   const [levelBand, setLevelBand] = useState("Standard")
+  const [saving, setSaving] = useState(false)
+  const [saveMsg, setSaveMsg] = useState<string | null>(null)
+  const [saveErr, setSaveErr] = useState<string | null>(null)
 
   const isVCAA = authority === "VCAA"
   const isACARA = authority === "ACARA"
@@ -140,6 +143,46 @@ export default function LessonGeneratorPreview() {
     setYear("F")
     setLevelBand("Foundation A–D")
     setMinutes(45)
+  }
+
+  async function saveDraft() {
+    try {
+      setSaving(true)
+      setSaveErr(null)
+      setSaveMsg(null)
+
+      const body = {
+        title: `${subject} – Year ${year}`,
+        learning_area: subject,
+        subject,
+        year_level: year,
+        duration_minutes: minutes,
+        lesson_structure: {
+          meta: { authority, version: isVCAA ? version : isACARA ? 'v9' : 'N/A', level: levelBand }
+        },
+        status: 'draft'
+      }
+
+      const res = await fetch('/api/lesson-plan/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      })
+
+      if (res.status === 401) {
+        setSaveErr('Please sign in to save plans.')
+        return
+      }
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data?.error || `Failed to save (status ${res.status})`)
+      }
+      setSaveMsg('Saved! View it in My Plans.')
+    } catch (e: any) {
+      setSaveErr(e?.message || 'Failed to save draft')
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -347,8 +390,12 @@ export default function LessonGeneratorPreview() {
                 >
                   Next →
                 </a>
-                <button className="px-5 py-3 rounded-full font-semibold border border-[#CBD5C0] bg-white hover:border-[#333] transition">
-                  Save Draft
+                <button
+                  onClick={saveDraft}
+                  disabled={saving}
+                  className="px-5 py-3 rounded-full font-semibold border border-[#CBD5C0] bg-white hover:border-[#333] transition disabled:opacity-50"
+                >
+                  {saving ? 'Saving…' : 'Save Draft'}
                 </button>
                 <a
                   href={curriculumQuery}
@@ -368,6 +415,20 @@ export default function LessonGeneratorPreview() {
                 )}
               </div>
             </div>
+            {(saveMsg || saveErr) && (
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                {saveMsg && (
+                  <div className="text-sm px-3 py-2 rounded bg-[#F0FFF4] text-[#166534] border border-[#BBF7D0]">
+                    {saveMsg} <a href="/my-plans" className="underline">Open My Plans</a>
+                  </div>
+                )}
+                {saveErr && (
+                  <div className="text-sm px-3 py-2 rounded bg-[#FEF2F2] text-[#991B1B] border border-[#FECACA]">
+                    {saveErr}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="bg-white rounded-2xl shadow-xl p-6 lg:p-8 flex flex-col border border-[#EFEFEF] h-full">

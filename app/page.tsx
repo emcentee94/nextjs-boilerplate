@@ -187,7 +187,7 @@ export default function TaughtfulLanding() {
 
 
       {/* RAG COMPARISON SECTION */}
-      <section id="how-it-works" className="py-12 px-4 bg-transparent relative overflow-hidden border-4 border-[#888625] rounded-3xl mx-4 md:mx-6 lg:mx-8">
+      <section id="how-it-works" className="py-12 px-4 bg-transparent relative overflow-hidden rounded-3xl mx-4 md:mx-6 lg:mx-8">
         {/* Decorative Elements */}
         <div className="absolute inset-0 pointer-events-none">
           {/* Paper airplane paths */}

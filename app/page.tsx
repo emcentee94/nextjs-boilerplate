@@ -31,6 +31,7 @@ import { motion } from 'framer-motion'
 import RAGSection from "@/components/RAGSection"
 import CurriculumCoverage from "@/components/CurriculumCoverage"
 import AboriginalPerspectivesNarrativeGrid from "@/components/AboriginalPerspectives"
+import CulturalSafeguardsGrid from "@/components/CulturalSafeguardsGrid"
 
 const waitlistSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -264,7 +265,7 @@ export default function TaughtfulLanding() {
           <div className="text-center">
             <div className="inline-flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-[#888625] rounded-full flex items-center justify-center text-white">🤝</div>
-              <h3 className="text-xl md:text-2xl font-bold font-fredoka text-[#888625]">Respectful teaching starts with local voices</h3>
+              <h3 className="text-xl md:text-2xl font-bold font-fredoka text-[#888625]">Aboriginal and Torres Strait Islander pedagogies in practice</h3>
         </div>
 
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-[#888625]/20">
@@ -297,6 +298,9 @@ export default function TaughtfulLanding() {
 
       {/* ABORIGINAL PERSPECTIVES NARRATIVE + GRID */}
       <AboriginalPerspectivesNarrativeGrid />
+
+      {/* CULTURAL SAFEGUARDS GRID */}
+      <CulturalSafeguardsGrid />
 
       {/* FOOTER */}
       <footer className="bg-[#333333] text-white py-16 px-4">

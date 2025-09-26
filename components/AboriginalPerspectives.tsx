@@ -74,11 +74,6 @@ export default function AboriginalPerspectivesNarrativeGrid() {
     <section className="py-16 bg-gradient-to-b from-stone-50 to-white">
       <div className="mx-auto max-w-6xl px-6">
         <header className="mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-stone-900 flex items-center gap-3">
-            <Leaf className="w-7 h-7 text-emerald-700" aria-hidden />
-            <span>Authentic Aboriginal Perspectives</span>
-          </h2>
-
           <p className="mt-4 text-lg text-stone-700">
             At <span className="font-semibold">Taughtful</span>, embedding Aboriginal and Torres Strait
             Islander perspectives is a responsibility—not an add-on. The product and content teams have
@@ -175,6 +170,75 @@ export default function AboriginalPerspectivesNarrativeGrid() {
           communities—building classrooms that are inclusive, standards-aligned, and enriched by
           the world’s oldest continuous cultures.
         </p>
+
+        {/* Community Priorities → Our Commitments grid */}
+        <div className="mt-8">
+          <div className="mb-3 flex items-center gap-3 text-stone-800">
+            <span className="text-sm font-semibold px-3 py-1 rounded-full bg-emerald-100 text-emerald-900">Community Priorities → Our Commitments</span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Row 1 */}
+            <div className="rounded-2xl border border-stone-200 bg-amber-50 p-4">
+              <div className="text-stone-900 font-semibold">Legal permissions</div>
+              <div className="text-stone-700 text-sm mt-1">Community Priorities</div>
+            </div>
+            <div className="rounded-2xl border border-stone-200 bg-emerald-50 p-4">
+              <div className="text-stone-900 font-semibold">Master IP agreement + source metadata schema</div>
+              <div className="text-stone-700 text-sm mt-1">Our Commitments</div>
+            </div>
+
+            {/* Row 2 */}
+            <div className="rounded-2xl border border-stone-200 bg-amber-50 p-4">
+              <div className="text-stone-900 font-semibold">Community consultation</div>
+              <div className="text-stone-700 text-sm mt-1">Community Priorities</div>
+            </div>
+            <div className="rounded-2xl border border-stone-200 bg-emerald-50 p-4">
+              <div className="text-stone-900 font-semibold">Pre‑selected partner organisations + opt‑in co‑creation packs</div>
+              <div className="text-stone-700 text-sm mt-1">Our Commitments</div>
+            </div>
+
+            {/* Row 3 */}
+            <div className="rounded-2xl border border-stone-200 bg-amber-50 p-4">
+              <div className="text-stone-900 font-semibold">Attribution</div>
+              <div className="text-stone-700 text-sm mt-1">Community Priorities</div>
+            </div>
+            <div className="rounded-2xl border border-stone-200 bg-emerald-50 p-4">
+              <div className="text-stone-900 font-semibold">Auto‑inserted in lesson footer + UX visibility</div>
+              <div className="text-stone-700 text-sm mt-1">Our Commitments</div>
+            </div>
+
+            {/* Row 4 */}
+            <div className="rounded-2xl border border-stone-200 bg-amber-50 p-4">
+              <div className="text-stone-900 font-semibold">AI misuse</div>
+              <div className="text-stone-700 text-sm mt-1">Community Priorities</div>
+            </div>
+            <div className="rounded-2xl border border-stone-200 bg-emerald-50 p-4">
+              <div className="text-stone-900 font-semibold">No generation in cultural slots; source‑pick only</div>
+              <div className="text-stone-700 text-sm mt-1">Our Commitments</div>
+            </div>
+
+            {/* Row 5 */}
+            <div className="rounded-2xl border border-stone-200 bg-amber-50 p-4">
+              <div className="text-stone-900 font-semibold">Leadership concerns</div>
+              <div className="text-stone-700 text-sm mt-1">Community Priorities</div>
+            </div>
+            <div className="rounded-2xl border border-stone-200 bg-emerald-50 p-4">
+              <div className="text-stone-900 font-semibold">Trust signal: “Every cultural insert is sourced, cited, and approved for classroom”</div>
+              <div className="text-stone-700 text-sm mt-1">Our Commitments</div>
+            </div>
+
+            {/* Row 6 */}
+            <div className="rounded-2xl border border-stone-200 bg-amber-50 p-4">
+              <div className="text-stone-900 font-semibold">Teacher clarity</div>
+              <div className="text-stone-700 text-sm mt-1">Community Priorities</div>
+            </div>
+            <div className="rounded-2xl border border-stone-200 bg-emerald-50 p-4">
+              <div className="text-stone-900 font-semibold">Protocol note with each insert + default sources 100% compliant</div>
+              <div className="text-stone-700 text-sm mt-1">Our Commitments</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   )

@@ -30,11 +30,11 @@ const statItems = [
 ]
 
 const toolCards = [
-  { icon: <BookOpenCheck className="w-5 h-5" />, title: "Lesson Plan", desc: "Aligned scaffold in minutes", href: "/dashboard" },
-  { icon: <Layers className="w-5 h-5" />, title: "Unit Plan", desc: "Scope & sequence builder", href: "/generate/unit" },
-  { icon: <ListChecks className="w-5 h-5" />, title: "Quiz", desc: "Auto‑items with distractors", href: "/generate/quiz" },
-  { icon: <FileText className="w-5 h-5" />, title: "Worksheet", desc: "Differentiated tasks", href: "/generate/worksheet" },
-  { icon: <Presentation className="w-5 h-5" />, title: "PPT Slides", desc: "Clean decks, fast", href: "/generate/ppt" },
+  { icon: <BookOpenCheck className="w-5 h-5" />, title: "Lesson Plan", desc: "Aligned scaffold in minutes", href: "/generator/profile" },
+  { icon: <Layers className="w-5 h-5" />, title: "Unit Plan", desc: "Scope & sequence builder (soon)", href: "#" },
+  { icon: <ListChecks className="w-5 h-5" />, title: "Quiz", desc: "Auto‑items with distractors (soon)", href: "#" },
+  { icon: <FileText className="w-5 h-5" />, title: "Worksheet", desc: "Differentiated tasks (soon)", href: "#" },
+  { icon: <Presentation className="w-5 h-5" />, title: "PPT Slides", desc: "Clean decks, fast (soon)", href: "#" },
 ]
 
 const pdTabs = [

@@ -17,6 +17,9 @@ export default function SignUpPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState("")
+  const [showFriendAccess, setShowFriendAccess] = useState(false)
+  const [friendPassword, setFriendPassword] = useState("")
+  const [friendError, setFriendError] = useState("")
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -58,6 +61,27 @@ export default function SignUpPage() {
     }
   }
 
+  const handleFriendAccess = (e: React.FormEvent) => {
+    e.preventDefault()
+    setFriendError("")
+    
+    if (friendPassword.toLowerCase() === 'mcentee') {
+      // Store friend session locally and go straight to dashboard
+      const friendUser = {
+        id: `friend-${Date.now()}`,
+        name: "Eva's Friend",
+        email: '',
+        demo: true,
+        friend: true,
+        created_at: new Date().toISOString(),
+      }
+      localStorage.setItem('taughtful_user', JSON.stringify(friendUser))
+      window.location.href = '/dashboard'
+    } else {
+      setFriendError("That's not quite right. Try again!")
+    }
+  }
+
   if (isSubmitted) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#FDE5DA] via-white to-[#FFF2E8] flex items-center justify-center p-4">
@@ -91,32 +115,18 @@ export default function SignUpPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#FDE5DA] via-white to-[#FFF2E8]">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center space-x-3">
-              <Image
-                src="/images/taughtful-logo-new.png"
-                alt="Taughtful Australia"
-                width={40}
-                height={40}
-                className="h-10 w-auto"
-              />
-              <span className="text-xl font-semibold text-gray-900 font-fredoka">Taughtful Australia</span>
-            </Link>
-            <Button variant="outline" asChild>
-              <Link href="/">
-                Back to Home
+      {/* Main Content */}
+      <div className="flex items-center justify-center min-h-screen p-4">
+        <div className="w-full max-w-2xl">
+          {/* Back Button */}
+          <div className="mb-6">
+            <Button variant="outline" asChild className="mb-4">
+              <Link href="/" className="inline-flex items-center">
+                ← Back to Home
               </Link>
             </Button>
           </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] p-4">
-        <div className="w-full max-w-2xl">
+          
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
               <div className="w-16 h-16 bg-gradient-to-br from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center">
@@ -142,7 +152,9 @@ export default function SignUpPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="p-6">
-              <form onSubmit={handleSubmit} className="space-y-6">
+              {!showFriendAccess ? (
+                <>
+                  <form onSubmit={handleSubmit} className="space-y-6">
                 {error && (
                   <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                     <p className="text-red-700 text-sm">{error}</p>
@@ -206,6 +218,64 @@ export default function SignUpPage() {
                   By submitting this form, you agree to be contacted by Taughtful regarding demo access.
                 </p>
               </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200 text-center">
+                <button
+                  onClick={() => setShowFriendAccess(true)}
+                  className="text-sm text-[#FD6585] hover:text-[#FD6585]/80 font-medium underline"
+                >
+                  Friend of Eva's? Click here (it's quicker)
+                </button>
+              </div>
+                </>
+              ) : (
+                <>
+                  <form onSubmit={handleFriendAccess} className="space-y-6">
+                    <div className="text-center mb-6">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">Quick Access</h3>
+                      <p className="text-sm text-gray-600">What's Eva's surname?</p>
+                    </div>
+                    
+                    {friendError && (
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <p className="text-red-700 text-sm">{friendError}</p>
+                      </div>
+                    )}
+                    
+                    <div>
+                      <Input
+                        type="text"
+                        value={friendPassword}
+                        onChange={(e) => setFriendPassword(e.target.value)}
+                        placeholder="Enter surname"
+                        className="border-gray-300 focus:border-[#FD6585] focus:ring-[#FD6585] text-center"
+                        autoFocus
+                      />
+                    </div>
+
+                    <div className="flex gap-3">
+                      <Button
+                        type="submit"
+                        className="flex-1 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] hover:from-[#FD6585]/90 hover:to-[#FF9A2E]/90 text-white py-3 font-semibold"
+                      >
+                        Access Dashboard
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                          setShowFriendAccess(false)
+                          setFriendPassword("")
+                          setFriendError("")
+                        }}
+                        className="px-4"
+                      >
+                        Back
+                      </Button>
+                    </div>
+                  </form>
+                </>
+              )}
             </CardContent>
           </Card>
 

@@ -62,64 +62,278 @@ export default function StandardsGenerator() {
     setSelected(prev => ({ ...prev, [id]: !prev[id] }))
   }
 
+  const tabs = [
+    {
+      key: "basics",
+      label: "Lesson Basics",
+      icon: (
+        <svg viewBox="0 0 24 24" className="w-4 h-4" aria-hidden>
+          <path
+            fill="currentColor"
+            d="M4 6a2 2 0 0 1 2-2h9a1 1 0 0 1 .8.4l3.2 4.2a1 1 0 0 1 .2.6V18a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6Zm11 0H6v12h12V9h-3a2 2 0 0 1-2-2V6Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      key: "standards",
+      label: "Curriculum Standards",
+      icon: (
+        <svg viewBox="0 0 24 24" className="w-4 h-4" aria-hidden>
+          <path fill="currentColor" d="M5 4h14v2H5V4Zm0 7h14v2H5v-2Zm0 7h14v2H5v-2Z" />
+        </svg>
+      ),
+    },
+    {
+      key: "profile",
+      label: "Class Profile",
+      icon: (
+        <svg viewBox="0 0 24 24" className="w-4 h-4" aria-hidden>
+          <path
+            fill="currentColor"
+            d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      key: "pedagogy",
+      label: "Pedagogy & Scaffolds",
+      icon: (
+        <svg viewBox="0 0 24 24" className="w-4 h-4" aria-hidden>
+          <path fill="currentColor" d="M3 4h18v2H3V4Zm2 4h14v12H5V8Zm4 2v8h2v-8H9Zm4 0v8h2v-8h-2Z" />
+        </svg>
+      ),
+    },
+    {
+      key: "review",
+      label: "Review & Generate",
+      icon: (
+        <svg viewBox="0 0 24 24" className="w-4 h-4" aria-hidden>
+          <path
+            fill="currentColor"
+            d="M12 2a10 10 0 1 0 10 10A10.01 10.01 0 0 0 12 2Zm1 5v6l5 3-.8 1.4L11 14V7h2Z"
+          />
+        </svg>
+      ),
+    },
+  ] as const
+
+  const activeKey = "standards"
+
   return (
-    <div className="max-w-5xl mx-auto py-8 px-4">
-      <h1 className="text-2xl font-bold mb-6">Curriculum Standards</h1>
-
-      <div className="space-y-3">
-        <div>
-          <span className="font-semibold">Curriculum:</span> {authority} {version}
-        </div>
-        <div>
-          <span className="font-semibold">Subject:</span> {subject}
-        </div>
-        <div>
-          <span className="font-semibold">Year:</span> {year}
-        </div>
-        {authority === "VCAA" && (
-          <div>
-            <span className="font-semibold">Level:</span> {level}
+    <div className="min-h-screen w-full bg-[#FDE5DA] text-[#333]">
+      <div className="max-w-7xl mx-auto px-6 py-6 lg:py-8">
+        <header className="sticky top-0 z-10 bg-[#FDE5DA]/80 backdrop-blur supports-[backdrop-filter]:backdrop-blur flex items-center justify-between mb-4 lg:mb-6 py-3">
+          <div className="flex items-center gap-3">
+            <h1 className="text-3xl font-black tracking-tight">Teacher Dashboard</h1>
           </div>
-        )}
-        <div>
-          <span className="font-semibold">Duration:</span> {minutes} minutes
-        </div>
-      </div>
+          <div className="flex items-center gap-2">
+            <div className="text-sm font-medium px-3 py-1 rounded-full bg-white border border-[#e9e9e9]">
+              Preview
+            </div>
+          </div>
+        </header>
 
-      <div className="mt-8 p-4 border rounded-lg bg-[#F7FBF3]">
-        <div className="mb-3 font-semibold">Standards linked to {subject} ({authority} {version})</div>
-        {loading && <div className="text-sm">Loading…</div>}
-        {error && <div className="text-sm text-red-600">{error}</div>}
-        {!loading && !error && (
-          <div className="space-y-2 max-h-[50vh] overflow-y-auto">
-            {outcomes.length === 0 && <div className="text-sm text-[#666]">No standards found.</div>}
-            {outcomes.map((o) => (
-              <label key={o.id || o.Code} className="block p-3 rounded border bg-white hover:bg-[#fff8] cursor-pointer">
-                <div className="flex items-start gap-3">
-                  <input
-                    type="checkbox"
-                    checked={Boolean(selected[o.id || o.Code])}
-                    onChange={() => toggle(o.id || o.Code)}
-                    className="mt-1"
-                  />
-                  <div>
-                    <div className="text-sm font-semibold">
-                      {(o.Code || o.code) ? `${o.Code || o.code}: ` : ''}{o["Content Description"] || o.content_description || o["Achievement Standard"] || o.achievement_standard || 'Standard'}
-                    </div>
-                    {o["Elaboration"] || o.elaboration ? (
-                      <div className="text-xs text-[#555]">
-                        {o["Elaboration"] || o.elaboration}
-                      </div>
-                    ) : null}
+        <nav className="flex flex-wrap gap-2 mb-4 lg:mb-6">
+          {tabs.map((t, i) => (
+            <button
+              key={t.key}
+              className={`group inline-flex items-center gap-2 px-3 py-2 rounded-full border transition-all ${
+                t.key === activeKey
+                  ? "bg-white text-[#333] shadow-sm border-[#CBD5C0] ring-2 ring-[#888625]/20"
+                  : "bg-white/60 text-[#333] hover:bg-white border-[#eee] hover:border-[#CBD5C0]"
+              }`}
+            >
+              <span
+                className={`p-1 rounded-full ${
+                  t.key === activeKey
+                    ? "bg-[#888625] text-white"
+                    : "bg-white text-[#333] group-hover:text-[#888625]"
+                }`}
+                aria-hidden
+              >
+                {t.icon}
+              </span>
+              <span className="text-sm font-semibold">
+                {i + 1}. {t.label}
+              </span>
+            </button>
+          ))}
+        </nav>
+
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[70vh]">
+          <div className="bg-white rounded-2xl shadow-xl p-6 lg:p-8 relative overflow-hidden border border-[#EFEFEF] h-full">
+            <div className="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-[#FF9A2E]/10" />
+            <div className="absolute -bottom-16 -left-10 w-40 h-40 rounded-full bg-[#FD6585]/10" />
+            <div className="absolute -top-8 -left-8 w-24 h-24 rounded-full bg-[#888625]/10" />
+            <div className="relative">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-9 h-9 rounded-2xl bg-[#888625]/10 flex items-center justify-center ring-1 ring-[#CBD5C0]">
+                  <svg viewBox="0 0 24 24" className="w-5 h-5 text-[#888625]" aria-hidden>
+                    <path fill="currentColor" d="M5 4h14v2H5V4Zm0 7h14v2H5v-2Zm0 7h14v2H5v-2Z" />
+                  </svg>
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold">Curriculum Standards</h2>
+                  <p className="text-sm text-[#666]">Select the standards that align with your lesson.</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="rounded-lg p-3 border bg-white ring-1 ring-[#F1F1F1]">
+                  <div className="text-xs text-[#666]">Curriculum</div>
+                  <div className="font-semibold">
+                    {authority === "ACARA"
+                      ? "ACARA v9 (AU)"
+                      : authority === "VCAA"
+                      ? "VCAA (VIC)"
+                      : authority === "NESA"
+                      ? "NESA (NSW)"
+                      : authority === "QCAA"
+                      ? "QCAA (QLD)"
+                      : "SCSA (WA)"}
                   </div>
                 </div>
-              </label>
-            ))}
+                <div className="rounded-lg p-3 border bg-white ring-1 ring-[#F1F1F1]">
+                  <div className="text-xs text-[#666]">Version</div>
+                  <div className="font-semibold">{authority === "VCAA" ? version : authority === "ACARA" ? "v9" : "—"}</div>
+                </div>
+                <div className="rounded-lg p-3 border bg-white ring-1 ring-[#F1F1F1]">
+                  <div className="text-xs text-[#666]">Subject</div>
+                  <div className="font-semibold">{subject}</div>
+                </div>
+                <div className="rounded-lg p-3 border bg-white ring-1 ring-[#F1F1F1]">
+                  <div className="text-xs text-[#666]">Year</div>
+                  <div className="font-semibold">{year}</div>
+                </div>
+                {authority === "VCAA" && (
+                  <div className="rounded-lg p-3 border bg-white ring-1 ring-[#F1F1F1] col-span-2">
+                    <div className="text-xs text-[#666]">Level</div>
+                    <div className="font-semibold">{level}</div>
+                  </div>
+                )}
+              </div>
+
+              <div className="rounded-xl border p-4 bg-[#F7FBF3] border-[#CBD5C0] mb-4">
+                <div className="text-xs text-[#666] mb-2 font-semibold">Available Standards</div>
+                {loading && <div className="text-sm text-[#666]">Loading standards...</div>}
+                {error && <div className="text-sm text-red-600">{error}</div>}
+                {!loading && !error && (
+                  <div className="space-y-2 max-h-[40vh] overflow-y-auto">
+                    {outcomes.length === 0 && <div className="text-sm text-[#666]">No standards found.</div>}
+                    {outcomes.map((o) => (
+                      <label key={o.id || o.Code} className="block p-3 rounded-lg border bg-white hover:bg-[#fff8] cursor-pointer transition-colors">
+                        <div className="flex items-start gap-3">
+                          <input
+                            type="checkbox"
+                            checked={Boolean(selected[o.id || o.Code])}
+                            onChange={() => toggle(o.id || o.Code)}
+                            className="mt-1 accent-[#888625]"
+                          />
+                          <div className="flex-1">
+                            <div className="text-sm font-semibold">
+                              {(o.Code || o.code) ? `${o.Code || o.code}: ` : ''}{o["Content Description"] || o.content_description || o["Achievement Standard"] || o.achievement_standard || 'Standard'}
+                            </div>
+                            {o["Elaboration"] || o.elaboration ? (
+                              <div className="text-xs text-[#555] mt-1">
+                                {o["Elaboration"] || o.elaboration}
+                              </div>
+                            ) : null}
+                          </div>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                )}
+                <div className="mt-3 text-xs text-[#666] font-semibold">
+                  Selected: {Object.values(selected).filter(Boolean).length} standards
+                </div>
+              </div>
+
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <button
+                  onClick={() => window.history.back()}
+                  className="px-5 py-3 rounded-full font-semibold border border-[#CBD5C0] bg-white hover:border-[#333] transition"
+                >
+                  ← Back
+                </button>
+                <button
+                  disabled={Object.values(selected).filter(Boolean).length === 0}
+                  className="px-5 py-3 rounded-full text-white font-semibold shadow-lg bg-[#888625] hover:bg-[#6f7220] ring-1 ring-white disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Next →
+                </button>
+                <span className="text-xs px-2 py-1 rounded-full bg-[#888625]/10 text-[#888625] font-semibold border border-[#CBD5C0]">
+                  Step 2 of 5
+                </span>
+              </div>
+            </div>
           </div>
-        )}
-        <div className="mt-3 text-xs text-[#666]">
-          Selected: {Object.values(selected).filter(Boolean).length}
-        </div>
+
+          <div className="bg-white rounded-2xl shadow-xl p-6 lg:p-8 flex flex-col border border-[#EFEFEF] h-full">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold">Selected Standards Preview</h3>
+              <span className="text-xs px-2 py-1 rounded-full bg-[#888625]/10 text-[#888625] font-semibold border border-[#CBD5C0]">
+                Auto-updating
+              </span>
+            </div>
+
+            <div className="rounded-xl border p-4 bg-[#F7FBF3] border-[#CBD5C0] mb-4">
+              <div className="text-xs text-[#666] mb-2 font-semibold">Selected Standards</div>
+              {Object.values(selected).filter(Boolean).length === 0 ? (
+                <div className="text-sm text-[#666]">No standards selected yet.</div>
+              ) : (
+                <div className="space-y-2 max-h-[30vh] overflow-y-auto">
+                  {outcomes
+                    .filter(o => selected[o.id || o.Code])
+                    .map((o) => (
+                      <div key={o.id || o.Code} className="p-2 rounded bg-white border border-[#CBD5C0]">
+                        <div className="text-sm font-semibold">
+                          {(o.Code || o.code) ? `${o.Code || o.code}: ` : ''}{o["Content Description"] || o.content_description || o["Achievement Standard"] || o.achievement_standard || 'Standard'}
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              )}
+            </div>
+
+            <div className="rounded-xl border p-4 bg-white">
+              <div className="text-xs text-[#666] mb-2">Next Steps</div>
+              <ul className="list-disc ml-5 text-sm leading-6">
+                <li>Selected standards will inform lesson structure</li>
+                <li>Trauma-informed scaffolds will be applied</li>
+                <li>Culturally respectful activities will be suggested</li>
+                <li>Assessment opportunities will be mapped</li>
+              </ul>
+            </div>
+
+            <div className="mt-5 flex items-center justify-between flex-wrap gap-3">
+              <div className="text-xs text-[#666]">Tip: Select 3-5 key standards for best results.</div>
+            </div>
+
+            <div className="mt-3 flex flex-wrap gap-2">
+              <a
+                href="/resources/getting-started"
+                className="text-xs px-2 py-1 rounded-full bg-white border border-[#e9e9e9] hover:border-[#888625]"
+              >
+                Getting Started Hub
+              </a>
+              <a
+                href="/resources/teaching-strategies"
+                className="text-xs px-2 py-1 rounded-full bg-white border border-[#e9e9e9] hover:border-[#888625]"
+              >
+                Teaching Strategies
+              </a>
+              <a
+                href="/resources/assessment-planning"
+                className="text-xs px-2 py-1 rounded-full bg-white border border-[#e9e9e9] hover:border-[#888625]"
+              >
+                Assessment & Planning
+              </a>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   )

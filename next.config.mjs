@@ -16,6 +16,10 @@ const nextConfig = {
     maxInactiveAge: 25 * 1000,
     pagesBufferLength: 2,
   },
+  // GitHub Pages configuration
+  output: 'export',
+  trailingSlash: true,
+  basePath: '',
 }
 
 export default nextConfig

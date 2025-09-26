@@ -30,9 +30,12 @@ jobs:
     - name: Build
       run: pnpm run build
       
+    - name: Export static files
+      run: pnpm run export
+      
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       if: github.ref == 'refs/heads/main'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
+        publish_dir: ./out

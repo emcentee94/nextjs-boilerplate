@@ -35,8 +35,8 @@ export async function GET(request: NextRequest) {
 
     // Filter by year level if provided
     if (yearLevel) {
-      // Normalize year level format (e.g., "5" -> "Year 5", "F" -> "Foundation")
-      const normalizedLevel = yearLevel === 'F' ? 'Foundation' : `Year ${yearLevel}`;
+      // Normalize year level format to match database (e.g., "5" -> "Year 5", "F" -> "Foundation Year")
+      const normalizedLevel = yearLevel === 'F' ? 'Foundation Year' : `Year ${yearLevel}`;
       query = query.eq('level', normalizedLevel);
     }
 

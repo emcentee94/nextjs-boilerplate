@@ -122,7 +122,7 @@ export default function ResourcesPage() {
         {/* Header */}
         <div className="mb-16 text-center">
           <h1 className="text-5xl font-bold text-gray-900 mb-6 font-fredoka animate-fade-in-down">
-            Knowledge Hubs
+            Knowledge Hub
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto font-nunito animate-fade-in-up">
             Explore our interactive hubs filled with teaching resources, guides, and tools to inspire and empower your educational journey.

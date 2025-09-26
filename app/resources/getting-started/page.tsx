@@ -12,7 +12,7 @@ export default function GettingStartedHub() {
         <div className="mb-8">
           <Button asChild variant="outline" className="rounded-full">
             <Link href="/resources">
-              <ArrowLeft className="mr-2 w-4 h-4" /> Back to Knowledge Hubs
+              <ArrowLeft className="mr-2 w-4 h-4" /> Back to Knowledge Hub
             </Link>
           </Button>
         </div>

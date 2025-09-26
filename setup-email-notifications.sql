@@ -35,3 +35,4 @@ CREATE TRIGGER user_login_notification
 -- Grant necessary permissions
 GRANT USAGE ON SCHEMA auth TO postgres;
 GRANT SELECT, INSERT, UPDATE ON auth.users TO postgres;
+

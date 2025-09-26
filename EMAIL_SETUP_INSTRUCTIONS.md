@@ -141,3 +141,4 @@ Supabase has built-in email capabilities. You can:
 - Use auth hooks for more advanced email handling
 
 All without needing Resend or any external email service!
+

@@ -10,13 +10,13 @@
     "status": "pending"
   },
   {
-    "id": "demo_1758874804470_9f54xpwq5",
+    "id": "demo_1758892078911_d45vkvhsc",
     "name": "Test User",
     "email": "test@example.com",
     "school": "Test School",
     "role": "Teacher",
-    "message": "Would like to see a demo",
-    "submitted_at": "2025-09-26T08:20:04.470Z",
+    "message": "Testing Proton SMTP configuration",
+    "submitted_at": "2025-09-26T13:07:58.911Z",
     "status": "pending"
   }
 ]

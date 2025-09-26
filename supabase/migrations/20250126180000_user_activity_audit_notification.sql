@@ -143,3 +143,4 @@ ORDER BY ual.created_at DESC;
 GRANT SELECT ON public.recent_user_activity TO postgres;
 GRANT SELECT ON public.recent_user_activity TO service_role;
 GRANT SELECT ON public.recent_user_activity TO authenticated;
+

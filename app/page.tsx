@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -216,68 +216,123 @@ export default function TaughtfulLanding() {
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
+      {/* RAG COMPARISON SECTION */}
       <section id="how-it-works" className="py-24 px-4 bg-gradient-to-br from-[#FDE5DA] via-white to-[#FDE5DA]">
         <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-foreground font-fredoka mb-6">
-              How Taughtful Works
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Our RAG (Retrieval-Augmented Generation) technology ensures every lesson is accurate, aligned, and culturally safe.
-            </p>
+          {/* Teacher Quote */}
+          <div className="mb-12 text-center">
+            <div className="inline-flex items-center gap-2 bg-[#FD6585]/10 text-[#FD6585] px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-[#FD6585]/20">
+              Built for teachers, not tech demos
+            </div>
+            
+            <Card className="rounded-2xl border inline-block text-left max-w-3xl bg-white shadow-lg">
+              <CardContent className="p-6 md:p-8">
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-white text-lg">"</span>
+                  </div>
+                  <p className="text-base md:text-lg text-gray-700 italic leading-relaxed">
+                    "I've tested AI tools for quizzes, slides, and lessons—options are obvious, slides dated, language awkward, visuals wrong. I end up reworking everything."
+                    <span className="block mt-3 not-italic text-gray-600 font-medium"> — Year 9 Science teacher (VIC)</span>
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {/* Step 1 */}
-            <div className="text-center group">
-              <div className="w-20 h-20 bg-gradient-to-br from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                <span className="text-3xl font-black text-white font-fredoka">1</span>
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 font-fredoka">Choose Your Details</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Select your curriculum, year level, and subject. Tell us about your class profile and learning needs.
-              </p>
-            </div>
-
-            {/* Step 2 */}
-            <div className="text-center group">
-              <div className="w-20 h-20 bg-gradient-to-br from-[#FF9A2E] to-[#888625] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                <span className="text-3xl font-black text-white font-fredoka">2</span>
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 font-fredoka">AI Retrieves & Augments</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Our AI finds the right curriculum resources and adds trauma-informed scaffolding and Indigenous perspectives.
-              </p>
-            </div>
-
-            {/* Step 3 */}
-            <div className="text-center group">
-              <div className="w-20 h-20 bg-gradient-to-br from-[#888625] to-[#FD6585] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                <span className="text-3xl font-black text-white font-fredoka">3</span>
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 font-fredoka">Get Your Lesson Plan</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Receive a complete, classroom-ready lesson plan that you can trust and use immediately.
-              </p>
-            </div>
+          {/* Punchy RAG explainer */}
+          <div className="mb-12">
+            <Card className="rounded-3xl border bg-gradient-to-r from-[#FD6585]/5 via-[#FF9A2E]/5 to-[#888625]/5 shadow-xl">
+              <CardContent className="p-8 md:p-12 space-y-8 text-center">
+                <div className="flex items-center justify-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center">
+                    <Sparkles className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-black text-foreground font-fredoka">The Secret Sauce: RAG</h3>
+                </div>
+                
+                <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-4xl mx-auto">
+                  This is where <span className="font-bold text-[#FD6585]">Taughtful leaps ahead of every other AI tool</span>. RAG—Retrieval‑Augmented Generation—means our AI doesn't wing it. It <span className="font-bold text-[#888625]">hunts down trusted curriculum, pedagogy frameworks, and assessment examples first</span>, then crafts content grounded in that evidence.
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="p-6 bg-white rounded-2xl shadow-lg border border-[#FD6585]/10">
+                    <div className="w-16 h-16 bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-2xl font-black text-white font-fredoka">1</span>
+                    </div>
+                    <span className="block font-bold text-foreground mb-2 font-fredoka text-lg">Retrieve</span>
+                    <p className="text-gray-600">Finds only vetted sources you'd trust in class.</p>
+                  </div>
+                  <div className="p-6 bg-white rounded-2xl shadow-lg border border-[#FF9A2E]/10">
+                    <div className="w-16 h-16 bg-gradient-to-r from-[#FF9A2E] to-[#888625] rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-2xl font-black text-white font-fredoka">2</span>
+                    </div>
+                    <span className="block font-bold text-foreground mb-2 font-fredoka text-lg">Ground</span>
+                    <p className="text-gray-600">Anchors language, structure, and examples in real pedagogy.</p>
+                  </div>
+                  <div className="p-6 bg-white rounded-2xl shadow-lg border border-[#888625]/10">
+                    <div className="w-16 h-16 bg-gradient-to-r from-[#888625] to-[#FD6585] rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-2xl font-black text-white font-fredoka">3</span>
+                    </div>
+                    <span className="block font-bold text-foreground mb-2 font-fredoka text-lg">Deliver</span>
+                    <p className="text-gray-600">Hands you lessons, quizzes, and slides that are <span className="font-bold">classroom‑ready</span>.</p>
+                  </div>
+                </div>
+                
+                <p className="text-xl md:text-2xl font-bold text-foreground font-fredoka">
+                  The payoff? <span className="text-[#FD6585]">No rewrites. No wasted time. Just teaching resources that click</span>—making sign‑up a no‑brainer.
+                </p>
+                
+                <Button 
+                  size="lg" 
+                  className="px-8 py-6 text-lg font-bold bg-gradient-to-r from-[#FD6585] to-[#FF9A2E] hover:from-[#FD6585]/90 hover:to-[#FF9A2E]/90 text-white shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 rounded-2xl"
+                  onClick={() => window.location.href = '/signup'}
+                >
+                  <Users className="mr-2 w-5 h-5" />
+                  Try Demo Mode
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </CardContent>
+            </Card>
           </div>
 
-          {/* Key Differentiator */}
-          <div className="bg-white rounded-3xl p-8 shadow-xl border-2 border-[#FD6585]/20 max-w-4xl mx-auto">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center mx-auto mb-6">
-                <Shield className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 font-fredoka">Why RAG Technology Matters</h3>
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                Unlike generic AI that guesses from the internet, our RAG system retrieves trusted curriculum resources first, 
-                then generates lessons with trauma-informed practices and authentic Indigenous perspectives built in.
-              </p>
-              <div className="inline-block bg-gradient-to-r from-[#888625] to-[#4CAF50] text-white px-6 py-3 rounded-full text-sm font-bold">
-                🛡️ Safe • Accurate • Respectful • Classroom-Ready
-              </div>
-            </div>
+          {/* Side-by-side comparison */}
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            <Card className="rounded-2xl border bg-white shadow-lg">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                    <span className="text-red-600 text-xl">✕</span>
+                  </div>
+                  <CardTitle className="text-xl md:text-2xl font-bold font-fredoka text-gray-900">Generic AI Tools</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <ComparisonRow icon="📊" text={<>Slides feel <span className="font-semibold text-red-600">dated and generic</span></>} />
+                <ComparisonRow icon="❓" text={<><span className="font-semibold text-red-600">Quiz options</span> are obvious or irrelevant</>} />
+                <ComparisonRow icon="💬" text={<>Tone is <span className="font-semibold text-red-600">awkward or too stiff</span></>} />
+                <ComparisonRow icon="🖼️" text={<>Diagrams are <span className="font-semibold text-red-600">wrong or irrelevant</span></>} />
+                <ComparisonRow icon="⏰" text={<>"Saves time" but forces <span className="font-semibold text-red-600">rework</span></>} />
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-2xl border bg-white shadow-lg">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <CheckCircle className="h-6 w-6 text-green-600" />
+                  </div>
+                  <CardTitle className="text-xl md:text-2xl font-bold font-fredoka text-gray-900">Taughtful with RAG</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <ComparisonRow icon="📊" text={<>Slides follow <span className="font-semibold text-[#888625]">evidence-based pedagogy</span></>} />
+                <ComparisonRow icon="❓" text={<><span className="font-semibold text-[#888625]">Quiz options</span> use real student misconceptions</>} />
+                <ComparisonRow icon="💬" text={<><span className="font-semibold text-[#888625]">Teacher-ready tone</span>, scaffolded and natural</>} />
+                <ComparisonRow icon="🖼️" text={<><span className="font-semibold text-[#888625]">Curriculum-aligned</span> visuals</>} />
+                <ComparisonRow icon="⏰" text={<><span className="font-semibold text-[#888625]">Classroom-ready</span> on day one</>} />
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
@@ -545,6 +600,15 @@ export default function TaughtfulLanding() {
           </div>
         </div>
       </footer>
+    </div>
+  )
+}
+
+function ComparisonRow({ icon, text }: { icon: string; text: React.ReactNode }) {
+  return (
+    <div className="flex items-start gap-3">
+      <div className="text-xl mt-0.5">{icon}</div>
+      <div className="text-gray-700 leading-relaxed">{text}</div>
     </div>
   )
 }

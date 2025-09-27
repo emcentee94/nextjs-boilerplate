@@ -10,11 +10,8 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { Mail, ArrowRight, Users, Sparkles } from 'lucide-react'
-import Image from 'next/image'
 import Link from 'next/link'
-import Header from '@/components/header'
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -22,7 +19,6 @@ export default function SignUpPage() {
     email: '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState('')
   const [showFriendAccess, setShowFriendAccess] = useState(false)
   const [friendPassword, setFriendPassword] = useState('')
@@ -90,7 +86,7 @@ export default function SignUpPage() {
       localStorage.setItem('taughtful_user', JSON.stringify(friendUser))
       window.location.href = '/dashboard'
     } else {
-      setFriendError("That's not quite right. Try again!")
+      setFriendError(&quot;That&apos;s not quite right. Try again!&quot;)
     }
   }
 
@@ -107,7 +103,7 @@ export default function SignUpPage() {
             </h2>
             <p className='text-gray-600 mb-6'>
               Your demo access request has been submitted and stored in our
-              system. We'll get back to you soon!
+              system. We&apos;ll get back to you soon!
             </p>
             <div className='space-y-3'>
               <Button asChild className='w-full'>
@@ -128,7 +124,6 @@ export default function SignUpPage() {
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-[#FDE5DA] via-white to-[#FFF2E8]'>
-      <Header showBackButton={true} backHref='/' backText='← Back to Home' />
       {/* Main Content */}
       <div className='flex items-center justify-center min-h-[calc(100vh-4rem)] p-4'>
         <div className='w-full max-w-2xl'>
@@ -143,7 +138,7 @@ export default function SignUpPage() {
             </h1>
             <p className='text-xl text-gray-600 max-w-lg mx-auto'>
               Experience Taughtful's trauma-informed, culturally safe learning
-              platform. Request demo access and we'll get you started!
+              platform. Request demo access and we&apos;ll get you started!
             </p>
           </div>
 
@@ -236,7 +231,7 @@ export default function SignUpPage() {
                       onClick={() => setShowFriendAccess(true)}
                       className='text-sm text-[#FD6585] hover:text-[#FD6585]/80 font-medium underline'
                     >
-                      Friend of Eva's? Click here (it's quicker)
+                      Friend of Eva&apos;s? Click here (it&apos;s quicker)
                     </button>
                   </div>
                 </>
@@ -248,7 +243,7 @@ export default function SignUpPage() {
                         Quick Access
                       </h3>
                       <p className='text-sm text-gray-600'>
-                        What's Eva's surname?
+                        What&apos;s Eva&apos;s surname?
                       </p>
                     </div>
 

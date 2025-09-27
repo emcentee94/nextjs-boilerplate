@@ -13,6 +13,7 @@ import {
   HandHeart,
   Feather,
   Globe,
+  Sparkles,
 } from 'lucide-react'
 import CurriculumSelector from './curriculum-selector'
 // import Highlight, { defaultProps } from 'prism-react-renderer';
@@ -53,7 +54,7 @@ const eightWays = [
   'Community Links: Apply learning for community benefit',
 ]
 
-function getWeightedEightWays(subject) {
+function getWeightedEightWays(subject: string): string[] {
   let weights = []
   switch (subject) {
     case 'English':
@@ -96,17 +97,17 @@ export default function TaughtfulDashboard() {
   const [tiOn, setTiOn] = useState(true)
   const [indigLevel, setIndigLevel] = useState(1) // 0 none, 1 contextual, 2 deep
   const [aboriginalPedagogy, setAboriginalPedagogy] = useState(false)
-  const [selectedEightWays, setSelectedEightWays] = useState([])
-  const [modalContent, setModalContent] = useState(null)
+  const [selectedEightWays, setSelectedEightWays] = useState<string[]>([])
+  const [modalContent, setModalContent] = useState<{title: string; body: string; link: string} | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
-  const [generatedLessonPlan, setGeneratedLessonPlan] = useState(null)
-  const [error, setError] = useState(null)
+  const [generatedLessonPlan, setGeneratedLessonPlan] = useState<Record<string, any> | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   // Curriculum selection state
-  const [curriculumItems, setCurriculumItems] = useState([])
-  const [selectedCurriculumItems, setSelectedCurriculumItems] = useState([])
+  const [curriculumItems, setCurriculumItems] = useState<Record<string, any>[]>([])
+  const [selectedCurriculumItems, setSelectedCurriculumItems] = useState<Record<string, any>[]>([])
   const [isLoadingCurriculum, setIsLoadingCurriculum] = useState(false)
-  const [curriculumError, setCurriculumError] = useState(null)
+  const [curriculumError, setCurriculumError] = useState<string | null>(null)
 
   const canNextBasics = Boolean(subject && year)
   const canNextCurriculum = selectedCurriculumItems.length > 0
@@ -125,7 +126,9 @@ export default function TaughtfulDashboard() {
           setDisplayName(parsed.name)
         }
       }
-    } catch {}
+    } catch {
+      // Ignore fetch errors
+    }
     if (aboriginalPedagogy && subject) {
       setSelectedEightWays(getWeightedEightWays(subject))
     } else {
@@ -138,7 +141,7 @@ export default function TaughtfulDashboard() {
     if (subject && year) {
       fetchCurriculumItems()
     }
-  }, [subject, year])
+  }, [subject, year, fetchCurriculumItems])
 
   const fetchCurriculumItems = async () => {
     setIsLoadingCurriculum(true)
@@ -159,46 +162,13 @@ export default function TaughtfulDashboard() {
       setCurriculumItems(data.outcomes || [])
     } catch (err) {
       console.error('Curriculum fetch error:', err)
-      setCurriculumError(err.message || 'Failed to load curriculum items')
+      setCurriculumError((err as Error).message || 'Failed to load curriculum items')
     } finally {
       setIsLoadingCurriculum(false)
     }
   }
 
-  const toggleCurriculumItem = (item) => {
-    setSelectedCurriculumItems((prev) => {
-      const itemId = item.id || item['Code'] || `item-${Date.now()}`
-      const isSelected = prev.some(
-        (selected) => selected.id === itemId || selected.code === item['Code']
-      )
-
-      if (isSelected) {
-        return prev.filter(
-          (selected) => selected.id !== itemId && selected.code !== item['Code']
-        )
-      } else {
-        return [
-          ...prev,
-          {
-            id: itemId,
-            code: item['Code'] || item.code,
-            title:
-              item['Content Description'] ||
-              item.content_description ||
-              item['Achievement Standard'] ||
-              item.achievement_standard ||
-              item['Description'] ||
-              item.description,
-            description: item['Elaboration'] || item.elaboration,
-            level: item['Level'] || item.level,
-            strand: item['Strand'] || item.strand,
-            subject: item['Subject'] || item.subject,
-            learning_area: item['Learning Area'] || item.learning_area,
-          },
-        ]
-      }
-    })
-  }
+  // Removed unused toggleCurriculumItem function
 
   const handleGenerateLessonPlan = async () => {
     if (!subject || !year || selectedCurriculumItems.length === 0) {
@@ -255,7 +225,7 @@ export default function TaughtfulDashboard() {
     } catch (err) {
       console.error('Lesson plan generation error:', err)
       setError(
-        err.message || 'Failed to generate lesson plan. Please try again.'
+        (err as Error).message || 'Failed to generate lesson plan. Please try again.'
       )
     } finally {
       setIsGenerating(false)
@@ -270,10 +240,10 @@ export default function TaughtfulDashboard() {
           <div className='flex items-center justify-between mb-6'>
             <div>
               <h1 className='text-3xl font-black text-gray-900 font-fredoka tracking-wide'>
-                G'DAY, {displayName || 'TEACHER'} 👋
+                G&apos;DAY, {displayName || 'TEACHER'} 👋
               </h1>
               <p className='text-lg text-gray-600 font-fredoka mt-1'>
-                Let's create an amazing lesson plan together!
+                Let&apos;s create an amazing lesson plan together!
               </p>
             </div>
             <motion.div
@@ -332,9 +302,11 @@ export default function TaughtfulDashboard() {
                       max={120}
                       step={5}
                       icon={Clock}
+                      suffix=' minutes'
                     />
                   </div>
                   <NavButtons
+                    onPrev={() => setActive('basics')}
                     onNext={() => setActive('curriculum')}
                     nextEnabled={canNextBasics}
                   />
@@ -399,6 +371,7 @@ export default function TaughtfulDashboard() {
                       min={5}
                       max={35}
                       step={1}
+                      icon={Users}
                       suffix='students'
                     />
                     <SelectField
@@ -419,7 +392,7 @@ export default function TaughtfulDashboard() {
                   <NavButtons
                     onPrev={() => setActive('basics')}
                     onNext={() => setActive('pedagogy')}
-                    nextEnabled={canNextClass}
+                    nextEnabled={Boolean(canNextClass)}
                   />
                 </motion.div>
               )}
@@ -543,7 +516,7 @@ export default function TaughtfulDashboard() {
                     </p>
                     {aboriginalPedagogy && selectedEightWays.length > 0 && (
                       <ul className='list-disc list-inside text-sm text-gray-700 mt-2 font-fredoka'>
-                        {selectedEightWays.map((w) => (
+                        {selectedEightWays.map((w: string) => (
                           <li key={w}>{w}</li>
                         ))}
                       </ul>
@@ -612,7 +585,10 @@ export default function TaughtfulDashboard() {
                       />
                     </div>
                   </div>
-                  <NavButtons onPrev={() => setActive('pedagogy')} />
+                  <NavButtons 
+                    onPrev={() => setActive('pedagogy')} 
+                    onNext={() => {}} 
+                  />
 
                   <div className='mt-6 flex justify-center'>
                     <motion.button
@@ -688,7 +664,7 @@ export default function TaughtfulDashboard() {
                           </h5>
                           <ul className='list-disc list-inside text-sm text-gray-700 font-fredoka'>
                             {generatedLessonPlan.learningGoals?.map(
-                              (goal, index) => (
+                              (goal: string, index: number) => (
                                 <li key={index}>{goal}</li>
                               )
                             )}
@@ -701,7 +677,7 @@ export default function TaughtfulDashboard() {
                           </h5>
                           <div className='space-y-3'>
                             {generatedLessonPlan.lessonTimeline?.map(
-                              (item, index) => (
+                              (item: Record<string, any>, index: number) => (
                                 <div
                                   key={index}
                                   className='border-l-4 border-[#FD6585] pl-4 bg-gradient-to-r from-[#fff9fb] to-transparent p-3 rounded-r-xl'
@@ -731,7 +707,7 @@ export default function TaughtfulDashboard() {
                               </h5>
                               <ul className='list-disc list-inside text-sm text-gray-700 font-fredoka'>
                                 {generatedLessonPlan.resources.map(
-                                  (resource, index) => (
+                                  (resource: string, index: number) => (
                                     <li key={index}>{resource}</li>
                                   )
                                 )}
@@ -748,7 +724,7 @@ export default function TaughtfulDashboard() {
                               </h5>
                               <ul className='list-disc list-inside text-sm text-gray-700 font-fredoka'>
                                 {generatedLessonPlan.traumaInformedStrategies.map(
-                                  (strategy, index) => (
+                                  (strategy: string, index: number) => (
                                     <li key={index}>{strategy}</li>
                                   )
                                 )}
@@ -827,10 +803,10 @@ if (
 }
 
 // --- Supporting Components ---
-function Stepper({ active, setActive }) {
+function Stepper({ active, setActive }: { active: string; setActive: (step: string) => void }) {
   return (
     <div className='flex flex-wrap gap-3'>
-      {steps.map((step, index) => (
+      {steps.map((step) => (
         <motion.button
           key={step.key}
           onClick={() => setActive(step.key)}
@@ -867,7 +843,7 @@ function Stepper({ active, setActive }) {
   )
 }
 
-function SectionHeader({ icon: Icon, title, subtitle }) {
+function SectionHeader({ icon: Icon, title, subtitle }: { icon: React.ComponentType<any>; title: string; subtitle: string }) {
   return (
     <div className='flex items-center gap-4'>
       <div className='rounded-2xl bg-gradient-to-br from-[#FD6585] to-[#FF9A2E] p-3 text-white shadow-lg'>
@@ -883,7 +859,7 @@ function SectionHeader({ icon: Icon, title, subtitle }) {
   )
 }
 
-function SelectField({ label, value, onChange, options, placeholder }) {
+function SelectField({ label, value, onChange, options, placeholder }: { label: string; value: string; onChange: (value: string) => void; options: string[]; placeholder: string }) {
   return (
     <div>
       <label className='block text-sm font-medium mb-2 font-fredoka text-gray-900'>
@@ -914,6 +890,15 @@ function SliderField({
   step,
   icon: Icon,
   suffix,
+}: {
+  label: string;
+  value: number;
+  onChange: (value: number) => void;
+  min: number;
+  max: number;
+  step: number;
+  icon: React.ComponentType<any>;
+  suffix: string;
 }) {
   return (
     <div>
@@ -947,7 +932,7 @@ function SliderField({
   )
 }
 
-function NavButtons({ onPrev, onNext, nextEnabled = true }) {
+function NavButtons({ onPrev, onNext, nextEnabled = true }: { onPrev: () => void; onNext: () => void; nextEnabled?: boolean }) {
   return (
     <div className='mt-8 flex justify-between'>
       {onPrev ? (
@@ -994,6 +979,19 @@ function PreviewCard({
   aboriginalPedagogy,
   selectedEightWays,
   selectedCurriculumItems,
+}: {
+  subject: string;
+  year: string;
+  duration: number;
+  classSize: number;
+  literacyTier: string;
+  assessment: string;
+  tiOn: boolean;
+  diff: number;
+  indigLevel: number;
+  aboriginalPedagogy: boolean;
+  selectedEightWays: string[];
+  selectedCurriculumItems: Record<string, any>[];
 }) {
   return (
     <div className='space-y-3 text-sm font-fredoka'>
@@ -1051,7 +1049,7 @@ function PreviewCard({
         </p>
         {aboriginalPedagogy && selectedEightWays.length > 0 && (
           <ul className='list-disc list-inside text-xs text-gray-600 mt-2'>
-            {selectedEightWays.map((way) => (
+            {selectedEightWays.map((way: string) => (
               <li key={way}>{way}</li>
             ))}
           </ul>
@@ -1067,7 +1065,7 @@ function PreviewCard({
         </p>
         {selectedCurriculumItems && selectedCurriculumItems.length > 0 && (
           <ul className='list-disc list-inside text-xs text-gray-600 max-h-20 overflow-y-auto mt-2'>
-            {selectedCurriculumItems.map((item, index) => (
+            {selectedCurriculumItems.map((item: Record<string, any>, index: number) => (
               <li key={item.id || index}>
                 {item.code}:{' '}
                 {item.title || item.description || 'Curriculum Standard'}
@@ -1080,15 +1078,9 @@ function PreviewCard({
   )
 }
 
-function Badge({ children }) {
-  return (
-    <span className='bg-[#333] text-white px-2 py-1 rounded-full text-xs'>
-      {children}
-    </span>
-  )
-}
+// Removed unused Badge function
 
-function Toggle({ checked, onChange }) {
+function Toggle({ checked, onChange }: { checked: boolean; onChange: (checked: boolean) => void }) {
   return (
     <button
       onClick={() => onChange(!checked)}

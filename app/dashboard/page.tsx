@@ -151,7 +151,7 @@ const pdTabs = [
   },
 ]
 
-function StatCard({ icon, label, value }) {
+function StatCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 6 }}
@@ -181,6 +181,17 @@ function ToolCard({
   hoverBorder,
   available,
   fontFamily,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  desc: string;
+  href: string;
+  gradient: string;
+  iconBg: string;
+  borderColor: string;
+  hoverBorder: string;
+  available: boolean;
+  fontFamily: string;
 }) {
   return (
     <a href={href} className='group'>
@@ -214,7 +225,7 @@ function ToolCard({
   )
 }
 
-function Badge({ children }) {
+function Badge({ children }: { children: React.ReactNode }) {
   return (
     <span className='inline-flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700'>
       <Award className='h-3.5 w-3.5' /> {children}
@@ -222,7 +233,7 @@ function Badge({ children }) {
   )
 }
 
-function PDTabStrip({ active, setActive }) {
+function PDTabStrip({ active, setActive }: { active: string; setActive: (tab: string) => void }) {
   return (
     <div className='mb-3 flex flex-wrap gap-2'>
       {pdTabs.map((t) => (
@@ -243,7 +254,7 @@ function PDTabStrip({ active, setActive }) {
   )
 }
 
-function PDTabPanel({ active }) {
+function PDTabPanel({ active }: { active: string }) {
   const tab = pdTabs.find((t) => t.key === active) ?? pdTabs[0]
   return (
     <motion.div
@@ -329,7 +340,7 @@ function DailyPrompt() {
   useEffect(() => {
     const t = setInterval(() => setIdx((i) => (i + 1) % prompts.length), 5500)
     return () => clearInterval(t)
-  }, [])
+  }, [prompts.length])
   return (
     <motion.div
       key={idx}
@@ -389,7 +400,9 @@ export default function Dashboard() {
           break
         }
       }
-    } catch {}
+    } catch {
+      // Ignore localStorage errors
+    }
   }, [])
 
   return (

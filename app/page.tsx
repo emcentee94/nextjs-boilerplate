@@ -45,32 +45,6 @@ export default function TaughtfulLanding() {
 
   // Removed testimonial rotation effect
 
-  const onSubmit = async (data: WaitlistFormData) => {
-    setIsSubmitting(true)
-    setSubmitStatus('idle')
-
-    try {
-      const response = await fetch('/api/waitlist', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-
-      if (response.ok) {
-        setSubmitStatus('success')
-        reset()
-      } else {
-        setSubmitStatus('error')
-      }
-    } catch (error) {
-      console.error('Form submission error:', error)
-      setSubmitStatus('error')
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-[#FDE5DA] via-[#FFF2E8] to-[#FDE5DA]'>
@@ -465,21 +439,6 @@ export default function TaughtfulLanding() {
           </div>
         </div>
       </footer>
-    </div>
-  )
-}
-
-function ComparisonRow({
-  icon,
-  text,
-}: {
-  icon: string
-  text: React.ReactNode
-}) {
-  return (
-    <div className='flex items-start gap-3'>
-      <div className='text-xl mt-0.5'>{icon}</div>
-      <div className='text-gray-700 leading-relaxed'>{text}</div>
     </div>
   )
 }

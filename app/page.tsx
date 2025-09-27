@@ -18,7 +18,6 @@ import { Button } from '@/components/ui/button'
 import AboriginalPerspectivesNarrativeGrid from '@/components/AboriginalPerspectives'
 import CulturalSafeguardsGrid from '@/components/CulturalSafeguardsGrid'
 import CurriculumCoverage from '@/components/CurriculumCoverage'
-import RAGSection from '@/components/RAGSection'
 
 export default function TaughtfulLanding() {
   // Testimonials removed; no rotation state needed
@@ -154,64 +153,6 @@ export default function TaughtfulLanding() {
 
             {/* Remove this entire benefits grid */}
           </div>
-        </div>
-      </section>
-
-      {/* RAG COMPARISON SECTION */}
-      <section
-        id='how-it-works'
-        className='py-12 px-4 bg-transparent relative overflow-hidden rounded-3xl mx-4 md:mx-6 lg:mx-8'
-      >
-        {/* Decorative Elements */}
-        <div className='absolute inset-0 pointer-events-none'>
-          {/* Paper airplane paths */}
-          <div className='absolute top-16 left-8 transform rotate-12'>
-            <div className='w-8 h-8 text-[#FF9A2E]/30 animate-pulse'>✈️</div>
-          </div>
-          <div className='absolute top-32 right-12 transform -rotate-12'>
-            <div
-              className='w-6 h-6 text-[#FD6585]/40 animate-bounce'
-              style={{ animationDelay: '0.5s', animationDuration: '2s' }}
-            >
-              🎯
-            </div>
-          </div>
-
-          {/* Geometric shapes */}
-          <div
-            className='absolute bottom-20 left-16 w-16 h-16 border-4 border-[#888625]/20 rotate-45 animate-spin'
-            style={{ animationDuration: '20s' }}
-          ></div>
-          <div className='absolute top-20 right-1/4 w-12 h-12 bg-gradient-to-r from-[#FD6585]/10 to-[#FF9A2E]/10 rounded-full'></div>
-
-          {/* Dashed lines */}
-          <svg
-            className='absolute top-1/3 left-1/4 w-32 h-16 opacity-20'
-            viewBox='0 0 100 50'
-          >
-            <line
-              x1='0'
-              y1='25'
-              x2='100'
-              y2='25'
-              stroke='#888625'
-              strokeWidth='2'
-              strokeDasharray='5,5'
-              className='animate-pulse'
-            />
-          </svg>
-        </div>
-
-        <div className='container mx-auto max-w-6xl relative z-10'>
-          {/* Testimonial Cards Removed */}
-
-          {/* SECRET SAUCE: RAG EXPLANATION */}
-          <section
-            id='how-it-works'
-            className='py-12 px-4 bg-transparent relative overflow-hidden rounded-3xl mx-4 md:mx-6 lg:mx-8'
-          >
-            <RAGSection />
-          </section>
         </div>
       </section>
 

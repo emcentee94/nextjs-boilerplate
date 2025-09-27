@@ -395,10 +395,18 @@ export default function TaughtfulLanding() {
             </div>
 
             <div className='border-t border-white/20 pt-8 text-white/60 text-sm'>
-              <p>
-                © 2025 Taughtful. Built for Australian teachers, by Australian
-                educators.
-              </p>
+              <div className='flex flex-col md:flex-row justify-between items-center gap-4'>
+                <p>
+                  © 2025 Taughtful. Built for Australian teachers, by
+                  Australian educators.
+                </p>
+                <a
+                  href='/admin'
+                  className='px-3 py-1 bg-white/10 hover:bg-white/20 text-white/80 hover:text-white rounded-md text-xs font-medium transition-all duration-200 border border-white/20 hover:border-white/40'
+                >
+                  Admin Dashboard
+                </a>
+              </div>
               <div className='mt-4 text-white/70'>
                 <p>
                   We acknowledge the Traditional Owners of the lands on which we

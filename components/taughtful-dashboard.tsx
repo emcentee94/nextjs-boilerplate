@@ -373,6 +373,25 @@ export default function TaughtfulDashboard() {
                   />
 
                   <div className='mt-6'>
+                    {isDemo && (
+                      <div className='mb-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl'>
+                        <div className='flex items-start gap-3'>
+                          <div className='w-4 h-4 bg-blue-500 rounded-full mt-0.5 flex-shrink-0'></div>
+                          <div>
+                            <h4 className='font-semibold text-blue-900 font-fredoka mb-1'>
+                              Demo Mode: Sample Curriculum Data
+                            </h4>
+                            <p className='text-sm text-blue-800 font-nunito'>
+                              The curriculum standards shown here are
+                              placeholder examples. In the full version,
+                              you&apos;ll have access to the complete Australian
+                              Curriculum database with thousands of standards
+                              across all learning areas and year levels.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                     <CurriculumSelector
                       curriculumItems={curriculumItems}
                       selectedItems={selectedCurriculumItems}

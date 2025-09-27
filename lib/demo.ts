@@ -21,6 +21,11 @@ export function setDemoInLocalStorage(enabled: boolean) {
 }
 
 export function isDemoMode(): boolean {
+  // During SSR, only check environment variable
+  if (typeof window === 'undefined') {
+    return getIsDemoFromEnv()
+  }
+
   return (
     getIsDemoFromEnv() || getIsDemoFromQuery() || getIsDemoFromLocalStorage()
   )

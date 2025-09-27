@@ -385,8 +385,9 @@ export default function TaughtfulDashboard() {
                               The curriculum standards shown here are
                               placeholder examples. In the full version,
                               you&apos;ll have access to the complete Australian
-                              Curriculum database with thousands of standards
-                              across all learning areas and year levels.
+                              Curriculum database with thousands of entries
+                              across all learning areas, outcomes and year
+                              levels.
                             </p>
                           </div>
                         </div>

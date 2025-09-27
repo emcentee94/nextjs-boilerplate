@@ -33,7 +33,7 @@ export default function NavigationBar() {
               <Button
                 variant='outline'
                 size='sm'
-                className='bg-pink-200/80 hover:bg-pink-300/80 text-gray-800 border-gray-800 font-semibold transition-all duration-200 hover:scale-105'
+                className='px-6 py-3 rounded-2xl border-2 border-[#FD6585] text-[#FD6585] bg-[#FD6585]/5 shadow-md transition-all duration-300 hover:bg-[#FD6585] hover:text-white hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.02] group font-nunito'
               >
                 <Home className='w-4 h-4 mr-2' />
                 Back to Home
@@ -44,7 +44,7 @@ export default function NavigationBar() {
               <Button
                 variant='outline'
                 size='sm'
-                className='bg-green-200/80 hover:bg-green-300/80 text-gray-800 border-gray-800 font-semibold transition-all duration-200 hover:scale-105'
+                className='px-6 py-3 rounded-2xl border-2 border-[#888625] text-[#888625] bg-[#888625]/5 shadow-md transition-all duration-300 hover:bg-[#888625] hover:text-white hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.02] group font-nunito'
               >
                 <BookOpen className='w-4 h-4 mr-2' />
                 Learning Hub
@@ -58,7 +58,7 @@ export default function NavigationBar() {
               <Button
                 variant='outline'
                 size='sm'
-                className='bg-orange-200/80 hover:bg-orange-300/80 text-gray-800 border-gray-800 font-semibold transition-all duration-200 hover:scale-105'
+                className='px-6 py-3 rounded-2xl border-2 border-[#FF9A2E] text-[#FF9A2E] bg-[#FF9A2E]/5 shadow-md transition-all duration-300 hover:bg-[#FF9A2E] hover:text-white hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.02] group font-nunito'
               >
                 <LogIn className='w-4 h-4 mr-2' />
                 Login
@@ -74,7 +74,7 @@ export default function NavigationBar() {
               <Button
                 variant='outline'
                 size='sm'
-                className='w-full bg-pink-200/80 hover:bg-pink-300/80 text-gray-800 border-gray-800 font-semibold text-xs'
+                className='w-full px-4 py-2 rounded-2xl border-2 border-[#FD6585] text-[#FD6585] bg-[#FD6585]/5 shadow-md transition-all duration-300 hover:bg-[#FD6585] hover:text-white hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.02] group font-nunito text-xs'
               >
                 <Home className='w-3 h-3 mr-1' />
                 Home
@@ -85,7 +85,7 @@ export default function NavigationBar() {
               <Button
                 variant='outline'
                 size='sm'
-                className='w-full bg-green-200/80 hover:bg-green-300/80 text-gray-800 border-gray-800 font-semibold text-xs'
+                className='w-full px-4 py-2 rounded-2xl border-2 border-[#888625] text-[#888625] bg-[#888625]/5 shadow-md transition-all duration-300 hover:bg-[#888625] hover:text-white hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.02] group font-nunito text-xs'
               >
                 <BookOpen className='w-3 h-3 mr-1' />
                 Learning Hub
@@ -96,7 +96,7 @@ export default function NavigationBar() {
               <Button
                 variant='outline'
                 size='sm'
-                className='w-full bg-orange-200/80 hover:bg-orange-300/80 text-gray-800 border-gray-800 font-semibold text-xs'
+                className='w-full px-4 py-2 rounded-2xl border-2 border-[#FF9A2E] text-[#FF9A2E] bg-[#FF9A2E]/5 shadow-md transition-all duration-300 hover:bg-[#FF9A2E] hover:text-white hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.02] group font-nunito text-xs'
               >
                 <LogIn className='w-3 h-3 mr-1' />
                 Login

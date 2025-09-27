@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { Mail, ArrowRight, Users, Sparkles } from 'lucide-react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -10,8 +12,6 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Mail, ArrowRight, Users, Sparkles } from 'lucide-react'
-import Link from 'next/link'
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -86,7 +86,7 @@ export default function SignUpPage() {
       localStorage.setItem('taughtful_user', JSON.stringify(friendUser))
       window.location.href = '/dashboard'
     } else {
-      setFriendError(&quot;That&apos;s not quite right. Try again!&quot;)
+      setFriendError("That's not quite right. Try again!")
     }
   }
 
@@ -137,8 +137,9 @@ export default function SignUpPage() {
               Get Demo Access
             </h1>
             <p className='text-xl text-gray-600 max-w-lg mx-auto'>
-              Experience Taughtful's trauma-informed, culturally safe learning
-              platform. Request demo access and we&apos;ll get you started!
+              Experience Taughtful&apos;s trauma-informed, culturally safe
+              learning platform. Request demo access and we&apos;ll get you
+              started!
             </p>
           </div>
 

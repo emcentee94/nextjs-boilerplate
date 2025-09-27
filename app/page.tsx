@@ -1,43 +1,27 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import {
   ArrowRight,
   BookOpen,
   Users,
-  Shield,
-  Clock,
-  Heart,
-  MessageCircle,
   Calculator,
   Flag as Flask,
   Globe,
+  Heart,
+  MessageCircle,
   Sparkles,
   Zap,
-  Target,
-  CheckCircle,
-  TrendingUp,
 } from 'lucide-react'
 import Image from 'next/image'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 import { z } from 'zod'
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import RAGSection from '@/components/RAGSection'
-import CurriculumCoverage from '@/components/CurriculumCoverage'
 import AboriginalPerspectivesNarrativeGrid from '@/components/AboriginalPerspectives'
 import CulturalSafeguardsGrid from '@/components/CulturalSafeguardsGrid'
+import CurriculumCoverage from '@/components/CurriculumCoverage'
+import RAGSection from '@/components/RAGSection'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 const waitlistSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -48,27 +32,13 @@ const waitlistSchema = z.object({
 
 type WaitlistFormData = z.infer<typeof waitlistSchema>
 
-const stats = [
-  { number: '30+', label: 'Teachers Testing' },
-  { number: '150+', label: 'Lessons Generated' },
-  { number: 'Beta', label: 'Currently Live' },
-  { number: 'Free', label: 'During Testing' },
-]
-
 export default function TaughtfulLanding() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<
-    'idle' | 'success' | 'error'
-  >('idle')
+  const [, setIsSubmitting] = useState(false)
+  const [, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
   // Testimonials removed; no rotation state needed
 
   const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
     reset,
-    formState: { errors },
   } = useForm<WaitlistFormData>({
     resolver: zodResolver(waitlistSchema),
   })
@@ -101,8 +71,6 @@ export default function TaughtfulLanding() {
       setIsSubmitting(false)
     }
   }
-
-  const yearLevels = watch('yearLevels')
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-[#FDE5DA] via-[#FFF2E8] to-[#FDE5DA]'>

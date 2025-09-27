@@ -150,13 +150,6 @@ export default function TaughtfulDashboard() {
     }
   }, [aboriginalPedagogy, subject])
 
-  // Fetch curriculum items when subject and year are selected
-  useEffect(() => {
-    if (subject && year) {
-      fetchCurriculumItems()
-    }
-  }, [subject, year, fetchCurriculumItems])
-
   const fetchCurriculumItems = useCallback(async () => {
     setIsLoadingCurriculum(true)
     setCurriculumError(null)
@@ -204,6 +197,13 @@ export default function TaughtfulDashboard() {
       setIsLoadingCurriculum(false)
     }
   }, [isDemo, subject, year])
+
+  // Fetch curriculum items when subject and year are selected
+  useEffect(() => {
+    if (subject && year) {
+      fetchCurriculumItems()
+    }
+  }, [subject, year, fetchCurriculumItems])
 
   // Removed unused toggleCurriculumItem function
 

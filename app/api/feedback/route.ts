@@ -22,14 +22,18 @@ export async function POST(req: NextRequest) {
     const { error } = await supabase.from('feedback').insert([payload])
     if (error) {
       console.error('Feedback insert error:', error)
-      return NextResponse.json({ ok: false, error: 'Failed to store feedback' }, { status: 500 })
+      return NextResponse.json(
+        { ok: false, error: 'Failed to store feedback' },
+        { status: 500 }
+      )
     }
 
     return NextResponse.json({ ok: true })
   } catch (e) {
     console.error('Feedback API exception:', e)
-    return NextResponse.json({ ok: false, error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json(
+      { ok: false, error: 'Internal server error' },
+      { status: 500 }
+    )
   }
 }
-
-

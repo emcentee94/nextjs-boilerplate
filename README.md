@@ -44,11 +44,13 @@ RESEND_API_KEY=your_resend_api_key
 ## Development
 
 1. Install dependencies:
+
    ```bash
    npm install
    ```
 
 2. Start the development server:
+
    ```bash
    npm run dev
    ```
@@ -66,16 +68,33 @@ This project is configured for deployment on Vercel:
 ## Email Configuration
 
 The app uses Proton Mail SMTP for email notifications:
+
 - Waitlist signups → `hello@taughtful.com.au`
 - Demo requests → `hello@taughtful.com.au`
 - User authentication emails → via Supabase SMTP
 
+I've added a Supabase project and enabled the pg_cron extension.
+
+```sql
+-- a CRON job to run every day at midnight
+SELECT cron.schedule('daily-cleanup', '0 0 * * *', 'DELETE FROM old_data');
+```
+
+And here's another code block.
+
+```javascript
+console.log('Hello, World!')
+```
+
+### Lists
+
+- Item 1
+- Item 2
+- Item 3
+
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
 

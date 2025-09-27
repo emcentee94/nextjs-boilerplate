@@ -1,0 +1,121 @@
+[33m7f6273c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Clean up repository: remove broken submodule, enhance .gitignore for security
+[33me0a7531[m Complete lesson plan generator: fix API integration, curriculum data, and Anthropic AI generation - fully working end-to-end
+[33ma6a5a16[m Indigenous updates: remove third box; add Acknowledgement of Country to footer
+[33m9483faf[m Dashboard: enhance tool cards with colors, typefaces, and demo mode labels
+[33m798f42b[m Dashboard: remove duplicate header; fix Lesson Plan link; mark upcoming tools as coming soon
+[33m65024ec[m Remove border from RAG section container
+[33m9c92189[m Remove Community Priorities → Our Commitments grid from Aboriginal section
+[33m1818550[m Aboriginal section: add Community Priorities→Commitments grid; add CulturalSafeguardsGrid; remove header; minor text updates
+[33m4c8c451[m Landing: add AboriginalPerspectives narrative+grid; more earthy SVGs; parallax divider; RAG comparison auto-animate; restore subject icon chips; remove All F–10 Learning Areas chips; footer year 2025; minor tweaks
+[33m47dbb48[m Landing cleanup: remove final CTA; enlarge RAG badge; integrate RAGSection; curriculum cards styling
+[33mb408729[m Landing: remove testimonial color cards above RAG section
+[33m618d589[m Integrate new RAGSection component; refine RAG layout and copy; curriculum cards orange tints; remove gradients in circles; cleanup sections and borders per brand
+[33m5913b63[m Landing updates: header buttons; hero CTA circles refined; simplify subheading; compact RAG; add testimonials row; fix runtime error; sitewide peach gradient; section borders; simplify Indigenous banner; remove testimonials + benefits; curriculum cards orange tints, no gradient circles; nav buttons outlined
+[33m924b285[m Enhance header styling: make links bolder with colorful borders for better visibility and branding consistency
+[33m0493886[m Remove header component and 500+ teachers badge from landing page
+[33mc39ddd7[m Replace RAG section with new comparison design aligned to Taughtful theme
+[33me0ec018[m Completely optimize and redesign landing page for better conversion and UX
+[33m646e77b[m Remove duplicate Knowledge Hub button from landing page hero section
+[33mda6eefc[m Add consistent header with Knowledge Hub button and playful font across all pages
+[33mf3746c1[m Fix duplicate headers on demo login page and add friend access option
+[33m72a7736[m Update lockfile for new dependencies
+[33mb8f95c7[m Update teacher dashboard with new features: stats, tools, PD tabs, wellbeing meter, and achievements
+[33mc6dbe08[m Update lesson generator: auto-show info panels with close buttons, replace special needs with inclusive learner profiles
+[33m457b4f9[m Fix lesson generator navigation: add Next button functionality and complete 5-step flow
+[33m27b728b[m Fix curriculum data loading: correct level format mapping for Supabase
+[33m7d0f40b[m feat: add 'What's this?' prompts to explain curriculum structure throughout lesson generator
+[33m39253b5[m fix: filter curriculum API to only return standards with codes
+[33m69f8046[m fix: normalize year level in curriculum API and update standards page UI to match dashboard design
+[33m3e7f595[m fix: add dynamic export to API routes and remove font dependencies from PDF generator
+[33m88e517b[m feat(survey): add feedback table migration, API, and post-generation survey UI
+[33mf8a8a66[m feat(dashboard): add Save Draft button wiring to plans save API
+[33m4c1cf25[m feat(plans): add save/archive/list APIs and My Plans page with free-tier limits
+[33mf8158a4[m feat(standards): fetch and display standards from curriculum API with selection
+[33mb252da3[m feat(generator): add StandardsGenerator page at /generator/standards
+[33mc7c6cfa[m feat(dashboard): integrate new LessonGeneratorPreview as dashboard view
+[33m87464f2[m feat(landing): use Link for CTAs, add reduced-motion, unify CTA styles
+[33m29a9cd4[m feat(demo-signup): require Supabase in prod and add demo_requests migration
+[33m2f69561[m feat(signup): simplify demo sign up to name + email and direct dashboard access
+[33ma44dd11[m feat(vcaa 2.0): center + playful styling and move Taughtful Alignment first
+[33m57eae97[m chore(resources): rename 'Knowledge Hubs' to 'Knowledge Hub' and back-links
+[33m4adf957[m feat: make Try Demo Mode button pink on landing hero
+[33m416d314[m fix: remove vercel.json with invalid secret references
+[33m7f78291[m chore: configure static export for GitHub Pages and add Pages workflow
+[33me4f7d70[m feat(curriculum): subject detail with version+links; add knowledge hubs
+[33m1cc29a8[m feat(resources): add 4 hub pages; wire demo signup to Supabase; greet user on dashboard
+[33mb0efa6e[m feat: demo signup logs to Supabase; greet on dashboard; resources UI + VCAA 2.0 hub; curriculum version/region toggles; api demo-request upsert
+[33m5e5c65e[m Enhance .npmrc: Add comprehensive npm/pnpm configuration for security, exact versions, and peer dependency handling
+[33m27256a9[m Lock pnpm version: Add packageManager field and configure Vercel for pnpm@10.17.0
+[33mbc7d2f0[m Trigger Vercel redeploy
+[33m921550a[m Configure for Vercel deployment: Remove GitHub Pages config, add Vercel config and update README
+[33m7bc6da1[m Fix GitHub Pages deployment: Configure Next.js for static export and update workflow
+[33m5d24cca[m Fix email configuration: Configure Proton Mail SMTP for waitlist and demo request notifications
+[33m4fc3842[m Trigger deployment retry
+[33m797b64d[m Fix deployment issues: add dynamic route config, email system updates, and user activity audit migration
+[33m68e22c8[m Enhance Resources page with comprehensive content and functional links
+[33m153eaeb[m Add Resources page and reformat Curriculum page with modern design
+[33m04c5d47[m Remove dashboard link from header navigation
+[33md6b1e05[m Fix curriculum selector: implement consistent unique ID system for individual item selection
+[33m9a30d6e[m Add debugging to curriculum selector to identify selection issue
+[33mb48bb9c[m Fix Supabase client creation to avoid build errors when env vars missing
+[33m9ae10de[m Update lockfile for deployment
+[33m9a65a31[m Simplify curriculum selector - remove unnecessary strand/sub-strand dropdowns and create proper curriculum API endpoint
+[33m880aec8[m Add sign-up page with demo access request form linking to hello@taughtful.com.au
+[33mc1c99f1[m Update title to 'trauma informed, culturally safe'
+[33m95ed195[m Fix curriculum standards selection component
+[33md0a00a2[m Auto-correct API: Add fallback to Supabase Storage URLs when database API fails
+[33m1524ed6[m Fix curriculum standards component - update API route to use correct table schema
+[33m7774ba1[m Move RAG heading up and fix circle text formatting
+[33m370dec7[m Improve RAG section design and remove redundancy
+[33m79072c1[m Move Revolutionary AI Technology badge closer to burnout line
+[33m2e095ae[m Replace first 'What Makes Us Different' section with dynamic RAG marketing
+[33mc801e94[m Add curriculum standards selection step to teacher dashboard
+[33m30f2cf3[m Add lesson plan generation functionality to TaughtfulDashboard using Anthropic API
+[33m3e7d48f[m Fix fonts in WhatMakesUsDifferent component - update to proper Tailwind font classes
+[33m28827ec[m Fix font configuration - add proper Tailwind font families and update font classes
+[33m1e1030a[m Fix Vercel build error by removing experimental optimizeCss feature
+[33m2693f4c[m Fix missing useState import in landing page
+[33m5a38604[m Make fonts more playful and add RAG explainer section - Replace font-mono with Fredoka and font-sans with Nunito throughout - Add WhatMakesUsDifferent component explaining RAG technology - Improve typography consistency across landing page and header
+[33m0daef99[m Make fonts more playful - replace font-mono with Fredoka and font-sans with Nunito throughout landing page and header
+[33m8136ebf[m Fix double header on landing page and make fonts more playful with Fredoka and Nunito
+[33m3d09ce2[m Update pnpm-lock.yaml for fresh Vercel deployment
+[33m6838e59[m Fix Tailwind CSS configuration - downgrade to v3 and fix build issues
+[33m789ba94[m Force fresh Vercel deployment - clear build cache
+[33m1394ce6[m Remove payload panel from dashboard
+[33m91e6315[m Simplify payload panel to fix Vercel deployment - remove prism-react-renderer dependency
+[33m5fefa84[m Trigger Vercel deployment with latest changes
+[33mc0a6187[m Fix prism-react-renderer theme import
+[33m7e6a1d7[m Add syntax highlighting to payload panel with prism-react-renderer
+[33me4f6233[m Improve payload panel formatting with whitespace-pre-wrap
+[33ma1bd77b[m Add comprehensive 8 Ways of Learning framework and enhanced TaughtfulDashboard
+[33m914b2ff[m Fix formatting alignment for Embedding Indigenous Perspectives section
+[33mdf8833d[m Simplify TaughtfulDashboard with modal functionality and cleaner UI
+[33m398c4b2[m Add comprehensive TaughtfulDashboard component with trauma-informed and Indigenous perspectives
+[33m6a22030[m Trigger Vercel rebuild with env vars
+[33m0944514[m Update pnpm lockfile to fix deployment
+[33m1575412[m feat: Implement AI-powered lesson plan generator with Australian Curriculum integration
+[33mdb3471e[m Add Supabase storage upload scripts and enhanced logo
+[33m0527adc[m Update Taughtful logo with new design
+[33mbc83792[m Add admin button to footer
+[33m103598f[m Create admin dashboard main page
+[33md2e3e36[m Remove middleware.ts causing build error
+[33m97442a4[m Fix hydration error in login page
+[33mf39df22[m Add fallback environment variables to lib/supabase.ts
+[33m6629557[m Update environment variable names
+[33mf7a0dc5[m Add Supabase integration and admin features
+[33m39e9a1c[m Add database security fixes and comprehensive guide
+[33mf9bf4a8[m Add Demo Mode button to header navigation
+[33m4b90049[m Add Taughtful Australia logo and header navigation
+[33m14b2f07[m Add Demo Mode: Try Demo Mode button and demo dashboard
+[33md45f552[m Initial setup: Next.js app with Supabase integration
+[33m497bece[m Add complete authentication system and teacher dashboard
+[33m87a6095[m Fix sample lesson plan button functionality
+[33med4850b[m sync changes and update API route for waitlist form
+[33m5a98623[m Add complete Taughtful landing page with trauma-informed and Indigenous perspectives
+[33ma4dff83[m Fix GitHub Actions workflow to use pnpm instead of npm
+[33m8b6c06e[m Resolve merge conflict in next.config.mjs
+[33m242d66f[m Configure for GitHub Pages deployment
+[33mfff1f64[m Add files via upload
+[33m02006a8[m[33m ([m[1;33mtag: [m[1;33mtest[m[33m)[m feat: add waitlist signup page with form
+[33m408d513[m feat: link "Join Beta Free Access" to "Coming Soon" page
+[33m2facc45[m Initial commit

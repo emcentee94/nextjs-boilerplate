@@ -31,7 +31,7 @@ export async function sendDemoRequestNotification(formData: {
         school: formData.school,
         role: formData.role,
         message: formData.message,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       })
       return { success: false, reason: 'SMTP not configured' }
     }
@@ -62,11 +62,14 @@ export async function sendDemoRequestNotification(formData: {
     // Send email
     const info = await transporter.sendMail(mailOptions)
     console.log('Email sent successfully:', info.messageId)
-    
+
     return { success: true, messageId: info.messageId }
   } catch (error) {
     console.error('Error sending email notification:', error)
-    return { success: false, reason: error instanceof Error ? error.message : 'Unknown email error' }
+    return {
+      success: false,
+      reason: error instanceof Error ? error.message : 'Unknown email error',
+    }
   }
 }
 
@@ -85,7 +88,7 @@ export async function sendWaitlistNotification(formData: {
         email: formData.email,
         yearLevels: formData.yearLevels,
         planningHeadache: formData.planningHeadache,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       })
       return { success: false, reason: 'SMTP not configured' }
     }
@@ -114,11 +117,17 @@ export async function sendWaitlistNotification(formData: {
 
     // Send email
     const info = await transporter.sendMail(mailOptions)
-    console.log('Waitlist notification email sent successfully:', info.messageId)
-    
+    console.log(
+      'Waitlist notification email sent successfully:',
+      info.messageId
+    )
+
     return { success: true, messageId: info.messageId }
   } catch (error) {
     console.error('Error sending waitlist notification:', error)
-    return { success: false, reason: error instanceof Error ? error.message : 'Unknown email error' }
+    return {
+      success: false,
+      reason: error instanceof Error ? error.message : 'Unknown email error',
+    }
   }
 }

@@ -1,64 +1,70 @@
 // JSON schemas for structured lesson plan output
 
 export const lessonPlanSchema = {
-  type: "object",
+  type: 'object',
   properties: {
-    title: { type: "string" },
-    overview: { type: "string" },
+    title: { type: 'string' },
+    overview: { type: 'string' },
     learningGoals: {
-      type: "array",
-      items: { type: "string" }
+      type: 'array',
+      items: { type: 'string' },
     },
     linkedCurriculum: {
-      type: "array",
+      type: 'array',
       items: {
-        type: "object",
+        type: 'object',
         properties: {
-          code: { type: "string" },
-          description: { type: "string" }
+          code: { type: 'string' },
+          description: { type: 'string' },
         },
-        required: ["code", "description"]
-      }
+        required: ['code', 'description'],
+      },
     },
     timingBreakdown: {
-      type: "array",
+      type: 'array',
       items: {
-        type: "object",
+        type: 'object',
         properties: {
-          minutes: { type: "number" },
-          activity: { type: "string" },
-          teacherMoves: { type: "string" },
-          studentTasks: { type: "string" }
+          minutes: { type: 'number' },
+          activity: { type: 'string' },
+          teacherMoves: { type: 'string' },
+          studentTasks: { type: 'string' },
         },
-        required: ["minutes", "activity"]
-      }
-    },
-    resources: { type: "array", items: { type: "string" } },
-    indigenousPerspectives: { type: "string" },
-    traumaInformedStrategies: { type: "string" },
-    differentiation: {
-      type: "object",
-      properties: {
-        access: { type: "string" },     // supports/scaffolds for access
-        extension: { type: "string" }   // challenge/extension
+        required: ['minutes', 'activity'],
       },
-      required: ["access", "extension"]
+    },
+    resources: { type: 'array', items: { type: 'string' } },
+    indigenousPerspectives: { type: 'string' },
+    traumaInformedStrategies: { type: 'string' },
+    differentiation: {
+      type: 'object',
+      properties: {
+        access: { type: 'string' }, // supports/scaffolds for access
+        extension: { type: 'string' }, // challenge/extension
+      },
+      required: ['access', 'extension'],
     },
     assessment: {
-      type: "object",
+      type: 'object',
       properties: {
-        style: { type: "string" },      // formative/summative/etc
-        method: { type: "string" },     // e.g., exit tickets, rubric criteria
-        successCriteria: { type: "array", items: { type: "string" } }
+        style: { type: 'string' }, // formative/summative/etc
+        method: { type: 'string' }, // e.g., exit tickets, rubric criteria
+        successCriteria: { type: 'array', items: { type: 'string' } },
       },
-      required: ["style", "method"]
+      required: ['style', 'method'],
     },
-    notesForTeacher: { type: "string" },
-    printableComplianceSummary: { type: "string" }
+    notesForTeacher: { type: 'string' },
+    printableComplianceSummary: { type: 'string' },
   },
   required: [
-    "title", "overview", "learningGoals", "linkedCurriculum",
-    "timingBreakdown", "resources", "differentiation",
-    "assessment", "printableComplianceSummary"
-  ]
-} as const;
+    'title',
+    'overview',
+    'learningGoals',
+    'linkedCurriculum',
+    'timingBreakdown',
+    'resources',
+    'differentiation',
+    'assessment',
+    'printableComplianceSummary',
+  ],
+} as const

@@ -1,10 +1,16 @@
 import { Resend } from 'resend'
-import { sendDemoRequestNotification as sendSMTPDemoRequest, sendWaitlistNotification as sendSMTPWaitlistNotification } from './email-smtp'
+import {
+  sendDemoRequestNotification as sendSMTPDemoRequest,
+  sendWaitlistNotification as sendSMTPWaitlistNotification,
+} from './email-smtp'
 
 const resendApiKey = process.env.RESEND_API_KEY
 
 // Only initialize Resend if API key is available
-const resend = resendApiKey && resendApiKey !== 'your_resend_api_key_here' ? new Resend(resendApiKey) : null
+const resend =
+  resendApiKey && resendApiKey !== 'your_resend_api_key_here'
+    ? new Resend(resendApiKey)
+    : null
 
 export async function sendDemoRequestNotification(formData: {
   name: string
@@ -23,7 +29,7 @@ export async function sendDemoRequestNotification(formData: {
         school: formData.school,
         role: formData.role,
         message: formData.message,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       })
       return { success: false, reason: 'Email service not configured' }
     }
@@ -86,7 +92,7 @@ export async function sendWaitlistNotification(formData: {
         email: formData.email,
         yearLevels: formData.yearLevels,
         planningHeadache: formData.planningHeadache,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       })
       return { success: false, reason: 'Email service not configured' }
     }

@@ -3,25 +3,25 @@
 
 export interface CurriculumItem {
   id: string
-  "Learning Area"?: string
-  "Subject"?: string
-  "Level"?: string
-  "Level Description"?: string
-  "Code"?: string
-  "Pathway"?: string
-  "Sequence"?: string
-  "Strand"?: string
-  "Sub-Strand"?: string
-  "Content Description"?: string
-  "Elaboration"?: string
-  "Topics"?: string
-  "Achievement Standard"?: string
-  "Description"?: string
-  "Organising ideas title"?: string
-  "Organising idea indicator"?: string
-  "Element"?: string
-  "Sub-Element"?: string
-  "Indicator"?: string
+  'Learning Area'?: string
+  Subject?: string
+  Level?: string
+  'Level Description'?: string
+  Code?: string
+  Pathway?: string
+  Sequence?: string
+  Strand?: string
+  'Sub-Strand'?: string
+  'Content Description'?: string
+  Elaboration?: string
+  Topics?: string
+  'Achievement Standard'?: string
+  Description?: string
+  'Organising ideas title'?: string
+  'Organising idea indicator'?: string
+  Element?: string
+  'Sub-Element'?: string
+  Indicator?: string
   // Legacy field names for backward compatibility
   learning_area?: string
   subject?: string
@@ -53,10 +53,14 @@ export interface CurriculumData {
 
 // Supabase Storage URLs
 const CURRICULUM_URLS = {
-  learning_areas: 'https://kpdusbhqiswdiyzdwxpw.supabase.co/storage/v1/object/public/V9%20CURRISULUM1/curriculum/learning_areas.json',
-  achievement_standards: 'https://kpdusbhqiswdiyzdwxpw.supabase.co/storage/v1/object/public/V9%20CURRISULUM1/curriculum/achievement_standards.json',
-  cross_curriculum_priorities: 'https://kpdusbhqiswdiyzdwxpw.supabase.co/storage/v1/object/public/V9%20CURRISULUM1/curriculum/cross_curriculum_priorities.json',
-  general_capabilities: 'https://kpdusbhqiswdiyzdwxpw.supabase.co/storage/v1/object/public/V9%20CURRISULUM1/curriculum/general_capabilities.json'
+  learning_areas:
+    'https://kpdusbhqiswdiyzdwxpw.supabase.co/storage/v1/object/public/V9%20CURRISULUM1/curriculum/learning_areas.json',
+  achievement_standards:
+    'https://kpdusbhqiswdiyzdwxpw.supabase.co/storage/v1/object/public/V9%20CURRISULUM1/curriculum/achievement_standards.json',
+  cross_curriculum_priorities:
+    'https://kpdusbhqiswdiyzdwxpw.supabase.co/storage/v1/object/public/V9%20CURRISULUM1/curriculum/cross_curriculum_priorities.json',
+  general_capabilities:
+    'https://kpdusbhqiswdiyzdwxpw.supabase.co/storage/v1/object/public/V9%20CURRISULUM1/curriculum/general_capabilities.json',
 }
 
 // Cache for curriculum data
@@ -66,21 +70,25 @@ const CACHE_DURATION = 24 * 60 * 60 * 1000 // 24 hours
 
 export class CurriculumService {
   private static normalize(value?: string): string {
-    return (value || "")
+    return (value || '')
       .toLowerCase()
-      .replace(/foundation year/g, "foundation")
-      .replace(/level\s+(\d+)/g, "year $1")
-      .replace(/[^a-z0-9]+/g, " ")
+      .replace(/foundation year/g, 'foundation')
+      .replace(/level\s+(\d+)/g, 'year $1')
+      .replace(/[^a-z0-9]+/g, ' ')
       .trim()
   }
 
   private static subjectAliases(subject: string): string[] {
     const s = this.normalize(subject)
     const aliases: Record<string, string[]> = {
-      "english as an additional language": ["eal", "english additional language", "english"],
-      "health and physical education": ["hpe", "health", "physical education"],
-      "design and technologies": ["design technologies"],
-      "digital technologies": ["digital tech", "ict"],
+      'english as an additional language': [
+        'eal',
+        'english additional language',
+        'english',
+      ],
+      'health and physical education': ['hpe', 'health', 'physical education'],
+      'design and technologies': ['design technologies'],
+      'digital technologies': ['digital tech', 'ict'],
     }
     const list = aliases[s] || []
     return [subject, ...list]
@@ -91,25 +99,30 @@ export class CurriculumService {
   static async fetchAllCurriculumData(): Promise<CurriculumData> {
     // Check cache first
     const now = Date.now()
-    if (curriculumCache && (now - cacheTimestamp) < CACHE_DURATION) {
+    if (curriculumCache && now - cacheTimestamp < CACHE_DURATION) {
       return curriculumCache
     }
 
     try {
       console.log('🔄 Fetching curriculum data from Supabase Storage...')
-      
-      const [learningAreas, achievementStandards, crossCurriculumPriorities, generalCapabilities] = await Promise.all([
+
+      const [
+        learningAreas,
+        achievementStandards,
+        crossCurriculumPriorities,
+        generalCapabilities,
+      ] = await Promise.all([
         this.fetchCurriculumData(CURRICULUM_URLS.learning_areas),
         this.fetchCurriculumData(CURRICULUM_URLS.achievement_standards),
         this.fetchCurriculumData(CURRICULUM_URLS.cross_curriculum_priorities),
-        this.fetchCurriculumData(CURRICULUM_URLS.general_capabilities)
+        this.fetchCurriculumData(CURRICULUM_URLS.general_capabilities),
       ])
 
       const curriculumData: CurriculumData = {
         learning_areas: learningAreas,
         achievement_standards: achievementStandards,
         cross_curriculum_priorities: crossCurriculumPriorities,
-        general_capabilities: generalCapabilities
+        general_capabilities: generalCapabilities,
       }
 
       // Cache the data
@@ -120,7 +133,7 @@ export class CurriculumService {
         learning_areas: learningAreas.length,
         achievement_standards: achievementStandards.length,
         cross_curriculum_priorities: crossCurriculumPriorities.length,
-        general_capabilities: generalCapabilities.length
+        general_capabilities: generalCapabilities.length,
       })
 
       return curriculumData
@@ -133,7 +146,9 @@ export class CurriculumService {
   /**
    * Fetch curriculum data from a specific URL
    */
-  private static async fetchCurriculumData(url: string): Promise<CurriculumItem[]> {
+  private static async fetchCurriculumData(
+    url: string
+  ): Promise<CurriculumItem[]> {
     try {
       const response = await fetch(url)
       if (!response.ok) {
@@ -143,27 +158,29 @@ export class CurriculumService {
       if (!Array.isArray(data)) {
         return []
       }
-      
+
       // Ensure each item has an ID and filter out empty items
       return data
         .map((item: any, index: number) => ({
           ...item,
-          id: item.id || `item-${Date.now()}-${index}`
+          id: item.id || `item-${Date.now()}-${index}`,
         }))
         .filter((item: any) => {
           // Filter out items that don't have meaningful content
-          const hasContent = item["Content Description"] || 
-                           item["Achievement Standard"] || 
-                           item["Description"]
-          
+          const hasContent =
+            item['Content Description'] ||
+            item['Achievement Standard'] ||
+            item['Description']
+
           // Also filter out items that are just learning area headers without content
-          const isJustHeader = item["Learning Area"] && 
-                              !item["Content Description"] && 
-                              !item["Achievement Standard"] && 
-                              !item["Description"] &&
-                              !item["Subject"]
-          
-          return hasContent && hasContent.trim() !== "" && !isJustHeader
+          const isJustHeader =
+            item['Learning Area'] &&
+            !item['Content Description'] &&
+            !item['Achievement Standard'] &&
+            !item['Description'] &&
+            !item['Subject']
+
+          return hasContent && hasContent.trim() !== '' && !isJustHeader
         })
     } catch (error) {
       console.error(`❌ Error fetching from ${url}:`, error)
@@ -174,19 +191,26 @@ export class CurriculumService {
   /**
    * Get learning areas for a specific subject and level
    */
-  static async getLearningAreas(subject?: string, level?: string): Promise<CurriculumItem[]> {
+  static async getLearningAreas(
+    subject?: string,
+    level?: string
+  ): Promise<CurriculumItem[]> {
     const curriculumData = await this.fetchAllCurriculumData()
     let learningAreas = curriculumData.learning_areas
 
     if (subject) {
-      learningAreas = learningAreas.filter(item => 
-        (item["Subject"] || item.subject)?.toLowerCase().includes(subject.toLowerCase())
+      learningAreas = learningAreas.filter((item) =>
+        (item['Subject'] || item.subject)
+          ?.toLowerCase()
+          .includes(subject.toLowerCase())
       )
     }
 
     if (level) {
-      learningAreas = learningAreas.filter(item => 
-        (item["Level"] || item.level)?.toLowerCase().includes(level.toLowerCase())
+      learningAreas = learningAreas.filter((item) =>
+        (item['Level'] || item.level)
+          ?.toLowerCase()
+          .includes(level.toLowerCase())
       )
     }
 
@@ -196,19 +220,26 @@ export class CurriculumService {
   /**
    * Get achievement standards for a specific subject and level
    */
-  static async getAchievementStandards(subject?: string, level?: string): Promise<CurriculumItem[]> {
+  static async getAchievementStandards(
+    subject?: string,
+    level?: string
+  ): Promise<CurriculumItem[]> {
     const curriculumData = await this.fetchAllCurriculumData()
     let standards = curriculumData.achievement_standards
 
     if (subject) {
-      standards = standards.filter(item => 
-        (item["Subject"] || item.subject)?.toLowerCase().includes(subject.toLowerCase())
+      standards = standards.filter((item) =>
+        (item['Subject'] || item.subject)
+          ?.toLowerCase()
+          .includes(subject.toLowerCase())
       )
     }
 
     if (level) {
-      standards = standards.filter(item => 
-        (item["Level"] || item.level)?.toLowerCase().includes(level.toLowerCase())
+      standards = standards.filter((item) =>
+        (item['Level'] || item.level)
+          ?.toLowerCase()
+          .includes(level.toLowerCase())
       )
     }
 
@@ -243,21 +274,38 @@ export class CurriculumService {
     const curriculumData = await this.fetchAllCurriculumData()
     const searchTerm = keyword.toLowerCase()
 
-    const filterByKeyword = (items: CurriculumItem[]) => 
-      items.filter(item => 
-        (item["Content Description"] || item.content_description)?.toLowerCase().includes(searchTerm) ||
-        (item["Achievement Standard"] || item.achievement_standard)?.toLowerCase().includes(searchTerm) ||
-        (item["Description"] || item.description)?.toLowerCase().includes(searchTerm) ||
-        (item["Learning Area"] || item.learning_area)?.toLowerCase().includes(searchTerm) ||
-        (item["Subject"] || item.subject)?.toLowerCase().includes(searchTerm) ||
-        (item["Level"] || item.level)?.toLowerCase().includes(searchTerm)
+    const filterByKeyword = (items: CurriculumItem[]) =>
+      items.filter(
+        (item) =>
+          (item['Content Description'] || item.content_description)
+            ?.toLowerCase()
+            .includes(searchTerm) ||
+          (item['Achievement Standard'] || item.achievement_standard)
+            ?.toLowerCase()
+            .includes(searchTerm) ||
+          (item['Description'] || item.description)
+            ?.toLowerCase()
+            .includes(searchTerm) ||
+          (item['Learning Area'] || item.learning_area)
+            ?.toLowerCase()
+            .includes(searchTerm) ||
+          (item['Subject'] || item.subject)
+            ?.toLowerCase()
+            .includes(searchTerm) ||
+          (item['Level'] || item.level)?.toLowerCase().includes(searchTerm)
       )
 
     return {
       learning_areas: filterByKeyword(curriculumData.learning_areas),
-      achievement_standards: filterByKeyword(curriculumData.achievement_standards),
-      cross_curriculum_priorities: filterByKeyword(curriculumData.cross_curriculum_priorities),
-      general_capabilities: filterByKeyword(curriculumData.general_capabilities)
+      achievement_standards: filterByKeyword(
+        curriculumData.achievement_standards
+      ),
+      cross_curriculum_priorities: filterByKeyword(
+        curriculumData.cross_curriculum_priorities
+      ),
+      general_capabilities: filterByKeyword(
+        curriculumData.general_capabilities
+      ),
     }
   }
 
@@ -267,10 +315,10 @@ export class CurriculumService {
   static async getSubjects(): Promise<string[]> {
     const curriculumData = await this.fetchAllCurriculumData()
     const subjects = new Set<string>()
-    
-    curriculumData.learning_areas.forEach(item => {
-      const subject = item["Subject"] || item.subject
-      if (subject && subject.trim() !== "") {
+
+    curriculumData.learning_areas.forEach((item) => {
+      const subject = item['Subject'] || item.subject
+      if (subject && subject.trim() !== '') {
         subjects.add(subject)
       }
     })
@@ -281,16 +329,22 @@ export class CurriculumService {
   /**
    * Get subjects for a specific learning area
    */
-  static async getSubjectsForLearningArea(learningArea: string): Promise<string[]> {
+  static async getSubjectsForLearningArea(
+    learningArea: string
+  ): Promise<string[]> {
     const curriculumData = await this.fetchAllCurriculumData()
     const subjects = new Set<string>()
-    
-    curriculumData.learning_areas.forEach(item => {
-      const itemLearningArea = item["Learning Area"] || item.learning_area
-      const subject = item["Subject"] || item.subject
-      
-      if (itemLearningArea && itemLearningArea.toLowerCase() === learningArea.toLowerCase() && 
-          subject && subject.trim() !== "") {
+
+    curriculumData.learning_areas.forEach((item) => {
+      const itemLearningArea = item['Learning Area'] || item.learning_area
+      const subject = item['Subject'] || item.subject
+
+      if (
+        itemLearningArea &&
+        itemLearningArea.toLowerCase() === learningArea.toLowerCase() &&
+        subject &&
+        subject.trim() !== ''
+      ) {
         subjects.add(subject)
       }
     })
@@ -301,18 +355,26 @@ export class CurriculumService {
   /**
    * Get subjects for a specific learning area and year level
    */
-  static async getSubjectsForLearningAreaAndLevel(learningArea: string, yearLevel: string): Promise<string[]> {
+  static async getSubjectsForLearningAreaAndLevel(
+    learningArea: string,
+    yearLevel: string
+  ): Promise<string[]> {
     const curriculumData = await this.fetchAllCurriculumData()
     const subjects = new Set<string>()
-    
-    curriculumData.learning_areas.forEach(item => {
-      const itemLearningArea = item["Learning Area"] || item.learning_area
-      const itemLevel = item["Level"] || item.level
-      const subject = item["Subject"] || item.subject
-      
-      if (itemLearningArea && itemLearningArea.toLowerCase() === learningArea.toLowerCase() &&
-          itemLevel && itemLevel.toLowerCase() === yearLevel.toLowerCase() &&
-          subject && subject.trim() !== "") {
+
+    curriculumData.learning_areas.forEach((item) => {
+      const itemLearningArea = item['Learning Area'] || item.learning_area
+      const itemLevel = item['Level'] || item.level
+      const subject = item['Subject'] || item.subject
+
+      if (
+        itemLearningArea &&
+        itemLearningArea.toLowerCase() === learningArea.toLowerCase() &&
+        itemLevel &&
+        itemLevel.toLowerCase() === yearLevel.toLowerCase() &&
+        subject &&
+        subject.trim() !== ''
+      ) {
         subjects.add(subject)
       }
     })
@@ -326,33 +388,45 @@ export class CurriculumService {
   static async getLevels(): Promise<string[]> {
     const curriculumData = await this.fetchAllCurriculumData()
     const levels = new Set<string>()
-    
-    curriculumData.learning_areas.forEach(item => {
-      const level = item["Level"] || item.level
-      if (level && level.trim() !== "") {
+
+    curriculumData.learning_areas.forEach((item) => {
+      const level = item['Level'] || item.level
+      if (level && level.trim() !== '') {
         levels.add(level)
       }
     })
 
     // Custom sort for year levels
     const levelOrder = [
-      "Foundation Year", "Foundation", "Year 1", "Year 2", "Year 3", "Year 4", 
-      "Year 5", "Year 6", "Year 7", "Year 8", "Year 9", "Year 10", "Year 11", "Year 12"
+      'Foundation Year',
+      'Foundation',
+      'Year 1',
+      'Year 2',
+      'Year 3',
+      'Year 4',
+      'Year 5',
+      'Year 6',
+      'Year 7',
+      'Year 8',
+      'Year 9',
+      'Year 10',
+      'Year 11',
+      'Year 12',
     ]
-    
+
     const sortedLevels = Array.from(levels).sort((a, b) => {
       const aIndex = levelOrder.indexOf(a)
       const bIndex = levelOrder.indexOf(b)
-      
+
       // If both are in the order array, sort by their position
       if (aIndex !== -1 && bIndex !== -1) {
         return aIndex - bIndex
       }
-      
+
       // If only one is in the order array, prioritize it
       if (aIndex !== -1) return -1
       if (bIndex !== -1) return 1
-      
+
       // If neither is in the order array, sort alphabetically
       return a.localeCompare(b)
     })
@@ -366,10 +440,10 @@ export class CurriculumService {
   static async getLearningAreaNames(): Promise<string[]> {
     const curriculumData = await this.fetchAllCurriculumData()
     const learningAreas = new Set<string>()
-    
-    curriculumData.learning_areas.forEach(item => {
-      const learningArea = item["Learning Area"] || item.learning_area
-      if (learningArea && learningArea.trim() !== "") {
+
+    curriculumData.learning_areas.forEach((item) => {
+      const learningArea = item['Learning Area'] || item.learning_area
+      if (learningArea && learningArea.trim() !== '') {
         learningAreas.add(learningArea)
       }
     })
@@ -380,159 +454,206 @@ export class CurriculumService {
   /**
    * Get curriculum text for specific codes (for lesson plan generation)
    */
-  static async getCurriculumTextByCodes(codes: string[]): Promise<Array<{
-    code: string;
-    description: string;
-    achievementStandard?: string;
-    strand?: string;
-    subStrand?: string;
-  }>> {
-    const curriculumData = await this.fetchAllCurriculumData();
-    const results = [];
-    
+  static async getCurriculumTextByCodes(codes: string[]): Promise<
+    Array<{
+      code: string
+      description: string
+      achievementStandard?: string
+      strand?: string
+      subStrand?: string
+    }>
+  > {
+    const curriculumData = await this.fetchAllCurriculumData()
+    const results = []
+
     for (const code of codes) {
       // Search in learning areas first
-      const learningAreaItem = curriculumData.learning_areas.find(item => 
-        (item["Code"] || item.code) === code
-      );
-      
+      const learningAreaItem = curriculumData.learning_areas.find(
+        (item) => (item['Code'] || item.code) === code
+      )
+
       if (learningAreaItem) {
         results.push({
           code,
-          description: learningAreaItem["Content Description"] || learningAreaItem.content_description || `Content description for ${code}`,
-          achievementStandard: learningAreaItem["Achievement Standard"] || learningAreaItem.achievement_standard,
-          strand: learningAreaItem["Strand"] || learningAreaItem.strand,
-          subStrand: learningAreaItem["Sub-Strand"] || learningAreaItem.sub_strand
-        });
-        continue;
+          description:
+            learningAreaItem['Content Description'] ||
+            learningAreaItem.content_description ||
+            `Content description for ${code}`,
+          achievementStandard:
+            learningAreaItem['Achievement Standard'] ||
+            learningAreaItem.achievement_standard,
+          strand: learningAreaItem['Strand'] || learningAreaItem.strand,
+          subStrand:
+            learningAreaItem['Sub-Strand'] || learningAreaItem.sub_strand,
+        })
+        continue
       }
-      
+
       // Search in achievement standards
-      const achievementStandardItem = curriculumData.achievement_standards.find(item => 
-        (item["Code"] || item.code) === code
-      );
-      
+      const achievementStandardItem = curriculumData.achievement_standards.find(
+        (item) => (item['Code'] || item.code) === code
+      )
+
       if (achievementStandardItem) {
         results.push({
           code,
-          description: achievementStandardItem["Description"] || achievementStandardItem.description || `Description for ${code}`,
-          achievementStandard: achievementStandardItem["Achievement Standard"] || achievementStandardItem.achievement_standard
-        });
-        continue;
+          description:
+            achievementStandardItem['Description'] ||
+            achievementStandardItem.description ||
+            `Description for ${code}`,
+          achievementStandard:
+            achievementStandardItem['Achievement Standard'] ||
+            achievementStandardItem.achievement_standard,
+        })
+        continue
       }
-      
+
       // If not found, create a placeholder
       results.push({
         code,
         description: `Official description text for ${code} from ACARA v9 curriculum.`,
-        achievementStandard: `Relevant achievement standard snippet for ${code}.`
-      });
+        achievementStandard: `Relevant achievement standard snippet for ${code}.`,
+      })
     }
-    
-    return results;
+
+    return results
   }
 
   /**
    * Search curriculum items by code (exact match)
    */
   static async searchByCode(code: string): Promise<CurriculumItem | null> {
-    const curriculumData = await this.fetchAllCurriculumData();
-    
+    const curriculumData = await this.fetchAllCurriculumData()
+
     // Search in learning areas
-    const learningAreaItem = curriculumData.learning_areas.find(item => 
-      (item["Code"] || item.code) === code
-    );
-    
+    const learningAreaItem = curriculumData.learning_areas.find(
+      (item) => (item['Code'] || item.code) === code
+    )
+
     if (learningAreaItem) {
-      return learningAreaItem;
+      return learningAreaItem
     }
-    
+
     // Search in achievement standards
-    const achievementStandardItem = curriculumData.achievement_standards.find(item => 
-      (item["Code"] || item.code) === code
-    );
-    
+    const achievementStandardItem = curriculumData.achievement_standards.find(
+      (item) => (item['Code'] || item.code) === code
+    )
+
     if (achievementStandardItem) {
-      return achievementStandardItem;
+      return achievementStandardItem
     }
-    
-    return null;
+
+    return null
   }
 
   /**
    * Get curriculum items for a specific subject and year level
    */
-  static async getCurriculumItemsForSubjectAndLevel(subject: string, yearLevel: string): Promise<CurriculumItem[]> {
-    const curriculumData = await this.fetchAllCurriculumData();
+  static async getCurriculumItemsForSubjectAndLevel(
+    subject: string,
+    yearLevel: string
+  ): Promise<CurriculumItem[]> {
+    const curriculumData = await this.fetchAllCurriculumData()
     const wantedLevel = this.normalize(yearLevel)
-    const wantedSubjects = this.subjectAliases(subject).map(s => this.normalize(s))
+    const wantedSubjects = this.subjectAliases(subject).map((s) =>
+      this.normalize(s)
+    )
 
-    const filtered = curriculumData.learning_areas.filter(item => {
-      const itemSubject = this.normalize(item["Subject"] || item.subject)
-      const itemLevel = this.normalize(item["Level"] || item.level)
-      const hasCode = !!(item["Code"] || item.code)
+    const filtered = curriculumData.learning_areas
+      .filter((item) => {
+        const itemSubject = this.normalize(item['Subject'] || item.subject)
+        const itemLevel = this.normalize(item['Level'] || item.level)
+        const hasCode = !!(item['Code'] || item.code)
 
-      const subjectMatch = wantedSubjects.some(ws => itemSubject.includes(ws))
-      const levelMatch = itemLevel.includes(wantedLevel)
-      return subjectMatch && levelMatch && hasCode
-    }).sort((a, b) => {
-      const aLevel = this.normalize(a["Level"] || a.level)
-      const bLevel = this.normalize(b["Level"] || b.level)
-      const levelOrder = [
-        "foundation",
-        "year 1","year 2","year 3","year 4","year 5",
-        "year 6","year 7","year 8","year 9","year 10"
-      ]
-      const aIdx = levelOrder.findIndex(l => aLevel.startsWith(l))
-      const bIdx = levelOrder.findIndex(l => bLevel.startsWith(l))
-      if (aIdx !== bIdx) return (aIdx === -1 ? 999 : aIdx) - (bIdx === -1 ? 999 : bIdx)
-      const aStrand = (a["Strand"] || a.strand || "").toString()
-      const bStrand = (b["Strand"] || b.strand || "").toString()
-      if (aStrand !== bStrand) return aStrand.localeCompare(bStrand)
-      const aCode = (a["Code"] || a.code || "").toString()
-      const bCode = (b["Code"] || b.code || "").toString()
-      return aCode.localeCompare(bCode)
-    })
+        const subjectMatch = wantedSubjects.some((ws) =>
+          itemSubject.includes(ws)
+        )
+        const levelMatch = itemLevel.includes(wantedLevel)
+        return subjectMatch && levelMatch && hasCode
+      })
+      .sort((a, b) => {
+        const aLevel = this.normalize(a['Level'] || a.level)
+        const bLevel = this.normalize(b['Level'] || b.level)
+        const levelOrder = [
+          'foundation',
+          'year 1',
+          'year 2',
+          'year 3',
+          'year 4',
+          'year 5',
+          'year 6',
+          'year 7',
+          'year 8',
+          'year 9',
+          'year 10',
+        ]
+        const aIdx = levelOrder.findIndex((l) => aLevel.startsWith(l))
+        const bIdx = levelOrder.findIndex((l) => bLevel.startsWith(l))
+        if (aIdx !== bIdx)
+          return (aIdx === -1 ? 999 : aIdx) - (bIdx === -1 ? 999 : bIdx)
+        const aStrand = (a['Strand'] || a.strand || '').toString()
+        const bStrand = (b['Strand'] || b.strand || '').toString()
+        if (aStrand !== bStrand) return aStrand.localeCompare(bStrand)
+        const aCode = (a['Code'] || a.code || '').toString()
+        const bCode = (b['Code'] || b.code || '').toString()
+        return aCode.localeCompare(bCode)
+      })
 
     if (filtered.length > 0) return filtered
 
     // Fallback 1: subject-only match (top 20)
-    const subjectOnly = curriculumData.learning_areas.filter(item => {
-      const itemSubject = this.normalize(item["Subject"] || item.subject)
-      const hasCode = !!(item["Code"] || item.code)
-      const subjectMatch = wantedSubjects.some(ws => itemSubject.includes(ws))
-      return subjectMatch && hasCode
-    }).sort((a, b) => {
-      const aLevel = this.normalize(a["Level"] || a.level)
-      const bLevel = this.normalize(b["Level"] || b.level)
-      const levelOrder = [
-        "foundation",
-        "year 1","year 2","year 3","year 4","year 5",
-        "year 6","year 7","year 8","year 9","year 10"
-      ]
-      const aIdx = levelOrder.findIndex(l => aLevel.startsWith(l))
-      const bIdx = levelOrder.findIndex(l => bLevel.startsWith(l))
-      if (aIdx !== bIdx) return (aIdx === -1 ? 999 : aIdx) - (bIdx === -1 ? 999 : bIdx)
-      const aStrand = (a["Strand"] || a.strand || "").toString()
-      const bStrand = (b["Strand"] || b.strand || "").toString()
-      if (aStrand !== bStrand) return aStrand.localeCompare(bStrand)
-      const aCode = (a["Code"] || a.code || "").toString()
-      const bCode = (b["Code"] || b.code || "").toString()
-      return aCode.localeCompare(bCode)
-    })
+    const subjectOnly = curriculumData.learning_areas
+      .filter((item) => {
+        const itemSubject = this.normalize(item['Subject'] || item.subject)
+        const hasCode = !!(item['Code'] || item.code)
+        const subjectMatch = wantedSubjects.some((ws) =>
+          itemSubject.includes(ws)
+        )
+        return subjectMatch && hasCode
+      })
+      .sort((a, b) => {
+        const aLevel = this.normalize(a['Level'] || a.level)
+        const bLevel = this.normalize(b['Level'] || b.level)
+        const levelOrder = [
+          'foundation',
+          'year 1',
+          'year 2',
+          'year 3',
+          'year 4',
+          'year 5',
+          'year 6',
+          'year 7',
+          'year 8',
+          'year 9',
+          'year 10',
+        ]
+        const aIdx = levelOrder.findIndex((l) => aLevel.startsWith(l))
+        const bIdx = levelOrder.findIndex((l) => bLevel.startsWith(l))
+        if (aIdx !== bIdx)
+          return (aIdx === -1 ? 999 : aIdx) - (bIdx === -1 ? 999 : bIdx)
+        const aStrand = (a['Strand'] || a.strand || '').toString()
+        const bStrand = (b['Strand'] || b.strand || '').toString()
+        if (aStrand !== bStrand) return aStrand.localeCompare(bStrand)
+        const aCode = (a['Code'] || a.code || '').toString()
+        const bCode = (b['Code'] || b.code || '').toString()
+        return aCode.localeCompare(bCode)
+      })
     if (subjectOnly.length > 0) return subjectOnly
 
     // Fallback 2: search achievement standards by subject
-    const standards = curriculumData.achievement_standards.filter(item => {
-      const itemSubject = this.normalize(item["Subject"] || item.subject)
-      return wantedSubjects.some(ws => itemSubject.includes(ws))
+    const standards = curriculumData.achievement_standards.filter((item) => {
+      const itemSubject = this.normalize(item['Subject'] || item.subject)
+      return wantedSubjects.some((ws) => itemSubject.includes(ws))
     })
     if (standards.length > 0) {
       // Map to curriculum-like items
-      return standards.map(s => ({
+      return standards.map((s) => ({
         ...s,
-        Code: s["Code"] || s.code || `STD-${Math.random().toString(36).slice(2,8)}`,
-        "Content Description": s["Description"] || s.description
+        Code:
+          s['Code'] ||
+          s.code ||
+          `STD-${Math.random().toString(36).slice(2, 8)}`,
+        'Content Description': s['Description'] || s.description,
       }))
     }
 

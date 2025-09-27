@@ -8,8 +8,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'fredoka': ['var(--font-fredoka)', 'Fredoka', 'sans-serif'],
-        'nunito': ['var(--font-nunito)', 'Nunito', 'sans-serif'],
+        fredoka: ['var(--font-fredoka)', 'Fredoka', 'sans-serif'],
+        nunito: ['var(--font-nunito)', 'Nunito', 'sans-serif'],
       },
     },
   },

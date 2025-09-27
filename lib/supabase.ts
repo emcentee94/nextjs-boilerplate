@@ -1,12 +1,19 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
-const supabaseKey = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key'
+const supabaseUrl =
+  process.env.SUPABASE_URL ||
+  process.env.NEXT_PUBLIC_SUPABASE_URL ||
+  'https://placeholder.supabase.co'
+const supabaseKey =
+  process.env.SUPABASE_ANON_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  'placeholder-key'
 
 // Only create client if we have real credentials
-export const supabase = supabaseUrl.includes('placeholder') || supabaseKey.includes('placeholder') 
-  ? null 
-  : createClient(supabaseUrl, supabaseKey)
+export const supabase =
+  supabaseUrl.includes('placeholder') || supabaseKey.includes('placeholder')
+    ? null
+    : createClient(supabaseUrl, supabaseKey)
 
 // Types for the new comprehensive schema
 export interface User {
@@ -142,22 +149,34 @@ export interface LessonTemplate {
 export const auth = {
   async signIn(email: string, password: string) {
     if (!supabase) {
-      return { data: null, error: { message: 'Supabase not configured. Please set up your environment variables.' } }
+      return {
+        data: null,
+        error: {
+          message:
+            'Supabase not configured. Please set up your environment variables.',
+        },
+      }
     }
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
-      password
+      password,
     })
     return { data, error }
   },
 
   async signUp(email: string, password: string) {
     if (!supabase) {
-      return { data: null, error: { message: 'Supabase not configured. Please set up your environment variables.' } }
+      return {
+        data: null,
+        error: {
+          message:
+            'Supabase not configured. Please set up your environment variables.',
+        },
+      }
     }
     const { data, error } = await supabase.auth.signUp({
       email,
-      password
+      password,
     })
     return { data, error }
   },
@@ -174,7 +193,9 @@ export const auth = {
     if (!supabase) {
       return null
     }
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     return user
   },
 
@@ -182,9 +203,11 @@ export const auth = {
     if (!supabase) {
       return null
     }
-    const { data: { session } } = await supabase.auth.getSession()
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
     return session
-  }
+  },
 }
 
 // Curriculum data functions
@@ -199,10 +222,8 @@ export const curriculum = {
     if (!supabase) {
       return { data: [], error: { message: 'Supabase not configured' } }
     }
-    
-    let query = supabase
-      .from('curriculum_data')
-      .select('*')
+
+    let query = supabase.from('curriculum_data').select('*')
 
     if (filters.learningArea) {
       query = query.eq('learning_area', filters.learningArea)
@@ -217,7 +238,9 @@ export const curriculum = {
     }
 
     if (filters.searchTerm) {
-      query = query.or(`content_description.ilike.%${filters.searchTerm}%,elaboration.ilike.%${filters.searchTerm}%,topics.cs.{${filters.searchTerm}}`)
+      query = query.or(
+        `content_description.ilike.%${filters.searchTerm}%,elaboration.ilike.%${filters.searchTerm}%,topics.cs.{${filters.searchTerm}}`
+      )
     }
 
     const { data, error } = await query.limit(filters.limit || 50)
@@ -232,9 +255,11 @@ export const curriculum = {
       .from('curriculum_data')
       .select('learning_area')
       .order('learning_area')
-    
+
     // Get unique learning areas
-    const uniqueAreas = [...new Set(data?.map(item => item.learning_area) || [])]
+    const uniqueAreas = [
+      ...new Set(data?.map((item) => item.learning_area) || []),
+    ]
     return { data: uniqueAreas, error }
   },
 
@@ -242,7 +267,7 @@ export const curriculum = {
     if (!supabase) {
       return { data: [], error: { message: 'Supabase not configured' } }
     }
-    
+
     let query = supabase
       .from('curriculum_data')
       .select('subject')
@@ -253,9 +278,9 @@ export const curriculum = {
     }
 
     const { data, error } = await query
-    
+
     // Get unique subjects
-    const uniqueSubjects = [...new Set(data?.map(item => item.subject) || [])]
+    const uniqueSubjects = [...new Set(data?.map((item) => item.subject) || [])]
     return { data: uniqueSubjects, error }
   },
 
@@ -263,11 +288,8 @@ export const curriculum = {
     if (!supabase) {
       return { data: [], error: { message: 'Supabase not configured' } }
     }
-    
-    let query = supabase
-      .from('curriculum_data')
-      .select('level')
-      .order('level')
+
+    let query = supabase.from('curriculum_data').select('level').order('level')
 
     if (learningArea) {
       query = query.eq('learning_area', learningArea)
@@ -278,9 +300,9 @@ export const curriculum = {
     }
 
     const { data, error } = await query
-    
+
     // Get unique year levels
-    const uniqueLevels = [...new Set(data?.map(item => item.level) || [])]
+    const uniqueLevels = [...new Set(data?.map((item) => item.level) || [])]
     return { data: uniqueLevels, error }
   },
 
@@ -292,9 +314,9 @@ export const curriculum = {
       .from('curriculum_data')
       .insert(outcomes)
       .select()
-    
+
     return { data, error }
-  }
+  },
 }
 
 // Lesson plan functions
@@ -308,11 +330,16 @@ export const lessons = {
       .select('*')
       .eq('user_id', userId)
       .order('updated_at', { ascending: false })
-    
+
     return { data, error }
   },
 
-  async createLesson(lesson: Omit<LessonPlan, 'id' | 'created_at' | 'updated_at' | 'last_edited_at'>) {
+  async createLesson(
+    lesson: Omit<
+      LessonPlan,
+      'id' | 'created_at' | 'updated_at' | 'last_edited_at'
+    >
+  ) {
     if (!supabase) {
       return { data: null, error: { message: 'Supabase not configured' } }
     }
@@ -321,7 +348,7 @@ export const lessons = {
       .insert(lesson)
       .select()
       .single()
-    
+
     return { data, error }
   },
 
@@ -331,11 +358,15 @@ export const lessons = {
     }
     const { data, error } = await supabase
       .from('lesson_plans')
-      .update({ ...updates, updated_at: new Date().toISOString(), last_edited_at: new Date().toISOString() })
+      .update({
+        ...updates,
+        updated_at: new Date().toISOString(),
+        last_edited_at: new Date().toISOString(),
+      })
       .eq('id', id)
       .select()
       .single()
-    
+
     return { data, error }
   },
 
@@ -343,11 +374,8 @@ export const lessons = {
     if (!supabase) {
       return { error: { message: 'Supabase not configured' } }
     }
-    const { error } = await supabase
-      .from('lesson_plans')
-      .delete()
-      .eq('id', id)
-    
+    const { error } = await supabase.from('lesson_plans').delete().eq('id', id)
+
     return { error }
   },
 
@@ -360,9 +388,9 @@ export const lessons = {
       .select('*')
       .eq('id', id)
       .single()
-    
+
     return { data, error }
-  }
+  },
 }
 
 // User functions
@@ -371,7 +399,9 @@ export const users = {
     if (!supabase) {
       return { data: null, error: { message: 'Supabase not configured' } }
     }
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     if (!user) return { data: null, error: { message: 'No user found' } }
 
     const { data, error } = await supabase
@@ -379,7 +409,7 @@ export const users = {
       .select('*')
       .eq('id', user.id)
       .single()
-    
+
     return { data, error }
   },
 
@@ -387,7 +417,9 @@ export const users = {
     if (!supabase) {
       return { data: null, error: { message: 'Supabase not configured' } }
     }
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     if (!user) return { data: null, error: { message: 'No user found' } }
 
     const { data, error } = await supabase
@@ -396,9 +428,9 @@ export const users = {
       .eq('id', user.id)
       .select()
       .single()
-    
+
     return { data, error }
-  }
+  },
 }
 
 // Analytics functions
@@ -412,20 +444,21 @@ export const analytics = {
     if (!supabase) {
       return { error: { message: 'Supabase not configured' } }
     }
-    
-    const { data: { user } } = await supabase.auth.getUser()
-    
-    const { error } = await supabase
-      .from('usage_analytics')
-      .insert({
-        user_id: user?.id,
-        lesson_plan_id: event.lesson_plan_id,
-        event_type: event.event_type,
-        event_data: event.event_data || {},
-        session_id: event.session_id,
-        user_agent: typeof window !== 'undefined' ? window.navigator.userAgent : undefined
-      })
-    
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
+    const { error } = await supabase.from('usage_analytics').insert({
+      user_id: user?.id,
+      lesson_plan_id: event.lesson_plan_id,
+      event_type: event.event_type,
+      event_data: event.event_data || {},
+      session_id: event.session_id,
+      user_agent:
+        typeof window !== 'undefined' ? window.navigator.userAgent : undefined,
+    })
+
     return { error }
-  }
+  },
 }

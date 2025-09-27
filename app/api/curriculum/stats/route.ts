@@ -42,30 +42,40 @@ export async function GET(request: NextRequest) {
     }
 
     // Process learning areas
-    const learningAreaCounts = learningAreaData?.reduce((acc: any, item) => {
-      acc[item.learning_area] = (acc[item.learning_area] || 0) + 1
-      return acc
-    }, {}) || {}
+    const learningAreaCounts =
+      learningAreaData?.reduce((acc: any, item) => {
+        acc[item.learning_area] = (acc[item.learning_area] || 0) + 1
+        return acc
+      }, {}) || {}
 
-    const learningAreaBreakdown = Object.entries(learningAreaCounts).map(([learning_area, count]) => ({
-      learning_area,
-      count
-    })).sort((a, b) => b.count - a.count)
+    const learningAreaBreakdown = Object.entries(learningAreaCounts)
+      .map(([learning_area, count]) => ({
+        learning_area,
+        count,
+      }))
+      .sort((a, b) => b.count - a.count)
 
     // Process year levels
-    const yearLevelCounts = yearLevelData?.reduce((acc: any, item) => {
-      acc[item.level] = (acc[item.level] || 0) + 1
-      return acc
-    }, {}) || {}
+    const yearLevelCounts =
+      yearLevelData?.reduce((acc: any, item) => {
+        acc[item.level] = (acc[item.level] || 0) + 1
+        return acc
+      }, {}) || {}
 
-    const yearLevelBreakdown = Object.entries(yearLevelCounts).map(([level, count]) => ({
-      level,
-      count
-    })).sort((a, b) => a.level.localeCompare(b.level))
+    const yearLevelBreakdown = Object.entries(yearLevelCounts)
+      .map(([level, count]) => ({
+        level,
+        count,
+      }))
+      .sort((a, b) => a.level.localeCompare(b.level))
 
     // Get unique counts
-    const uniqueLearningAreas = new Set(learningAreaData?.map(item => item.learning_area) || []).size
-    const uniqueYearLevels = new Set(yearLevelData?.map(item => item.level) || []).size
+    const uniqueLearningAreas = new Set(
+      learningAreaData?.map((item) => item.learning_area) || []
+    ).size
+    const uniqueYearLevels = new Set(
+      yearLevelData?.map((item) => item.level) || []
+    ).size
 
     // Get sample records to check data quality
     const { data: sampleData, error: sampleError } = await supabase
@@ -84,16 +94,21 @@ export async function GET(request: NextRequest) {
       learning_area_breakdown: learningAreaBreakdown,
       year_level_breakdown: yearLevelBreakdown,
       sample_records: sampleData,
-      import_status: totalRecords && totalRecords > 15000 ? 'complete' : 'incomplete',
+      import_status:
+        totalRecords && totalRecords > 15000 ? 'complete' : 'incomplete',
       expected_records: 21000,
-      completion_percentage: totalRecords ? ((totalRecords / 21000) * 100).toFixed(1) : 0
+      completion_percentage: totalRecords
+        ? ((totalRecords / 21000) * 100).toFixed(1)
+        : 0,
     })
-
   } catch (error) {
     console.error('Stats error:', error)
-    return NextResponse.json({ 
-      error: 'Failed to fetch statistics', 
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 })
+    return NextResponse.json(
+      {
+        error: 'Failed to fetch statistics',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    )
   }
 }

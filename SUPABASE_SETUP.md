@@ -1,7 +1,9 @@
 # 🚀 Supabase Setup Guide for Taughtful
 
 ## ✅ Current Status
+
 Your app is now configured to work in **both modes**:
+
 - **Demo Mode**: Works with localStorage (current state)
 - **Production Mode**: Will work with Supabase once configured
 
@@ -67,21 +69,25 @@ npm run dev
 ## 🎯 What You'll Get After Setup
 
 ### ✅ Real Authentication
+
 - User registration and login
 - Secure password handling
 - Session management
 
 ### ✅ Database Storage
+
 - Lesson plans stored in database
 - User-specific data isolation
 - Real-time updates
 
 ### ✅ Curriculum Integration
+
 - Import your 21k+ curriculum rows
 - Fast search across all outcomes
 - Multi-framework support
 
 ### ✅ Scalability
+
 - Handle thousands of users
 - Production-ready infrastructure
 - Automatic backups
@@ -89,16 +95,19 @@ npm run dev
 ## 🆘 Troubleshooting
 
 ### "Supabase not configured" Error
+
 - Check your `.env.local` file has correct values
 - Restart your development server
 - Make sure no spaces in the environment variables
 
 ### Database Connection Issues
+
 - Verify your project URL is correct
 - Check your anon key is correct
 - Ensure your Supabase project is active
 
 ### Import Issues
+
 - Make sure CSV file is properly formatted
 - Check that database schema was created
 - Verify file size isn't too large (split if needed)

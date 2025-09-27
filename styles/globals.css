@@ -126,7 +126,10 @@
 
 /* Reduce motion support */
 @media (prefers-reduced-motion: reduce) {
-  .animate-float, .animate-bounce, .animate-spin, .animate-pulse {
+  .animate-float,
+  .animate-bounce,
+  .animate-spin,
+  .animate-pulse {
     animation: none !important;
     transition: none !important;
   }

@@ -6,8 +6,11 @@ export const dynamic = 'force-dynamic'
 export async function POST(req: NextRequest) {
   try {
     const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user)
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { id } = await req.json()
     if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 })
@@ -27,8 +30,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true, plan: data })
   } catch (e) {
     console.error('Archive API exception:', e)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
   }
 }
-
-

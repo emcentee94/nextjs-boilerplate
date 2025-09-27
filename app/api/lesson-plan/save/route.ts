@@ -6,7 +6,9 @@ export const dynamic = 'force-dynamic'
 export async function POST(req: NextRequest) {
   try {
     const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -14,7 +16,9 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const insert = {
       user_id: user.id,
-      title: body.title || `${body.subject || 'Lesson'} – ${body.year_level || 'F-10'}`,
+      title:
+        body.title ||
+        `${body.subject || 'Lesson'} – ${body.year_level || 'F-10'}`,
       learning_area: body.learning_area || body.subject || 'General',
       subject: body.subject || 'General',
       year_level: body.year_level || 'F',
@@ -24,7 +28,9 @@ export async function POST(req: NextRequest) {
       learning_intentions: body.learning_intentions || null,
       success_criteria: body.success_criteria || null,
       trauma_informed_profile: body.trauma_informed_profile || {},
-      include_indigenous_perspectives: Boolean(body.include_indigenous_perspectives),
+      include_indigenous_perspectives: Boolean(
+        body.include_indigenous_perspectives
+      ),
       indigenous_pedagogy_methods: body.indigenous_pedagogy_methods || [],
       lesson_structure: body.lesson_structure || {},
       differentiation_strategies: body.differentiation_strategies || {},
@@ -41,14 +47,18 @@ export async function POST(req: NextRequest) {
 
     if (error) {
       console.error('Save lesson plan error:', error)
-      return NextResponse.json({ error: 'Failed to save lesson plan' }, { status: 500 })
+      return NextResponse.json(
+        { error: 'Failed to save lesson plan' },
+        { status: 500 }
+      )
     }
 
     return NextResponse.json({ success: true, plan: data })
   } catch (e) {
     console.error('Save API exception:', e)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
   }
 }
-
-

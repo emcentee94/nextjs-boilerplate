@@ -40,6 +40,7 @@ cp env.local.example .env.local
 ```
 
 Add your Anthropic API key:
+
 ```
 ANTHROPIC_API_KEY=your_anthropic_api_key_here
 ```
@@ -79,6 +80,7 @@ Navigate to `/dashboard` to access the lesson plan generator.
 ### 4. Generate Lesson Plan
 
 Click "Generate Lesson Plan" to create an AI-powered lesson plan that includes:
+
 - Learning goals aligned to selected curriculum items
 - Detailed timing breakdown with activities
 - Teacher moves and student tasks
@@ -99,6 +101,7 @@ Click "Generate Lesson Plan" to create an AI-powered lesson plan that includes:
 Generates a lesson plan using Claude AI.
 
 **Request Body:**
+
 ```typescript
 {
   subject: string;
@@ -120,6 +123,7 @@ Generates a lesson plan using Claude AI.
 ```
 
 **Response:**
+
 ```typescript
 {
   lessonPlan: {
@@ -206,6 +210,7 @@ The system uses carefully crafted prompts to ensure:
 ### Debug Mode
 
 Enable debug logging by adding to your environment:
+
 ```
 DEBUG=lesson-plan:*
 ```

@@ -1,11 +1,11 @@
-import { type NextRequest, NextResponse } from "next/server"
-import { z } from "zod"
-import { sendWaitlistNotification } from "../../../lib/email-smtp"
+import { type NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
+import { sendWaitlistNotification } from '../../../lib/email-smtp'
 
 const waitlistSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  name: z.string().min(1, "Name is required"),
-  yearLevels: z.string().min(1, "Please select year levels"),
+  email: z.string().email('Please enter a valid email address'),
+  name: z.string().min(1, 'Name is required'),
+  yearLevels: z.string().min(1, 'Please select year levels'),
   planningHeadache: z.string().optional(),
 })
 
@@ -17,11 +17,11 @@ export async function POST(request: NextRequest) {
     const validatedData = waitlistSchema.parse(body)
 
     // Log the submission
-    console.log("New waitlist signup:", {
+    console.log('New waitlist signup:', {
       email: validatedData.email,
       name: validatedData.name,
       yearLevels: validatedData.yearLevels,
-      planningHeadache: validatedData.planningHeadache || "Not provided",
+      planningHeadache: validatedData.planningHeadache || 'Not provided',
       timestamp: new Date().toISOString(),
     })
 
@@ -31,9 +31,9 @@ export async function POST(request: NextRequest) {
         name: validatedData.name,
         email: validatedData.email,
         yearLevels: validatedData.yearLevels,
-        planningHeadache: validatedData.planningHeadache
+        planningHeadache: validatedData.planningHeadache,
       })
-      
+
       if (emailResult.success === false) {
         console.warn('Email notification skipped:', emailResult.reason)
       } else {
@@ -44,13 +44,22 @@ export async function POST(request: NextRequest) {
       // Don't fail the entire request if email fails
     }
 
-    return NextResponse.json({ message: "Successfully joined waitlist!" }, { status: 200 })
+    return NextResponse.json(
+      { message: 'Successfully joined waitlist!' },
+      { status: 200 }
+    )
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: "Validation failed", details: error.errors }, { status: 400 })
+      return NextResponse.json(
+        { error: 'Validation failed', details: error.errors },
+        { status: 400 }
+      )
     }
 
-    console.error("Waitlist signup error:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    console.error('Waitlist signup error:', error)
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
   }
 }

@@ -2,7 +2,13 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 
 export default function TestMinimalInsertPage() {
   const [isTesting, setIsTesting] = useState(false)
@@ -27,65 +33,92 @@ export default function TestMinimalInsertPage() {
 
       setTestResults(data)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Minimal insert test failed')
+      setError(
+        err instanceof Error ? err.message : 'Minimal insert test failed'
+      )
     } finally {
       setIsTesting(false)
     }
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-2xl mx-auto px-4">
+    <div className='min-h-screen bg-gray-50 py-8'>
+      <div className='max-w-2xl mx-auto px-4'>
         <Card>
           <CardHeader>
             <CardTitle>Minimal Insert Test</CardTitle>
             <CardDescription>
-              Test basic insert operations to identify any database or schema issues.
+              Test basic insert operations to identify any database or schema
+              issues.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <Button 
-              onClick={runMinimalInsertTest} 
+          <CardContent className='space-y-6'>
+            <Button
+              onClick={runMinimalInsertTest}
               disabled={isTesting}
-              className="w-full"
+              className='w-full'
             >
-              {isTesting ? 'Testing Minimal Inserts...' : 'Run Minimal Insert Test'}
+              {isTesting
+                ? 'Testing Minimal Inserts...'
+                : 'Run Minimal Insert Test'}
             </Button>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                <h3 className="font-medium text-red-900">Test Failed:</h3>
-                <p className="text-red-700">{error}</p>
+              <div className='bg-red-50 border border-red-200 rounded-lg p-4'>
+                <h3 className='font-medium text-red-900'>Test Failed:</h3>
+                <p className='text-red-700'>{error}</p>
               </div>
             )}
 
             {testResults && (
-              <div className="space-y-4">
+              <div className='space-y-4'>
                 {testResults.success ? (
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                    <h3 className="font-medium text-green-900">✅ All Minimal Insert Tests Passed!</h3>
-                    <div className="text-green-700 space-y-2">
-                      <p><strong>Message:</strong> {testResults.message}</p>
-                      <div className="space-y-1">
-                        <p><strong>Tests:</strong></p>
-                        <ul className="list-disc list-inside ml-4">
-                          <li>Minimal Insert: {testResults.tests.minimalInsert}</li>
-                          <li>More Fields Insert: {testResults.tests.moreFieldsInsert}</li>
-                          <li>Multiple Records Insert: {testResults.tests.multipleRecordsInsert}</li>
+                  <div className='bg-green-50 border border-green-200 rounded-lg p-4'>
+                    <h3 className='font-medium text-green-900'>
+                      ✅ All Minimal Insert Tests Passed!
+                    </h3>
+                    <div className='text-green-700 space-y-2'>
+                      <p>
+                        <strong>Message:</strong> {testResults.message}
+                      </p>
+                      <div className='space-y-1'>
+                        <p>
+                          <strong>Tests:</strong>
+                        </p>
+                        <ul className='list-disc list-inside ml-4'>
+                          <li>
+                            Minimal Insert: {testResults.tests.minimalInsert}
+                          </li>
+                          <li>
+                            More Fields Insert:{' '}
+                            {testResults.tests.moreFieldsInsert}
+                          </li>
+                          <li>
+                            Multiple Records Insert:{' '}
+                            {testResults.tests.multipleRecordsInsert}
+                          </li>
                         </ul>
                       </div>
                     </div>
                   </div>
                 ) : (
-                  <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                    <h3 className="font-medium text-red-900">❌ Minimal Insert Tests Failed</h3>
-                    <div className="text-red-700 space-y-2">
-                      <p><strong>Error:</strong> {testResults.error}</p>
+                  <div className='bg-red-50 border border-red-200 rounded-lg p-4'>
+                    <h3 className='font-medium text-red-900'>
+                      ❌ Minimal Insert Tests Failed
+                    </h3>
+                    <div className='text-red-700 space-y-2'>
+                      <p>
+                        <strong>Error:</strong> {testResults.error}
+                      </p>
                       {testResults.details && (
-                        <p><strong>Details:</strong> {testResults.details}</p>
+                        <p>
+                          <strong>Details:</strong> {testResults.details}
+                        </p>
                       )}
                       {testResults.code && (
-                        <p><strong>Code:</strong> {testResults.code}</p>
+                        <p>
+                          <strong>Code:</strong> {testResults.code}
+                        </p>
                       )}
                     </div>
                   </div>
@@ -93,9 +126,11 @@ export default function TestMinimalInsertPage() {
               </div>
             )}
 
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h3 className="font-medium text-blue-900">What This Test Does:</h3>
-              <ul className="text-blue-700 text-sm space-y-1 mt-2">
+            <div className='bg-blue-50 border border-blue-200 rounded-lg p-4'>
+              <h3 className='font-medium text-blue-900'>
+                What This Test Does:
+              </h3>
+              <ul className='text-blue-700 text-sm space-y-1 mt-2'>
                 <li>• Tests inserting a single record with minimal fields</li>
                 <li>• Tests inserting a record with more fields</li>
                 <li>• Tests inserting multiple records at once</li>

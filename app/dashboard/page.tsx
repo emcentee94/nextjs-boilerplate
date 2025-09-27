@@ -422,7 +422,7 @@ export default function Dashboard() {
   }, [])
 
   return (
-    <div className='min-h-screen bg-[#FDE5DA]'>
+    <div className='min-h-screen bg-[#FDE5DA] pt-20'>
       <DemoBanner />
       <SignupModalBridge />
       <div className='mx-auto max-w-7xl px-4 py-6'>

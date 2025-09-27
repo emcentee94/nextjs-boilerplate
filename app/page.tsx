@@ -24,7 +24,7 @@ export default function TaughtfulLanding() {
   // Testimonials removed; no rotation state needed
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-[#FDE5DA] via-[#FFF2E8] to-[#FDE5DA]'>
+    <div className='min-h-screen bg-gradient-to-br from-[#FDE5DA] via-[#FFF2E8] to-[#FDE5DA] pt-20'>
       {/* HERO SECTION */}
       <section className='pt-16 pb-24 px-4 bg-transparent relative overflow-hidden rounded-3xl mx-4 md:mx-6 lg:mx-8'>
         {/* Playful Background Elements */}

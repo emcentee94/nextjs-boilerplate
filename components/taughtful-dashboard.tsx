@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import TaughtfulSurvey from './taughtful-survey'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   BookOpen,
@@ -15,7 +14,10 @@ import {
   Globe,
   Sparkles,
 } from 'lucide-react'
+import TaughtfulSurvey from './taughtful-survey'
 import CurriculumSelector from './curriculum-selector'
+import { useDemo } from '@/contexts/DemoContext'
+import { exemplaryLesson } from '@/lib/demo-samples'
 // import Highlight, { defaultProps } from 'prism-react-renderer';
 // import { themes } from 'prism-react-renderer';
 
@@ -85,6 +87,7 @@ function getWeightedEightWays(subject: string): string[] {
 }
 
 export default function TaughtfulDashboard() {
+  const { isDemo } = useDemo()
   const [active, setActive] = useState('basics')
   const [displayName, setDisplayName] = useState<string>('Teacher')
   const [subject, setSubject] = useState('English')
@@ -98,14 +101,25 @@ export default function TaughtfulDashboard() {
   const [indigLevel, setIndigLevel] = useState(1) // 0 none, 1 contextual, 2 deep
   const [aboriginalPedagogy, setAboriginalPedagogy] = useState(false)
   const [selectedEightWays, setSelectedEightWays] = useState<string[]>([])
-  const [modalContent, setModalContent] = useState<{title: string; body: string; link: string} | null>(null)
+  const [modalContent, setModalContent] = useState<{
+    title: string
+    body: string
+    link: string
+  } | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
-  const [generatedLessonPlan, setGeneratedLessonPlan] = useState<Record<string, any> | null>(null)
+  const [generatedLessonPlan, setGeneratedLessonPlan] = useState<Record<
+    string,
+    unknown
+  > | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   // Curriculum selection state
-  const [curriculumItems, setCurriculumItems] = useState<Record<string, any>[]>([])
-  const [selectedCurriculumItems, setSelectedCurriculumItems] = useState<Record<string, any>[]>([])
+  const [curriculumItems, setCurriculumItems] = useState<
+    Record<string, unknown>[]
+  >([])
+  const [selectedCurriculumItems, setSelectedCurriculumItems] = useState<
+    Record<string, unknown>[]
+  >([])
   const [isLoadingCurriculum, setIsLoadingCurriculum] = useState(false)
   const [curriculumError, setCurriculumError] = useState<string | null>(null)
 
@@ -150,19 +164,42 @@ export default function TaughtfulDashboard() {
     setSelectedCurriculumItems([])
 
     try {
-      const response = await fetch(
-        `/api/curriculum/search?learningAreaId=${subject}&yearLevel=${year}&limit=100`
-      )
+      if (isDemo) {
+        // Use demo curriculum data
+        await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate loading
+        setCurriculumItems([
+          {
+            id: 'demo-1',
+            code: 'VCEEN008',
+            title: 'English VCAA 8.1 (Persuasive Texts)',
+            description:
+              'Create persuasive texts for different purposes and audiences',
+          },
+          {
+            id: 'demo-2',
+            code: 'VCEEN009',
+            title: 'English VCAA 8.2 (Personal and Cultural Contexts)',
+            description:
+              'Analyze how language choices shape meaning and influence readers',
+          },
+        ])
+      } else {
+        const response = await fetch(
+          `/api/curriculum/search?learningAreaId=${subject}&yearLevel=${year}&limit=100`
+        )
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch curriculum items')
+        if (!response.ok) {
+          throw new Error('Failed to fetch curriculum items')
+        }
+
+        const data = await response.json()
+        setCurriculumItems(data.outcomes || [])
       }
-
-      const data = await response.json()
-      setCurriculumItems(data.outcomes || [])
     } catch (err) {
       console.error('Curriculum fetch error:', err)
-      setCurriculumError((err as Error).message || 'Failed to load curriculum items')
+      setCurriculumError(
+        (err as Error).message || 'Failed to load curriculum items'
+      )
     } finally {
       setIsLoadingCurriculum(false)
     }
@@ -183,49 +220,56 @@ export default function TaughtfulDashboard() {
     setGeneratedLessonPlan(null)
 
     try {
-      // Convert selected curriculum items to the format expected by the API
-      const curriculumItemsForAPI = selectedCurriculumItems.map((item) => ({
-        code: item.code || item.id,
-        title: item.title || `Curriculum item ${item.code}`,
-      }))
+      if (isDemo) {
+        // Use demo data instead of real API call
+        await new Promise((resolve) => setTimeout(resolve, 2000)) // Simulate loading
+        setGeneratedLessonPlan(exemplaryLesson)
+      } else {
+        // Convert selected curriculum items to the format expected by the API
+        const curriculumItemsForAPI = selectedCurriculumItems.map((item) => ({
+          code: item.code || item.id,
+          title: item.title || `Curriculum item ${item.code}`,
+        }))
 
-      const request = {
-        subject,
-        yearLevels: [year],
-        items: curriculumItemsForAPI,
-        durationMins: duration,
-        classProfile: {
-          size: classSize,
-          literacyTier: literacyTier.toLowerCase(),
-          additionalNeeds: [],
-        },
-        options: {
-          embedIndigenousPerspectives: indigLevel > 0,
-          traumaInformedScaffolds: tiOn,
-          differentiation: ['low', 'medium', 'high'][diff],
-          assessmentStyle: assessment.toLowerCase(),
-        },
+        const request = {
+          subject,
+          yearLevels: [year],
+          items: curriculumItemsForAPI,
+          durationMins: duration,
+          classProfile: {
+            size: classSize,
+            literacyTier: literacyTier.toLowerCase(),
+            additionalNeeds: [],
+          },
+          options: {
+            embedIndigenousPerspectives: indigLevel > 0,
+            traumaInformedScaffolds: tiOn,
+            differentiation: ['low', 'medium', 'high'][diff],
+            assessmentStyle: assessment.toLowerCase(),
+          },
+        }
+
+        const response = await fetch('/api/lesson-plan/generate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(request),
+        })
+
+        if (!response.ok) {
+          const errorData = await response.json()
+          throw new Error(errorData.error || 'Failed to generate lesson plan')
+        }
+
+        const data = await response.json()
+        setGeneratedLessonPlan(data.lessonPlan)
       }
-
-      const response = await fetch('/api/lesson-plan/generate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(request),
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to generate lesson plan')
-      }
-
-      const data = await response.json()
-      setGeneratedLessonPlan(data.lessonPlan)
     } catch (err) {
       console.error('Lesson plan generation error:', err)
       setError(
-        (err as Error).message || 'Failed to generate lesson plan. Please try again.'
+        (err as Error).message ||
+          'Failed to generate lesson plan. Please try again.'
       )
     } finally {
       setIsGenerating(false)
@@ -585,9 +629,9 @@ export default function TaughtfulDashboard() {
                       />
                     </div>
                   </div>
-                  <NavButtons 
-                    onPrev={() => setActive('pedagogy')} 
-                    onNext={() => {}} 
+                  <NavButtons
+                    onPrev={() => setActive('pedagogy')}
+                    onNext={() => {}}
                   />
 
                   <div className='mt-6 flex justify-center'>
@@ -677,7 +721,10 @@ export default function TaughtfulDashboard() {
                           </h5>
                           <div className='space-y-3'>
                             {generatedLessonPlan.lessonTimeline?.map(
-                              (item: Record<string, any>, index: number) => (
+                              (
+                                item: Record<string, unknown>,
+                                index: number
+                              ) => (
                                 <div
                                   key={index}
                                   className='border-l-4 border-[#FD6585] pl-4 bg-gradient-to-r from-[#fff9fb] to-transparent p-3 rounded-r-xl'
@@ -803,7 +850,13 @@ if (
 }
 
 // --- Supporting Components ---
-function Stepper({ active, setActive }: { active: string; setActive: (step: string) => void }) {
+function Stepper({
+  active,
+  setActive,
+}: {
+  active: string
+  setActive: (step: string) => void
+}) {
   return (
     <div className='flex flex-wrap gap-3'>
       {steps.map((step) => (
@@ -843,7 +896,15 @@ function Stepper({ active, setActive }: { active: string; setActive: (step: stri
   )
 }
 
-function SectionHeader({ icon: Icon, title, subtitle }: { icon: React.ComponentType<any>; title: string; subtitle: string }) {
+function SectionHeader({
+  icon: Icon,
+  title,
+  subtitle,
+}: {
+  icon: React.ComponentType<{ className?: string }>
+  title: string
+  subtitle: string
+}) {
   return (
     <div className='flex items-center gap-4'>
       <div className='rounded-2xl bg-gradient-to-br from-[#FD6585] to-[#FF9A2E] p-3 text-white shadow-lg'>
@@ -859,7 +920,19 @@ function SectionHeader({ icon: Icon, title, subtitle }: { icon: React.ComponentT
   )
 }
 
-function SelectField({ label, value, onChange, options, placeholder }: { label: string; value: string; onChange: (value: string) => void; options: string[]; placeholder: string }) {
+function SelectField({
+  label,
+  value,
+  onChange,
+  options,
+  placeholder,
+}: {
+  label: string
+  value: string
+  onChange: (value: string) => void
+  options: string[]
+  placeholder: string
+}) {
   return (
     <div>
       <label className='block text-sm font-medium mb-2 font-fredoka text-gray-900'>
@@ -891,14 +964,14 @@ function SliderField({
   icon: Icon,
   suffix,
 }: {
-  label: string;
-  value: number;
-  onChange: (value: number) => void;
-  min: number;
-  max: number;
-  step: number;
-  icon: React.ComponentType<any>;
-  suffix: string;
+  label: string
+  value: number
+  onChange: (value: number) => void
+  min: number
+  max: number
+  step: number
+  icon: React.ComponentType<{ className?: string }>
+  suffix: string
 }) {
   return (
     <div>
@@ -932,7 +1005,15 @@ function SliderField({
   )
 }
 
-function NavButtons({ onPrev, onNext, nextEnabled = true }: { onPrev: () => void; onNext: () => void; nextEnabled?: boolean }) {
+function NavButtons({
+  onPrev,
+  onNext,
+  nextEnabled = true,
+}: {
+  onPrev: () => void
+  onNext: () => void
+  nextEnabled?: boolean
+}) {
   return (
     <div className='mt-8 flex justify-between'>
       {onPrev ? (
@@ -980,18 +1061,18 @@ function PreviewCard({
   selectedEightWays,
   selectedCurriculumItems,
 }: {
-  subject: string;
-  year: string;
-  duration: number;
-  classSize: number;
-  literacyTier: string;
-  assessment: string;
-  tiOn: boolean;
-  diff: number;
-  indigLevel: number;
-  aboriginalPedagogy: boolean;
-  selectedEightWays: string[];
-  selectedCurriculumItems: Record<string, any>[];
+  subject: string
+  year: string
+  duration: number
+  classSize: number
+  literacyTier: string
+  assessment: string
+  tiOn: boolean
+  diff: number
+  indigLevel: number
+  aboriginalPedagogy: boolean
+  selectedEightWays: string[]
+  selectedCurriculumItems: Record<string, unknown>[]
 }) {
   return (
     <div className='space-y-3 text-sm font-fredoka'>
@@ -1065,12 +1146,14 @@ function PreviewCard({
         </p>
         {selectedCurriculumItems && selectedCurriculumItems.length > 0 && (
           <ul className='list-disc list-inside text-xs text-gray-600 max-h-20 overflow-y-auto mt-2'>
-            {selectedCurriculumItems.map((item: Record<string, any>, index: number) => (
-              <li key={item.id || index}>
-                {item.code}:{' '}
-                {item.title || item.description || 'Curriculum Standard'}
-              </li>
-            ))}
+            {selectedCurriculumItems.map(
+              (item: Record<string, unknown>, index: number) => (
+                <li key={item.id || index}>
+                  {item.code}:{' '}
+                  {item.title || item.description || 'Curriculum Standard'}
+                </li>
+              )
+            )}
           </ul>
         )}
       </div>
@@ -1080,7 +1163,13 @@ function PreviewCard({
 
 // Removed unused Badge function
 
-function Toggle({ checked, onChange }: { checked: boolean; onChange: (checked: boolean) => void }) {
+function Toggle({
+  checked,
+  onChange,
+}: {
+  checked: boolean
+  onChange: (checked: boolean) => void
+}) {
   return (
     <button
       onClick={() => onChange(!checked)}

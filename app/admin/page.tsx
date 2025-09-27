@@ -1,7 +1,6 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useState, useEffect } from 'react'
 import {
   Upload,
   Database,
@@ -12,10 +11,89 @@ import {
   FileText,
   CheckCircle,
   AlertTriangle,
+  Lock,
 } from 'lucide-react'
 import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+
+const ADMIN_PASSWORD = 'taughtful2025'
 
 export default function AdminPage() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    // Check if already authenticated in session
+    const authStatus = sessionStorage.getItem('admin_authenticated')
+    if (authStatus === 'true') {
+      setIsAuthenticated(true)
+    }
+  }, [])
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (password === ADMIN_PASSWORD) {
+      setIsAuthenticated(true)
+      sessionStorage.setItem('admin_authenticated', 'true')
+      setError('')
+    } else {
+      setError('Incorrect password')
+    }
+  }
+
+  const handleLogout = () => {
+    setIsAuthenticated(false)
+    sessionStorage.removeItem('admin_authenticated')
+    setPassword('')
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className='min-h-screen bg-background flex items-center justify-center'>
+        <Card className='w-full max-w-md'>
+          <CardHeader className='text-center'>
+            <div className='mx-auto w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-4'>
+              <Lock className='w-6 h-6 text-red-600' />
+            </div>
+            <CardTitle>Admin Access Required</CardTitle>
+            <p className='text-muted-foreground'>
+              Please enter the admin password to continue
+            </p>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleLogin} className='space-y-4'>
+              <div>
+                <Input
+                  type='password'
+                  placeholder='Enter admin password'
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className='w-full'
+                />
+              </div>
+              {error && (
+                <p className='text-sm text-red-600 text-center'>{error}</p>
+              )}
+              <Button type='submit' className='w-full'>
+                Access Admin Dashboard
+              </Button>
+            </form>
+            <div className='mt-4 text-center'>
+              <Link
+                href='/'
+                className='text-sm text-muted-foreground hover:text-foreground'
+              >
+                ← Back to Home
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
   return (
     <div className='min-h-screen bg-background'>
       {/* Header */}
@@ -30,6 +108,14 @@ export default function AdminPage() {
             <span className='text-sm text-muted-foreground'>
               Admin Dashboard
             </span>
+            <Button
+              variant='outline'
+              size='sm'
+              onClick={handleLogout}
+              className='ml-4'
+            >
+              Logout
+            </Button>
           </div>
         </div>
       </header>

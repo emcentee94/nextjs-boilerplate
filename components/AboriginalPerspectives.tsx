@@ -163,16 +163,16 @@ export default function AboriginalPerspectivesNarrativeGrid() {
           </div>
         </div>
 
-        <div className="mt-12 flex items-start gap-3 text-emerald-700">
-          <Leaf className="w-6 h-6 mt-1" aria-hidden />
-          <BadgeCheck className="w-6 h-6 mt-1" aria-hidden />
-          <p className="text-lg font-bold leading-relaxed">
+        <p className="mt-12 text-lg font-bold text-[#888625] flex items-start gap-3">
+          <Leaf className="w-6 h-6 text-[#888625] mt-1" aria-hidden />
+          <span>
             This is deliberate, research-driven work. By making Aboriginal perspectives a natural
-            part of planning, <span className="font-semibold">Taughtful</span> stands with educators and First Nations
+            part of planning, <span className="underline decoration-[#888625]">Taughtful</span> stands with educators and First Nations
             communities—building classrooms that are inclusive, standards-aligned, and enriched by
             the world’s oldest continuous cultures.
-          </p>
-        </div>
+          </span>
+          <BadgeCheck className="w-6 h-6 text-[#888625] mt-1" aria-hidden />
+        </p>
 
         {/* Community Priorities → Our Commitments grid removed */}
       </div>

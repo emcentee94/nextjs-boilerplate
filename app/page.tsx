@@ -275,7 +275,7 @@ export default function TaughtfulLanding() {
             </div>
             
             {/* Cultural integrity value props */}
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
               <div className="rounded-2xl border border-[#888625]/30 bg-[#FDE5DA]/60 p-4 shadow-sm">
                 <p className="text-sm md:text-base text-[#333333]">
                   “<span className="font-bold">Guided, not guessed.</span> Taughtful shows <em>where</em> Indigenous perspectives belong in your plan, provides <span className="font-bold">checklists and sources</span>, and lets you decide what’s appropriate.”
@@ -284,11 +284,6 @@ export default function TaughtfulLanding() {
               <div className="rounded-2xl border border-[#888625]/30 bg-[#FF9A2E]/10 p-4 shadow-sm">
                 <p className="text-sm md:text-base text-[#333333]">
                   “<span className="font-bold">Abstain over invent.</span> When cultural content needs authority, Taughtful holds the line—and points you to the right pathway.”
-                </p>
-              </div>
-              <div className="rounded-2xl border border-[#888625]/30 bg-[#888625]/10 p-4 shadow-sm">
-                <p className="text-sm md:text-base text-[#333333]">
-                  “<span className="font-bold">From tokenism to intention.</span> Replace vague add-ons with <span className="font-bold">specific, curriculum-aligned steps</span> and authentic resources.”
                 </p>
               </div>
             </div>
@@ -346,6 +341,14 @@ export default function TaughtfulLanding() {
 
             <div className="border-t border-white/20 pt-8 text-white/60 text-sm">
               <p>© 2025 Taughtful. Built for Australian teachers, by Australian educators.</p>
+              <div className="mt-4 text-white/70">
+                <p>
+                  We acknowledge the Traditional Owners of the lands on which we work and learn, and pay our respects to Elders past and present. Sovereignty was never ceded.
+                </p>
+                <p className="mt-1">
+                  We commit to embedding respectful Aboriginal and Torres Strait Islander perspectives and supporting teachers to do the same.
+                </p>
+              </div>
             </div>
           </div>
         </div>

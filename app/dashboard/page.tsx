@@ -30,11 +30,66 @@ const statItems = [
 ]
 
 const toolCards = [
-  { icon: <BookOpenCheck className="w-5 h-5" />, title: "Lesson Plan", desc: "Aligned scaffold in minutes", href: "/generator/profile" },
-  { icon: <Layers className="w-5 h-5" />, title: "Unit Plan", desc: "Scope & sequence builder (soon)", href: "#" },
-  { icon: <ListChecks className="w-5 h-5" />, title: "Quiz", desc: "Auto‑items with distractors (soon)", href: "#" },
-  { icon: <FileText className="w-5 h-5" />, title: "Worksheet", desc: "Differentiated tasks (soon)", href: "#" },
-  { icon: <Presentation className="w-5 h-5" />, title: "PPT Slides", desc: "Clean decks, fast (soon)", href: "#" },
+  { 
+    icon: <BookOpenCheck className="w-5 h-5" />, 
+    title: "Lesson Plan", 
+    desc: "Aligned scaffold in minutes", 
+    href: "/generator",
+    gradient: "from-[#FD6585] to-[#FF9A2E]",
+    iconBg: "bg-gradient-to-br from-[#FD6585] to-[#FF9A2E]",
+    borderColor: "border-[#FD6585]/30",
+    hoverBorder: "hover:border-[#FD6585]/60",
+    available: true,
+    fontFamily: "font-fredoka"
+  },
+  { 
+    icon: <Layers className="w-5 h-5" />, 
+    title: "Unit Plan", 
+    desc: "Not available in demo mode", 
+    href: "#",
+    gradient: "from-[#888625] to-[#4CAF50]",
+    iconBg: "bg-gradient-to-br from-[#888625] to-[#4CAF50]",
+    borderColor: "border-[#888625]/30",
+    hoverBorder: "hover:border-[#888625]/60",
+    available: false,
+    fontFamily: "font-fredoka"
+  },
+  { 
+    icon: <ListChecks className="w-5 h-5" />, 
+    title: "Quiz", 
+    desc: "Not available in demo mode", 
+    href: "#",
+    gradient: "from-[#3B82F6] to-[#8B5CF6]",
+    iconBg: "bg-gradient-to-br from-[#3B82F6] to-[#8B5CF6]",
+    borderColor: "border-[#3B82F6]/30",
+    hoverBorder: "hover:border-[#3B82F6]/60",
+    available: false,
+    fontFamily: "font-fredoka"
+  },
+  { 
+    icon: <FileText className="w-5 h-5" />, 
+    title: "Worksheet", 
+    desc: "Not available in demo mode", 
+    href: "#",
+    gradient: "from-[#10B981] to-[#059669]",
+    iconBg: "bg-gradient-to-br from-[#10B981] to-[#059669]",
+    borderColor: "border-[#10B981]/30",
+    hoverBorder: "hover:border-[#10B981]/60",
+    available: false,
+    fontFamily: "font-fredoka"
+  },
+  { 
+    icon: <Presentation className="w-5 h-5" />, 
+    title: "PPT Slides", 
+    desc: "Not available in demo mode", 
+    href: "#",
+    gradient: "from-[#F59E0B] to-[#D97706]",
+    iconBg: "bg-gradient-to-br from-[#F59E0B] to-[#D97706]",
+    borderColor: "border-[#F59E0B]/30",
+    hoverBorder: "hover:border-[#F59E0B]/60",
+    available: false,
+    fontFamily: "font-fredoka"
+  },
 ]
 
 const pdTabs = [

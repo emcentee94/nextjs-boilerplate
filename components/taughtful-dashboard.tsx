@@ -192,9 +192,7 @@ export default function TaughtfulDashboard() {
       // Convert selected curriculum items to the format expected by the API
       const curriculumItemsForAPI = selectedCurriculumItems.map(item => ({
         code: item.code || item.id,
-        description: item.description || item.title || `Curriculum item ${item.code}`,
-        strand: item.strand || subject,
-        subStrand: item.sub_strand || 'General'
+        title: item.title || `Curriculum item ${item.code}`
       }));
 
       const request = {
@@ -203,15 +201,15 @@ export default function TaughtfulDashboard() {
         items: curriculumItemsForAPI,
         durationMins: duration,
         classProfile: {
-          classSize,
-          literacyTier,
-          assessmentStyle: assessment
+          size: classSize,
+          literacyTier: literacyTier.toLowerCase(),
+          additionalNeeds: []
         },
         options: {
-          traumaInformed: tiOn,
-          differentiation: ['Light', 'Balanced', 'Full'][diff],
-          indigenousEmbedding: ['Not included', 'Contextual', 'Deep integration'][indigLevel],
-          aboriginalPedagogy: aboriginalPedagogy ? selectedEightWays : []
+          embedIndigenousPerspectives: indigLevel > 0,
+          traumaInformedScaffolds: tiOn,
+          differentiation: ['low', 'medium', 'high'][diff],
+          assessmentStyle: assessment.toLowerCase()
         }
       };
 

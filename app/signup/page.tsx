@@ -23,6 +23,7 @@ export default function SignUpPage() {
   const [showFriendAccess, setShowFriendAccess] = useState(false)
   const [friendPassword, setFriendPassword] = useState('')
   const [friendError, setFriendError] = useState('')
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -56,7 +57,7 @@ export default function SignUpPage() {
         created_at: new Date().toISOString(),
       }
       localStorage.setItem('taughtful_user', JSON.stringify(demoUser))
-      window.location.href = '/dashboard'
+      setIsSubmitted(true)
     } catch (error) {
       console.error('Error submitting demo request:', error)
       setError(

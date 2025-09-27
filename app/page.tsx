@@ -20,15 +20,6 @@ import CulturalSafeguardsGrid from '@/components/CulturalSafeguardsGrid'
 import CurriculumCoverage from '@/components/CurriculumCoverage'
 import RAGSection from '@/components/RAGSection'
 
-const waitlistSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
-  name: z.string().min(1, 'Name is required'),
-  yearLevels: z.string().min(1, 'Please select year levels'),
-  planningHeadache: z.string().optional(),
-})
-
-type WaitlistFormData = z.infer<typeof waitlistSchema>
-
 export default function TaughtfulLanding() {
   // Testimonials removed; no rotation state needed
 

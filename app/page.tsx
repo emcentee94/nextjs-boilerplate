@@ -1,6 +1,5 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
 import {
   ArrowRight,
   BookOpen,
@@ -14,7 +13,7 @@ import {
   Zap,
 } from 'lucide-react'
 import Image from 'next/image'
-import { z } from 'zod'
+import { Button } from '@/components/ui/button'
 import AboriginalPerspectivesNarrativeGrid from '@/components/AboriginalPerspectives'
 import CulturalSafeguardsGrid from '@/components/CulturalSafeguardsGrid'
 import CurriculumCoverage from '@/components/CurriculumCoverage'

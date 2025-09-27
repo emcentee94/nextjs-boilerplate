@@ -47,7 +47,7 @@ export default function NavigationBar() {
                 className='px-6 py-3 rounded-2xl border-2 border-[#888625] text-[#888625] bg-[#888625]/5 shadow-md transition-all duration-300 hover:bg-[#888625] hover:text-white hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.02] group font-nunito'
               >
                 <BookOpen className='w-4 h-4 mr-2' />
-                Learning Hub
+                Knowledge Hub
               </Button>
             </Link>
           </div>
@@ -88,7 +88,7 @@ export default function NavigationBar() {
                 className='w-full px-4 py-2 rounded-2xl border-2 border-[#888625] text-[#888625] bg-[#888625]/5 shadow-md transition-all duration-300 hover:bg-[#888625] hover:text-white hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.02] group font-nunito text-xs'
               >
                 <BookOpen className='w-3 h-3 mr-1' />
-                Learning Hub
+                Knowledge Hub
               </Button>
             </Link>
 

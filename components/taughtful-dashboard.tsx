@@ -90,8 +90,8 @@ export default function TaughtfulDashboard() {
   const { isDemo } = useDemo()
   const [active, setActive] = useState('basics')
   const [displayName, setDisplayName] = useState<string>('Teacher')
-  const [subject, setSubject] = useState('English')
-  const [year, setYear] = useState('5')
+  const [subject, setSubject] = useState('')
+  const [year, setYear] = useState('')
   const [duration, setDuration] = useState(60)
   const [classSize, setClassSize] = useState(25)
   const [literacyTier, setLiteracyTier] = useState('Mixed')
@@ -342,7 +342,7 @@ export default function TaughtfulDashboard() {
                       label='Duration (mins)'
                       value={duration}
                       onChange={setDuration}
-                      min={20}
+                      min={30}
                       max={120}
                       step={5}
                       icon={Clock}

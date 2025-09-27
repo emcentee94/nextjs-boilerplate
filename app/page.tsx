@@ -14,14 +14,11 @@ import {
   Zap,
 } from 'lucide-react'
 import Image from 'next/image'
-import { useState } from 'react'
 import { z } from 'zod'
 import AboriginalPerspectivesNarrativeGrid from '@/components/AboriginalPerspectives'
 import CulturalSafeguardsGrid from '@/components/CulturalSafeguardsGrid'
 import CurriculumCoverage from '@/components/CurriculumCoverage'
 import RAGSection from '@/components/RAGSection'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 
 const waitlistSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -33,18 +30,7 @@ const waitlistSchema = z.object({
 type WaitlistFormData = z.infer<typeof waitlistSchema>
 
 export default function TaughtfulLanding() {
-  const [, setIsSubmitting] = useState(false)
-  const [, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
   // Testimonials removed; no rotation state needed
-
-  const {
-    reset,
-  } = useForm<WaitlistFormData>({
-    resolver: zodResolver(waitlistSchema),
-  })
-
-  // Removed testimonial rotation effect
-
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-[#FDE5DA] via-[#FFF2E8] to-[#FDE5DA]'>

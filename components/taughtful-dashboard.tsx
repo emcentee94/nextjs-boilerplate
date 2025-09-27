@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   BookOpen,
@@ -157,7 +157,7 @@ export default function TaughtfulDashboard() {
     }
   }, [subject, year, fetchCurriculumItems])
 
-  const fetchCurriculumItems = async () => {
+  const fetchCurriculumItems = useCallback(async () => {
     setIsLoadingCurriculum(true)
     setCurriculumError(null)
     setCurriculumItems([])
@@ -203,7 +203,7 @@ export default function TaughtfulDashboard() {
     } finally {
       setIsLoadingCurriculum(false)
     }
-  }
+  }, [isDemo, subject, year])
 
   // Removed unused toggleCurriculumItem function
 

@@ -13,11 +13,13 @@ import {
   Zap,
 } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import AboriginalPerspectivesNarrativeGrid from '@/components/AboriginalPerspectives'
 import CulturalSafeguardsGrid from '@/components/CulturalSafeguardsGrid'
 import CurriculumCoverage from '@/components/CurriculumCoverage'
 import RAGSection from '@/components/RAGSection'
+import AnimatedMascot from '@/components/AnimatedMascot'
 
 export default function TaughtfulLanding() {
   // Testimonials removed; no rotation state needed
@@ -117,12 +119,13 @@ export default function TaughtfulLanding() {
             </p>
 
             {/* Hero CTAs */}
-            <div className='flex flex-col sm:flex-row gap-6 justify-center mb-16'>
-              <Button
-                variant='outline'
-                size='lg'
-                onClick={() => (window.location.href = '/signup')}
-                className='px-8 py-5 rounded-2xl border-2 border-[#FD6585] text-[#FD6585] bg-[#FD6585]/5 shadow-md transition-all duration-300 hover:bg-[#FD6585] hover:text-white hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.02] group font-nunito'
+            <div className='flex flex-col sm:flex-row gap-6 justify-center mb-16 items-center'>
+              <div className='hidden md:block mr-2'>
+                <AnimatedMascot className='w-20 h-20' />
+              </div>
+              <Link
+                href='/dashboard?demo=1'
+                className='px-8 py-5 rounded-2xl border-2 border-[#FD6585] text-[#FD6585] bg-[#FD6585]/5 shadow-md transition-all duration-300 hover:bg-[#FD6585] hover:text-white hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.02] group font-nunito flex flex-col items-center justify-center'
               >
                 <div className='flex items-center gap-3 justify-center'>
                   <Users className='w-6 h-6 group-hover:animate-pulse' />
@@ -131,7 +134,7 @@ export default function TaughtfulLanding() {
                 <div className='text-sm opacity-90 mt-1'>
                   ✨ No signup needed
                 </div>
-              </Button>
+              </Link>
 
               <Button
                 variant='outline'

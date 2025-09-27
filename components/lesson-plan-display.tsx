@@ -1,17 +1,6 @@
 'use client'
 
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
-import type { LessonPlan } from '@/src/domain/lessonPlan'
-import {
   BookOpen,
   Clock,
   Target,
@@ -24,6 +13,19 @@ import {
   Heart,
   Shield,
 } from 'lucide-react'
+import AnimatedMascot from './AnimatedMascot'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
+import type { LessonPlan } from '@/src/domain/lessonPlan'
+import { useDemo } from '@/contexts/DemoContext'
 
 interface LessonPlanDisplayProps {
   lessonPlan: LessonPlan
@@ -36,6 +38,7 @@ export function LessonPlanDisplay({
   onPrint,
   onExport,
 }: LessonPlanDisplayProps) {
+  const { isDemo } = useDemo()
   const totalMinutes = lessonPlan.lessonTimeline.reduce(
     (sum, item) => sum + item.minutes,
     0
@@ -45,7 +48,7 @@ export function LessonPlanDisplay({
     <div className='space-y-6'>
       {/* Header */}
       <Card>
-        <CardHeader>
+        <CardHeader className='relative'>
           <div className='flex items-start justify-between'>
             <div className='space-y-2'>
               <CardTitle className='text-2xl'>{lessonPlan.title}</CardTitle>
@@ -53,17 +56,66 @@ export function LessonPlanDisplay({
                 {lessonPlan.overview}
               </CardDescription>
             </div>
-            <div className='flex gap-2'>
-              <Button variant='outline' size='sm' onClick={onPrint}>
+            <div className='flex gap-2 relative'>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={onPrint}
+                disabled={isDemo}
+              >
                 <Printer className='h-4 w-4 mr-2' />
                 Print
               </Button>
-              <Button variant='outline' size='sm' onClick={onExport}>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={onExport}
+                disabled={isDemo}
+              >
                 <Download className='h-4 w-4 mr-2' />
                 Export
               </Button>
+              {isDemo && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '-70px',
+                    right: 0,
+                    zIndex: 10,
+                    maxWidth: 260,
+                    background: 'white',
+                    borderRadius: 16,
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.10)',
+                    padding: '16px',
+                    border: '1px solid #e0e7ef',
+                    fontSize: 14,
+                    color: '#1e293b',
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: 8,
+                  }}
+                  className='animate-fade-in'
+                >
+                  <span style={{ fontSize: 24, marginRight: 8 }}>💡</span>
+                  <span>
+                    <strong>
+                      Export to Word/PDF is available after signup!
+                    </strong>
+                    <br />
+                    <span style={{ color: '#64748b' }}>
+                      Sign up to unlock downloads and keep your lesson plans
+                      forever.
+                    </span>
+                  </span>
+                </div>
+              )}
             </div>
           </div>
+          {isDemo && (
+            <div className='absolute top-0 right-0 mt-[-32px] mr-[-32px] md:mt-[-40px] md:mr-[-40px]'>
+              <AnimatedMascot className='w-24 h-24 md:w-32 md:h-32' />
+            </div>
+          )}
         </CardHeader>
       </Card>
 
@@ -97,18 +149,47 @@ export function LessonPlanDisplay({
         </CardHeader>
         <CardContent>
           <div className='space-y-3'>
-            {lessonPlan.linkedCurriculum.map((item, index) => (
-              <div key={index} className='p-3 border rounded-lg'>
-                <div className='flex items-center gap-2 mb-2'>
-                  <Badge variant='outline' className='font-mono'>
-                    {item.code}
-                  </Badge>
+            {isDemo ? (
+              <>
+                <div className='p-3 border rounded-lg'>
+                  <div className='flex items-center gap-2 mb-2'>
+                    <Badge variant='outline' className='font-mono'>
+                      VCEEN008
+                    </Badge>
+                  </div>
+                  <p className='text-sm text-muted-foreground'>
+                    English VCAA 8.1 (Persuasive Texts)
+                  </p>
+                  <p className='text-xs text-gray-500 mt-2'>
+                    <em>
+                      Example only. In the real app, you can select multiple
+                      curriculum codes to match your lesson focus!
+                    </em>
+                  </p>
                 </div>
-                <p className='text-sm text-muted-foreground'>
-                  {item.description}
-                </p>
-              </div>
-            ))}
+                <div className='mt-2 text-[14px] text-blue-700'>
+                  <strong>Tip:</strong> When you create or edit a lesson, you
+                  can select <strong>multiple curriculum links</strong> from the
+                  official VCAA database. This helps you align your lesson with
+                  exactly the right standards—no more guessing or manual lookup!
+                </div>
+              </>
+            ) : (
+              <>
+                {lessonPlan.linkedCurriculum.map((item, index) => (
+                  <div key={index} className='p-3 border rounded-lg'>
+                    <div className='flex items-center gap-2 mb-2'>
+                      <Badge variant='outline' className='font-mono'>
+                        {item.code}
+                      </Badge>
+                    </div>
+                    <p className='text-sm text-muted-foreground'>
+                      {item.description}
+                    </p>
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         </CardContent>
       </Card>

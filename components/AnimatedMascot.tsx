@@ -25,6 +25,21 @@ export default function AnimatedMascot({
         </div>
       </div>
       <div className='absolute -z-10 left-6 right-6 bottom-0 h-6 bg-black/10 blur-2xl rounded-full animate-pulse' />
+      <div className='w-full flex justify-center mt-2'>
+        <div
+          className='px-4 py-1 rounded-full shadow-md border border-[#FD6585]/40 text-sm font-semibold'
+          style={{
+            minWidth: 160,
+            textAlign: 'center',
+            background: '#FD6585',
+            color: 'white',
+          }}
+        >
+          Hello! my name is{' '}
+          <span className='font-bold text-white'>Dee Moe</span>
+        </div>
+      </div>
+      {/* eslint-disable-next-line react/no-unknown-property */}
       <style jsx global>{`
         @keyframes mascot-float {
           0%,

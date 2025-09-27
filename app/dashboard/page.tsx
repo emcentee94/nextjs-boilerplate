@@ -21,6 +21,8 @@ import {
   HeartHandshake,
   UsersRound,
 } from 'lucide-react'
+import DemoBanner from '@/components/demo/DemoBanner'
+import SignupModalBridge from '@/components/demo/SignupModalBridge'
 // Removed Header import to avoid duplicate headers
 
 const statItems = [
@@ -151,7 +153,15 @@ const pdTabs = [
   },
 ]
 
-function StatCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+function StatCard({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode
+  label: string
+  value: string
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 6 }}
@@ -182,16 +192,16 @@ function ToolCard({
   available,
   fontFamily,
 }: {
-  icon: React.ReactNode;
-  title: string;
-  desc: string;
-  href: string;
-  gradient: string;
-  iconBg: string;
-  borderColor: string;
-  hoverBorder: string;
-  available: boolean;
-  fontFamily: string;
+  icon: React.ReactNode
+  title: string
+  desc: string
+  href: string
+  gradient: string
+  iconBg: string
+  borderColor: string
+  hoverBorder: string
+  available: boolean
+  fontFamily: string
 }) {
   return (
     <a href={href} className='group'>
@@ -233,7 +243,13 @@ function Badge({ children }: { children: React.ReactNode }) {
   )
 }
 
-function PDTabStrip({ active, setActive }: { active: string; setActive: (tab: string) => void }) {
+function PDTabStrip({
+  active,
+  setActive,
+}: {
+  active: string
+  setActive: (tab: string) => void
+}) {
   return (
     <div className='mb-3 flex flex-wrap gap-2'>
       {pdTabs.map((t) => (
@@ -407,12 +423,14 @@ export default function Dashboard() {
 
   return (
     <div className='min-h-screen bg-[#FDE5DA]'>
+      <DemoBanner />
+      <SignupModalBridge />
       <div className='mx-auto max-w-7xl px-4 py-6'>
         {/* Header */}
         <div className='mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
           <div>
             <h1 className='text-2xl font-bold tracking-tight text-gray-900 font-fredoka'>
-              G'DAY, {name || 'Demi Mowed'} 👋
+              G&apos;DAY, {name || 'Demi Mowed'} 👋
             </h1>
             <p className='mt-1 text-sm text-gray-600'>
               Welcome back to your hub. Built for teachers, not tech demos.

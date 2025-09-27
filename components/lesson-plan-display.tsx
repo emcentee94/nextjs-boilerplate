@@ -12,8 +12,8 @@ import {
   Lightbulb,
   Heart,
   Shield,
+  Sparkles,
 } from 'lucide-react'
-import AnimatedMascot from './AnimatedMascot'
 import {
   Card,
   CardContent,
@@ -113,7 +113,9 @@ export function LessonPlanDisplay({
           </div>
           {isDemo && (
             <div className='absolute top-0 right-0 mt-[-32px] mr-[-32px] md:mt-[-40px] md:mr-[-40px]'>
-              <AnimatedMascot className='w-24 h-24 md:w-32 md:h-32' />
+              <div className='w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-[#FD6585] to-[#FF9A2E] rounded-full flex items-center justify-center'>
+                <Sparkles className='w-8 h-8 text-white' />
+              </div>
             </div>
           )}
         </CardHeader>

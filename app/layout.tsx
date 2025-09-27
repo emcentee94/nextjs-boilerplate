@@ -5,7 +5,6 @@ import { Nunito } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { Suspense } from 'react'
 import { DemoProvider } from '@/contexts/DemoContext'
-import DemoMascotCorner from '@/components/DemoMascotCorner'
 
 import './globals.css'
 
@@ -37,7 +36,6 @@ export default function RootLayout({
     <html lang='en' className='bg-transparent'>
       <body className={`font-sans ${fredoka.variable} ${nunito.variable}`}>
         <DemoProvider>
-          <DemoMascotCorner />
           <Suspense fallback={null}>{children}</Suspense>
         </DemoProvider>
         <Analytics />

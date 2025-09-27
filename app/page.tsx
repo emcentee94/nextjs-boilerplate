@@ -19,7 +19,6 @@ import AboriginalPerspectivesNarrativeGrid from '@/components/AboriginalPerspect
 import CulturalSafeguardsGrid from '@/components/CulturalSafeguardsGrid'
 import CurriculumCoverage from '@/components/CurriculumCoverage'
 import RAGSection from '@/components/RAGSection'
-import AnimatedMascot from '@/components/AnimatedMascot'
 
 export default function TaughtfulLanding() {
   // Testimonials removed; no rotation state needed
@@ -120,9 +119,6 @@ export default function TaughtfulLanding() {
 
             {/* Hero CTAs */}
             <div className='flex flex-col sm:flex-row gap-6 justify-center mb-16 items-center'>
-              <div className='hidden md:block mr-2'>
-                <AnimatedMascot className='w-20 h-20' />
-              </div>
               <Link
                 href='/dashboard?demo=1'
                 className='px-8 py-5 rounded-2xl border-2 border-[#FD6585] text-[#FD6585] bg-[#FD6585]/5 shadow-md transition-all duration-300 hover:bg-[#FD6585] hover:text-white hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.02] group font-nunito flex flex-col items-center justify-center'
